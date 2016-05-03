@@ -1,10 +1,10 @@
 # Template file for 'oracle-jdk'
 pkgname=oracle-jdk
-version=8u66
-revision=4
+version=8u91
+revision=1
 
-_longVersion=1.8.0_66
-_build=17
+_build=14
+_longVersion=1.${version%u*}.0_${version#*u}
 
 short_desc="Java Development Kit (JDK)"
 maintainer="Enno Boland <gottox@voidlinux.eu>"
@@ -12,7 +12,7 @@ homepage="http://www.oracle.com/technetwork/java/javase/downloads/index.html"
 license="oracle"
 lib32disabled=yes
 repository="nonfree"
-only_for_archs="i686 x86_64"
+only_for_archs="i686 x86_64 armv6l armv7l aarch64"
 depends="hicolor-icon-theme desktop-file-utils xdg-utils shared-mime-info wget"
 hostmakedepends="wget"
 provides="java-environment-${version}_1"
@@ -22,12 +22,22 @@ case "${XBPS_TARGET_MACHINE}" in
 x86_64)
 	_arch=amd64
 	_filename=jdk-${version}-linux-x64.tar.gz
-	checksum="7e95ad5fa1c75bc65d54aaac9e9986063d0a442f39a53f77909b044cef63dc0a"
+	checksum="6f9b516addfc22907787896517e400a62f35e0de4a7b4d864b26b61dbe1b7552"
 	;;
 i686)
 	_arch=i386
 	_filename=jdk-${version}-linux-i586.tar.gz
-	checksum="21026a8d789f479d3905a4ead0c97fd5190aa9b4d1bfc66413e9136513ca84a2"
+	checksum="5ecd05b5e566cbe688fc1e3159f04004ccad14d4faa3f50d15ffba1d50b4cd52"
+	;;
+arm*)
+	_arch=arm
+	_filename=jdk-${version}-linux-arm32-vfp-hflt.tar.gz
+	checksum="79dda1dec6ccd7130b5204e75d1a8300e5b02c18f70888697f51764a777e5339"
+	;;
+aarch64)
+	_arch=aarch64
+	_filename=jdk-${version}-linux-arm64-vfp-hflt.tar.gz
+	checksum="3dededc2e31bfda0a129b1df394e37078f339aa99e82e56d35cabff28ccfeb3b"
 	;;
 esac
 

@@ -6,6 +6,7 @@ packages for XBPS, the `Void Linux` native packaging system.
 *Table of Contents*  
 
 * [Introduction](#Introduction)
+	* [Quality Requirements](#quality_requirements)
 	* [Package build phases](#buildphase)
 	* [Package naming conventions](#namingconvention)
 		* [Libraries](#libs)
@@ -83,6 +84,24 @@ If everything went fine after running
     
 a binary package named `foo-1.0_1.<arch>.xbps` will be generated in the local repository
 `hostdir/binpkgs`.
+
+<a id="quality_requirements"></a>
+### Quality Requirements
+
+Follow this list to determine if a piece of software or other technology may be
+permitted in the Void Linux repository. Exceptions to the list are possible,
+and may be accepted, but are extremely unlikely. If you believe you have an
+exception, start a PR and make an argument for why that particular piece of
+software, while not meeting the below requirements, is a good candidate for
+the Void packages system.
+
+1. System: The software should be installed system-wide, not per-user.
+
+1. Compiled: The software needs to be compiled before being used, even if it is 
+   software that is not needed by the whole system.
+
+1. Required: Another package either within the repository or pending inclusion
+   requires the package.
 
 <a id="buildphase"></a>
 ### Package build phases
@@ -375,9 +394,9 @@ Example:
   | GNOME_SITE       | http://ftp.gnome.org/pub/GNOME/sources          |
   | GNU_SITE         | http://mirrors.kernel.org/gnu                   |
   | KERNEL_SITE      | http://www.kernel.org/pub/linux                 |
-  | MOZILLA_SITE     | http://ftp.mozilla.org/pub/mozilla.org          |
+  | MOZILLA_SITE     | http://ftp.mozilla.org/pub                      |
   | NONGNU_SITE      | http://download.savannah.nongnu.org/releases    |
-  | PYPI_SITE        | http://pypi.python.org/packages/source          |
+  | PYPI_SITE        | https://pypi.io/packages/source                 |
   | SOURCEFORGE_SITE | http://downloads.sourceforge.net/sourceforge    |
   | UBUNTU_SITE      | http://archive.ubuntu.com/ubuntu/pool           |
   | XORG_HOME        | http://xorg.freedesktop.org/wiki/               |
@@ -453,6 +472,16 @@ Example `skip_extraction="foo-${version}.tar.gz"`.
 paths, wildcards will be extended, and multiple entries can be separated by blanks i.e:
 `conf_files="/etc/foo.conf /etc/foo2.conf /etc/foo/*.conf"`.
 
+- `mutable_files` A list of files the binary package owns, with the expectation 
+  that those files will be changed. These act a lot like `conf_files` but 
+  without the assumption that a human will edit them.
+
+- `make_dirs` A list of entries defining directories and permissions to be
+  created at install time. Each entry should be space separated, and will
+  itself contain spaces. `make_dirs="/dir 0750 user group"`. User and group and
+  mode are required on every line, even if they are `755 root root`. By
+  convention, there is only one entry of `dir perms user group` per line.
+
 - `noarch` If set, the binary package is not architecture specific and can be shared
 by all supported architectures.
 
@@ -489,8 +518,14 @@ This appends to the generated file rather than replacing it.
 packages automatically. In the `reverts` field one can define a list of broken
 pkgver the resulting package should revert. This field *must* be defined before
 `version` and `revision` fields in order to work as expected. The versions
-defined in `reverts` must be lesser than the one defined in `version`.
-example: `reverts="2.0_1 2.0_2"`
+defined in `reverts` must be bigger than the one defined in `version`.
+Example:
+
+    ```
+    reverts="2.0_1 2.0_2"
+    version=1.9
+    revision=2
+    ```
 
 - `alternatives` A white space separated list of supported alternatives the package provides.
 A list is composed of three components separated by a colon: group, symlink and target.
@@ -594,7 +629,7 @@ Additional install arguments can be specified via `make_install_args`.
 - `perl-ModuleBuild` For packages that use the Perl
 [Module::Build](http://search.cpan.org/~leont/Module-Build-0.4202/lib/Module/Build.pm) method.
 
-- `perl` For packages that use the Perl
+- `perl-module` For packages that use the Perl
 [ExtUtils::MakeMaker](http://perldoc.perl.org/ExtUtils/MakeMaker.html) build method.
 
 - `python-module` For packages that use the Python module build method (setup.py).
@@ -1071,6 +1106,8 @@ The following variables influence how Go packages are built:
   will be downloaded with `go get`. Otherwise, a distfile has to be
   provided. This option should only be used with `-git` (or similar)
   packages; using a versioned distfile is preferred.
+- `go_build_tags`: An optional, space-separated list of build tags to
+  pass to Go.
 
 <a id="pkgs_haskell"></a>
 ### Haskell packages
@@ -1131,8 +1168,8 @@ a github pull request; see https://help.github.com/articles/fork-a-repo for more
 
 For commit messages please use the following rules:
 
-- If you've imported a new package use `"New package: <pkgver>"`.
-- If you've updated a package use `"<pkgname>: updated to <version>"`.
+- If you've imported a new package use `"New package: <pkgname>-<version>"`.
+- If you've updated a package use `"<pkgname>: update to <version>."`.
 - If you've removed a package use `"<pkgname>: removed ..."`.
 - If you've modified a package use `"<pkgname>: ..."`.
 

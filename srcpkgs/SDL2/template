@@ -7,13 +7,13 @@ configure_args="--enable-alsa --disable-esd --disable-rpath --enable-libudev
  --enable-clock_gettime --disable-nas --disable-arts --disable-x11-shared
  --disable-alsa-shared --disable-pulseaudio-shared --enable-dbus"
 hostmakedepends="pkg-config nasm"
-makedepends="alsa-lib-devel dbus-devel libudev-devel libusb-compat-devel"
+makedepends="alsa-lib-devel dbus-devel eudev-libudev-devel libusb-compat-devel"
 short_desc="Simple DirectMedia Layer (version 2)"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://www.libsdl.org/"
 license="zlib"
-distfiles="http://www.libsdl.org/tmp/release/${pkgname}-$version.tar.gz"
-checksum=26c6aea8e1c7c60f4bed11d9b39630a878576a09a722ea67755b4fb7a0694af7
+distfiles="http://www.libsdl.org/release/${pkgname}-${version}.tar.gz"
+checksum=da55e540bf6331824153805d58b590a29c39d2d506c6d02fa409aedeab21174b
 
 # Package build options
 build_options="gles opengl pulseaudio sndio wayland x11"

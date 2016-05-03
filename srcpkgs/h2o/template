@@ -1,12 +1,11 @@
 # Template file for 'h2o'
 pkgname=h2o
-version=1.6.1
-revision=1
+version=1.7.1
+revision=3
 build_style=cmake
 conf_files="/etc/h2o.conf"
 system_accounts="h2o"
-make_dirs="/var/log/h2o 0750 root root"
-hostmakedepends="cmake pkg-config"
+hostmakedepends="pkg-config"
 makedepends="zlib-devel libressl-devel"
 depends="perl"
 short_desc="An optimized HTTP server with support for HTTP/1.x and HTTP/2"
@@ -14,7 +13,7 @@ maintainer="Eivind Uggedal <eivind@uggedal.com>"
 license="MIT"
 homepage="https://github.com/h2o/h2o"
 distfiles="${homepage}/archive/v${version}.tar.gz"
-checksum=b9ffb59ecce6c35ea55cc95c71c7d85e91ac5fc888ada264da7c77f1d8e655f0
+checksum=a9488667f0b73a66d5ef593660f6c0f66311d6eb4bf9378c6b7e74ab7ec9eea2
 
 post_install() {
 	vsv h2o

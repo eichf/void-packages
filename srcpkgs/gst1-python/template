@@ -1,6 +1,6 @@
 # Template file for 'gst1-python'.
 pkgname=gst1-python
-version=1.6.2
+version=1.8.1
 revision=1
 wrksrc="gst-python-${version}"
 build_style=gnu-configure
@@ -14,7 +14,7 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="LGPL-2.1"
 homepage="http://gstreamer.freedesktop.org"
 distfiles="$homepage/src/gst-python/gst-python-${version}.tar.xz"
-checksum=4e763e317079f48a2d6f37bd600bc19650d61597fac9f5763dbad293f72f9125
+checksum=76a3bfb72f9cb81d2b2cf8d07e420478e5b3592ea4b8056bb8c8127f73810a98
 
 pre_configure() {
 	if [ "$CROSS_BUILD" ]; then

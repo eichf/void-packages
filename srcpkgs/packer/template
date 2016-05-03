@@ -1,17 +1,17 @@
 # Template file for 'packer'
 pkgname=packer
-version=0.8.6
-revision=3
+version=0.10.0
+revision=2
 replaces="packer-bin>=0"
 short_desc="Create identical multiplatform machine images from a single source"
 maintainer="Andrea Brancaleoni <miwaxe@gmail.com>"
 build_style=go
-hostmakedepends="git"
+hostmakedepends="git-perl"
 license="MPL-2"
 homepage="http://www.packer.io"
 go_import_path="github.com/mitchellh/packer"
 distfiles="https://${go_import_path}/archive/v${version}.tar.gz"
-checksum=3d2e4d291a746f8f0aa23f6b5b5b0a6ef7b040e765d856a12f5f125ede8ea425
+checksum=cc7a5c857a3031c1587984528152f55b654ff33ef143d6fcebaea1b004f6e766
 
 post_build() {
 	for F in $(find -type f -name main.go); do
@@ -22,7 +22,7 @@ post_build() {
 do_install() {
 	find "${GOPATH}/bin" -type f -executable | while read line
 	do
-		if [[ $(basename $line) == packer ]]; then
+		if [ "$(basename $line)" = packer ]; then
 			vbin $line
 		else
 			vbin $line packer-$(basename $line)

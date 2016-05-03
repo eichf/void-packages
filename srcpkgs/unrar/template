@@ -1,7 +1,7 @@
 # Template file for 'unrar'
 pkgname=unrar
-version=5.3.8
-revision=1
+version=5.3.11
+revision=3
 wrksrc=unrar
 homepage="http://www.rarlab.com/rar"
 distfiles="${homepage}/unrarsrc-${version}.tar.gz"
@@ -9,7 +9,7 @@ short_desc="Unarchiver for .rar files (non-free version)"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="freeware"
 repository="nonfree"
-checksum=52386ee592150f009a5438829dffc91c1e0006935e8ef701f3c8d8785b8eeb99
+checksum=77b87af4b2976ef7c6b0c79e071284c2c1b035a9543273ec925f9d92f73b8763
 
 do_build() {
 	sed -i 's/^\(CXXFLAGS\)=\(.*\)/\1+=\2/' makefile

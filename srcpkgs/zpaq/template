@@ -1,6 +1,6 @@
 # template for 'zpaq'
 pkgname=zpaq
-version=7.05
+version=7.11
 revision=1
 license="GPL-3"
 short_desc="Incremental Journaling Backup Utility and Archiver"
@@ -10,7 +10,7 @@ maintainer="necrophcodr <necrophcodr@necrophcodr.me>"
 homepage="http://mattmahoney.net/dc/zpaq.html"
 distfiles="http://mattmahoney.net/dc/zpaq${version//\./}.zip"
 create_wrksrc=yes
-checksum=d8abe3e3620d4c6f3ddc1da149acffa4c24296fd9c74c9d7b62319e308b63334
+checksum=4e7725a5b64464f89d40cd2b320877a0049fd8e8d90fbcd6eda2c23c6c4f6a4f
 
 do_build() {
 	$CXX $CFLAGS -Dunix zpaq.cpp libzpaq.cpp -pthread -o zpaq

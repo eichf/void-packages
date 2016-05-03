@@ -1,15 +1,16 @@
 # Template file for 'fuse'
 pkgname=fuse
-version=2.9.4
-revision=3
+version=2.9.6
+revision=1
 build_style=gnu-configure
-configure_args="--sbindir=/usr/bin --enable-lib --enable-util"
+configure_args="--enable-lib --enable-util"
+hostmakedepends="automake libtool gettext-devel"
 short_desc="Filesystem in Userspace"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="GPL-2"
-homepage="http://fuse.sourceforge.net"
-distfiles="${SOURCEFORGE_SITE}/$pkgname/$pkgname-$version.tar.gz"
-checksum=6be9c0bff6af8c677414935f31699ea5a7f8f5f791cfa5205be02ea186b97ce1
+homepage="https://github.com/libfuse/libfuse"
+distfiles="${homepage}/releases/download/${pkgname}-${version}/${pkgname}-${version}.tar.gz"
+checksum=0cb48bbc7106632d15a0c6bb582496c9884b869e329428891fe075a9e916f16b
 
 post_install() {
 	# remove obsolete rules file provided by udev.

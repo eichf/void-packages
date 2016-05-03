@@ -1,14 +1,14 @@
 # Template file for 'abduco'
 pkgname=abduco
-version=0.4
-revision=2
+version=0.6
+revision=1
 build_style=gnu-makefile
 short_desc="Session management in a clean and simple way"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="ISC"
 homepage="http://www.brain-dump.org/projects/abduco/"
 distfiles="http://www.brain-dump.org/projects/${pkgname}/${pkgname}-${version}.tar.gz"
-checksum=bda3729df116ce41f9a087188d71d934da2693ffb1ebcf33b803055eb478bcbb
+checksum=c90909e13fa95770b5afc3b59f311b3d3d2fdfae23f9569fa4f96a3e192a35f4
 
 do_build() {
 	make CC="$CC"

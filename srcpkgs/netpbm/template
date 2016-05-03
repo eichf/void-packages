@@ -1,10 +1,10 @@
 # Template file for 'netpbm'
 pkgname=netpbm
 # from http://svn.code.sf.net/p/netpbm/code/advanced/doc/HISTORY
-version=10.73.00
-_githash=103edb7554ae3235d47ee68924a9daca3494e953
+version=10.74.02
+_githash=3bb2edc4c1563f23e5e2922095eb8d6705e499d1
 revision=1
-_githash_guide=c44eb20afb3ec79088bc8236faabbef72fc1b2b6
+_githash_guide=e40b41180130fff8341baa8d1760644466b296db
 create_wrksrc=yes
 build_wrksrc="netpbm-mirror-${_githash}"
 hostmakedepends="pkg-config perl python flex"
@@ -16,8 +16,8 @@ homepage="http://netpbm.sourceforge.net/"
 nocross=yes
 distfiles="https://github.com/chneukirchen/netpbm-mirror/archive/${_githash}.tar.gz
  https://github.com/chneukirchen/netpbm-mirror/archive/${_githash_guide}.tar.gz"
-checksum="22c1c1a25a5f7597dd19d2daacecd5d29fac29faa2159f20ef136b08bf7a7a3d
- 0f9c0aad729e81fe90fabf830aa4e5296f4553416c8d573223c71eeebcc29bd2"
+checksum="3b93924f6906fc60858eb815b452fe7ebab3d2cd3637648e196066fd0ad50c92
+ bc23acaddac783ce1b34f6cfc939ba29103012ed65377f624dbe06400a8de0bd"
 
 post_extract() {
 	cd $build_wrksrc
@@ -46,7 +46,7 @@ do_build() {
 do_install() {
 	make pkgdir=$DESTDIR/usr PKGMANDIR=share/man install-run install-dev
 	rm $DESTDIR/usr/share/man/man?/*
-	make MAKEMAN="${PWD}/buildtools/makeman" MANDIR="$DESTDIR/usr/share/man" \
+	make MAKEMAN="${PWD}/buildtools/makeman" MANDIR="$DESTDIR/usr/share/man" USERGUIDE=. \
 		-C ../netpbm-mirror-${_githash_guide} \
 		-f "${PWD}/buildtools/manpage.mk" installman
 	vlicense doc/copyright_summary LICENSE

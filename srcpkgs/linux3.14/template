@@ -1,7 +1,7 @@
 # Template file for 'linux3.14'
 #
 pkgname=linux3.14
-version=3.14.58
+version=3.14.67
 revision=1
 wrksrc="linux-${version}"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
@@ -9,7 +9,7 @@ homepage="http://www.kernel.org"
 license="GPL-2"
 short_desc="The Linux kernel and modules (3.14 series)"
 distfiles="${KERNEL_SITE}/kernel/v3.x/linux-${version}.tar.xz"
-checksum=f4d016cb807b294988c6515c245939b2a7987ba606ad0662958bd8cb8600814b
+checksum=f0fef05f0c89382e5152a3b53cbb3350613c0a16dda2a2c2fef88985a7b7dbae
 
 _kernver="${version}_${revision}"
 
@@ -17,7 +17,7 @@ nostrip=yes
 noverifyrdeps=yes
 preserve=yes
 only_for_archs="i686 i686-musl x86_64 x86_64-musl"
-makedepends="bc perl kmod libressl"
+makedepends="bc perl kmod"
 triggers="kernel-hooks"
 # These files could be modified when an external module is built.
 mutable_files="

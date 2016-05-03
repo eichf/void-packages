@@ -1,6 +1,6 @@
 # Template file for 'prosody'
 pkgname=prosody
-version=0.9.8
+version=0.9.10
 revision=3
 build_style=configure
 conf_files="
@@ -12,13 +12,13 @@ system_accounts="prosody"
 prosody_homedir="/var/lib/prosody"
 make_dirs="/var/lib/prosody 0755 prosody prosody"
 makedepends="lua51-devel libressl-devel libidn-devel"
-depends="lua51 luasocket luafilesystem luaexpat luasec"
+depends="luasocket luafilesystem luaexpat lua51-luasec"
 short_desc="Lightweight and extensible Jabber/XMPP server written in Lua"
-maintainer="Duncaen <mail@duncano.de>"
+maintainer="Duncaen <duncaen@voidlinux.eu>"
 license="MIT"
 homepage="https://prosody.im/"
 distfiles="https://prosody.im/downloads/source/${pkgname}-${version}.tar.gz"
-checksum=9470415c56e0b847089b45fabd48bc1f8211cd525fba56967409d064f4257871
+checksum=4836eefed4d9bbb632cba24ac5bd8e9bc7c029a79d06084b00ffc70858d1662f
 
 pre_build() {
 	cp -f ${FILESDIR}/prosody.cfg.lua prosody.cfg.lua.dist
@@ -38,4 +38,5 @@ do_configure() {
 
 post_install() {
 	vsv prosody
+	vlicense COPYING
 }

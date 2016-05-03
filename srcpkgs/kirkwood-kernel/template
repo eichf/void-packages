@@ -1,6 +1,6 @@
 # Template file for 'kirkwood-kernel'
 pkgname=kirkwood-kernel
-version=4.1.15
+version=4.1.23
 revision=1
 wrksrc="linux-${version}"
 maintainer="Andrea Brancaleoni <miwaxe@gmail.com>"
@@ -14,8 +14,8 @@ https://raw.githubusercontent.com/archlinuxarm/PKGBUILDs/${_commit}/core/linux-k
 https://raw.githubusercontent.com/archlinuxarm/PKGBUILDs/${_commit}/core/linux-kirkwood/config"
 skip_extraction="mach-types archlinuxarm.patch config"
 checksum="
-472288cc966188c5d7c511c6be0f78682843c9ca2d5d6c4d67d77455680359a3
-f0c32b80f6a445a58fd673b790a5693c256e324f708e60dc5f2df9da57b1dcb0
+15b13213052596f9af040dc25e01a88e950a0901cec38fabb8f38b6a661e8c74
+ccd04baddb35debd8f3e8377f2002d1eee437b0b37633189ce7fefe79ee32070
 53259fb05cb3903c5215da33426a654e3f212756cce155363decf8dc5ed7751e
 1a6825cf6467604138e25c806cd9ff5b964894dbafc1f6a97fe8386c45f644bd"
 
@@ -25,7 +25,7 @@ noverifyrdeps=yes
 noshlibprovides=yes
 
 only_for_archs="armv5tel armv5tel-musl"
-hostmakedepends="perl kmod uboot-mkimage libressl-openssl bc"
+hostmakedepends="perl kmod uboot-mkimage libressl bc"
 makedepends="ncurses-devel"
 triggers="kernel-hooks"
 

@@ -1,6 +1,6 @@
 # Template file for 'python-ipython_ipykernel'
 pkgname=python-ipython_ipykernel
-version=4.2.2
+version=4.3.1
 revision=1
 noarch=yes
 wrksrc="ipykernel-${version}"
@@ -14,7 +14,7 @@ maintainer="Alessio Sergi <al3hex@gmail.com>"
 homepage="https://github.com/ipython/ipykernel"
 license="3-clause-BSD"
 distfiles="${PYPI_SITE}/i/ipykernel/ipykernel-${version}.tar.gz"
-checksum=a876da43e01acec2c305abdd8e6aa55f052bab1196171ccf1cb9a6aa230298b0
+checksum=8219d3eaa3e4d4efc5f349114e41a40f0986c91a960846bb81d5da817fb7cc3f
 
 post_install() {
 	vlicense COPYING.md LICENSE

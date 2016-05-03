@@ -1,16 +1,21 @@
 # Template file for 'meld'
 pkgname=meld
-version=3.15.0
+version=3.16.0
 revision=1
 noarch=yes
-build_style="python-module"
+build_style=python-module
 hostmakedepends="pkg-config intltool gnome-doc-utils python itstool gtk-update-icon-cache"
-depends="python-gobject gtksourceview desktop-file-utils hicolor-icon-theme"
+depends="python-gobject gsettings-desktop-schemas gtksourceview desktop-file-utils hicolor-icon-theme"
 pycompile_module="meld"
 short_desc="Visual diff and merge tool"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://meldmerge.org/"
 license="GPL-2"
 distfiles="${GNOME_SITE}/meld/${version%.*}/meld-${version}.tar.xz"
-checksum=3ac5ee6e5177183a24e72ae6681b685c7e410ff756c5ea2b65ff033db400aeca
+checksum=341bfd53ac7c0167d6d43694c0e7dbedf76463bdf79b425c439376ba15b56c0a
 configure_args="--disable-schemas-compile"
+
+post_install() {
+	rm $DESTDIR/usr/share/glib-2.0/schemas/gschemas.compiled \
+		$DESTDIR/usr/share/icons/hicolor/icon-theme.cache
+}

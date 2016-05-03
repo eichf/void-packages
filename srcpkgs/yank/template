@@ -1,6 +1,6 @@
 # Template file for 'yank'
 pkgname=yank
-version=0.6.2
+version=0.6.4
 revision=1
 build_style=gnu-makefile
 depends="xsel"
@@ -9,7 +9,7 @@ maintainer="Alessio Sergi <al3hex@gmail.com>"
 homepage="https://github.com/mptre/yank"
 license="MIT"
 distfiles="https://github.com/mptre/yank/archive/v${version}.tar.gz"
-checksum=e6dbeb1b8e5883f76156c2d3ff1b9a4171a6b59fabf5d38469e33d7719ffeb1b
+checksum=4794bd1e5eba2358b63253e750c547a2791e663105d91b18cd4818e0a534e75f
 
 do_install() {
 	make PREFIX=${DESTDIR}/usr install

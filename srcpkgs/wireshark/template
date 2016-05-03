@@ -1,6 +1,6 @@
 # Template file for 'wireshark'
 pkgname=wireshark
-version=2.0.1
+version=2.0.3
 revision=1
 build_style=gnu-configure
 configure_args="--with-ssl --with-pcap --with-libcap --with-zlib --with-lua
@@ -13,8 +13,10 @@ short_desc="A network protocol analyzer"
 maintainer="Enno Boland <gottox@voidlinux.eu>"
 homepage="http://www.wireshark.org"
 license="GPL-2"
-distfiles="http://www.wireshark.org/download/src/${pkgname}-${version}.tar.bz2"
-checksum=c9bd07dd0d0045d6ca7537390a1afbcdf33716d193ea7d7084ae4f6c30b683ab
+# XXX ovh is blocked (repo4.voidlinux.eu can't download this).
+#distfiles="http://www.wireshark.org/download/src/${pkgname}-${version}.tar.bz2"
+distfiles="https://sources.voidlinux.eu/${pkgname}-${version}/${pkgname}-${version}.tar.bz2"
+checksum=e196376e75fe21fdef41b4eaa27ce2e1b2b561e7f7b20328a8e96657cc4465fc
 system_groups="wireshark"
 subpackages="libwireshark libwireshark-devel wireshark-gtk"
 
@@ -44,7 +46,7 @@ post_install() {
 		vcopy "$i/*.h" $_includeDir/$i
 	done
 
-	chmod +754 $DESTDIR/usr/bin/dumpcap
+	chmod 0750 $DESTDIR/usr/bin/dumpcap
 }
 
 libwireshark_package() {
@@ -63,7 +65,6 @@ libwireshark-devel_package() {
 	}
 }
 wireshark-gtk_package() {
-	replaces="wireshark<1.12.2_1"
 	depends="${sourcepkg}>=${version}_${revision} hicolor-icon-theme desktop-file-utils"
 	short_desc+=" - GTK+ frontend"
 	pkg_install() {
@@ -73,7 +74,6 @@ wireshark-gtk_package() {
 	}
 }
 wireshark-qt_package() {
-	replaces="wireshark<1.12.2_1"
 	depends="${sourcepkg}>=${version}_${revision} desktop-file-utils"
 	short_desc+=" - Qt frontend"
 	pkg_install() {

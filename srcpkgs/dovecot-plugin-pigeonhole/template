@@ -1,25 +1,25 @@
 # Template file for 'dovecot-plugin-pigeonhole'
 pkgname=dovecot-plugin-pigeonhole
-# make sure this matches the current dovecot
-_dovecot_ver=2.2.21
-version=0.4.9
-revision=3
+version=0.4.14
+revision=1
 wrksrc="dovecot-2.2-pigeonhole-${version}"
 build_style=gnu-configure
 configure_args="--prefix=/usr
  --with-dovecot=${XBPS_CROSS_BASE}/usr/lib/dovecot
  --with-moduledir=/usr/lib/dovecot/modules
+ --with-ldap=plugin
  --disable-static"
 # Hack around dovecot-config for cross building.
 make_build_args="LIBDOVECOT_INCLUDE=-I${XBPS_CROSS_BASE}/usr/include/dovecot
  LIBS=-L${XBPS_CROSS_BASE}/usr/lib/dovecot"
-makedepends="dovecot-devel libressl-devel"
+hostmakedepends="libldap-devel"
+makedepends="dovecot-devel libressl-devel libldap-devel"
 short_desc="Sieve implementation for Dovecot"
 maintainer="John Regan <john@jrjrtech.com>"
 license="LGPL-2.1"
 homepage="http://pigeonhole.dovecot.org"
-distfiles="${homepage}/releases/2.2/dovecot-2.2-pigeonhole-${version}.tar.gz"
-checksum=82892f876d26008a076973dfddf1cffaf5a0451825fd44e06287e94b89078649
+distfiles="${homepage}/releases/2.2/${wrksrc}.tar.gz"
+checksum=dff30a636c1516158f3e159c669a254569c9dabaa6ecfa3669379101ea5b3300
 
 dovecot-plugin-pigeonhole-devel_package() {
 	depends="${sourcepkg}>=${version}_${revision}"
@@ -29,3 +29,10 @@ dovecot-plugin-pigeonhole-devel_package() {
 	}
 }
 
+dovecot-plugin-pigeonhole-ldap_package() {
+	short_desc+=" - ldap plugin"
+	pkg_install() {
+		vmove usr/lib/dovecot/modules/sieve/lib10_sieve_storage_ldap_plugin.so
+		vmove usr/share/doc/dovecot/sieve/locations/ldap.txt
+	}
+}

@@ -1,7 +1,7 @@
 # Template file for 'transmission'
 pkgname=transmission
-version=2.84
-revision=12
+version=2.92
+revision=3
 build_style=gnu-configure
 configure_args="--enable-nls --enable-cli --enable-daemon --enable-utp --without-systemd-daemon"
 hostmakedepends="pkg-config intltool"
@@ -10,8 +10,8 @@ short_desc="A fast, easy, and free BitTorrent client"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://www.transmissionbt.com/"
 license="MIT, GPL-2"
-distfiles="https://transmission.cachefly.net/${pkgname}-${version}.tar.xz"
-checksum=a9fc1936b4ee414acc732ada04e84339d6755cd0d097bcbd11ba2cfc540db9eb
+distfiles="https://download.transmissionbt.com/files/${pkgname}-${version}.tar.xz"
+checksum=3a8d045c306ad9acb7bf81126939b9594553a388482efa0ec1bfb67b22acd35f
 
 # Create transmission system user/group
 system_accounts="transmission"
@@ -70,6 +70,7 @@ transmission-qt_package() {
 		vmove usr/bin/transmission-qt
 		vmove usr/share/man/man1/transmission-qt.1
 		vmove usr/share/qt4/translations
+		sed -i '/Icon=/s/transmission/&-qt/' ${wrksrc}/qt/transmission-qt.desktop
 		vinstall ${wrksrc}/qt/icons/transmission.png 644 usr/share/pixmaps transmission-qt.png
 		vinstall ${wrksrc}/qt/transmission-qt.desktop 644 usr/share/applications
 	}

@@ -1,14 +1,14 @@
 # Template file for 'linux4.3'
 pkgname=linux4.3
-version=4.3.3
-revision=2
+version=4.3.6
+revision=1
 wrksrc="linux-${version}"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://www.kernel.org"
 license="GPL-2"
 short_desc="The Linux kernel and modules (${version%.*} series)"
 distfiles="${KERNEL_SITE}/kernel/v4.x/linux-${version}.tar.xz"
-checksum=8cad4ce7d049c2ecc041b0844bd478bf85f0d3071c93e0c885a776d57cbca3cf
+checksum=e0a3745d2fbc5cb2d5d18bd4493c750735b9c1a92d6dfae3cce1cbe9c947ad71
 
 nocross=yes
 nodebug=yes

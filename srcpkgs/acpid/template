@@ -1,16 +1,15 @@
 # Template file for 'acpid'
 pkgname=acpid
-version=2.0.25
-revision=3
+version=2.0.27
+revision=1
 build_style=gnu-configure
-configure_args="--sbindir=/usr/bin"
 conf_files="/etc/acpi/events/anything /etc/acpi/handler.sh"
 short_desc="The ACPI Daemon (acpid) With Netlink Support"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="GPL-2"
 homepage="http://sourceforge.net/projects/acpid2/"
 distfiles="${SOURCEFORGE_SITE}/acpid2/acpid-$version.tar.xz"
-checksum=0b700a8072bec162c512f72cbe419195601ab3e0ffd2138f9bd95ed3097a5c68
+checksum=820c223e53cc11d9d7229fb1ffc2c2205f1054082c80f83f5a4ec4df16d3a616
 
 post_install() {
 	vinstall ${FILESDIR}/handler.sh 755 etc/acpi

@@ -1,15 +1,40 @@
 # Template file for 'python-dulwich'
 pkgname=python-dulwich
-version=0.10.1a
-revision=1
+version=0.13.0
+revision=2
 wrksrc="dulwich-${version}"
 build_style=python-module
-hostmakedepends="python-setuptools"
-makedepends="python-devel"
+python_versions="2.7 3.4"
+hostmakedepends="python-setuptools python3.4-setuptools"
+makedepends="python-devel python3.4-devel"
 pycompile_module="dulwich"
-short_desc="Python implementation of the Git file formats and protocols"
+short_desc="Python2 implementation of the Git file formats and protocols"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
-homepage="http://samba.org/~jelmer/dulwich/"
+homepage="https://www.dulwich.io/"
 license="GPL-2"
-distfiles="https://pypi.python.org/packages/source/d/dulwich/dulwich-${version}.tar.gz"
-checksum=666600ab5eb0b6d531879ee0f65dfefd71bce2e21ab3910c28f7789e15b6330b
+distfiles="${PYPI_SITE}/d/dulwich/dulwich-${version}.tar.gz"
+checksum=8ed35334e22cf93e7dcfd5113d8e262041967fe4c3cead5e262c9102f3e63238
+
+alternatives="
+ dulwich:dul-receive-pack:/usr/bin/dul-receive-pack2.7
+ dulwich:dul-upload-pack:/usr/bin/dul-upload-pack2.7
+ dulwich:dulwich:/usr/bin/dulwich2.7"
+
+post_install() {
+	# remove extra docs
+	rm -rf ${DESTDIR}/usr/lib/python*/site-packages/docs
+}
+
+python3.4-dulwich_package() {
+	alternatives="
+	 dulwich:dul-receive-pack:/usr/bin/dul-receive-pack3.4
+	 dulwich:dul-upload-pack:/usr/bin/dul-upload-pack3.4
+	 dulwich:dulwich:/usr/bin/dulwich3.4"
+	pycompile_version="3.4"
+	pycompile_module="dulwich"
+	short_desc="${short_desc/Python2/Python3.4}"
+	pkg_install() {
+		vmove usr/bin/*3.4
+		vmove usr/lib/python3.4
+	}
+}

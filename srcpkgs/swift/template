@@ -1,0 +1,61 @@
+# Template file for 'swift'
+pkgname=swift
+version=2.2.1
+revision=1
+nocross=yes
+depends="clang"
+makedepends="libxml2-devel libuuid-devel libbsd-devel icu-devel libedit-devel"
+only_for_archs="x86_64"
+hostmakedepends="pkg-config ninja cmake icu swig clang python perl"
+short_desc="The Swift Programming Language"
+maintainer="pancake <pancake@nopcode.org>"
+license="Apache-2.0"
+homepage="https://www.swift.org/"
+_head="https://github.com/apple/"
+_tail="archive/${pkgname}-${version}-RELEASE.tar.gz"
+wrksrc="swift-swift-${version}-RELEASE"
+distfiles="
+${_head}/swift/${_tail}>swift-${version}.tar.gz
+${_head}/swift-llvm/${_tail}>swift-llvm-${version}.tar.gz
+${_head}/swift-clang/${_tail}>swift-clang-${version}.tar.gz
+${_head}/swift-lldb/${_tail}>swift-lldb-${version}.tar.gz
+${_head}/swift-cmark/${_tail}>swift-cmark-${version}.tar.gz
+"
+checksum="
+95fb0da2282da15f2aada66dec07a26630e66caf9d68f2c9f492527e25962096
+f7977e5bb275494b5dac4490afc5d634f894ba5f209f3b2dbd5b7e520fa5fce2
+40bdfa7eec0497ec69005d6a5d018b12c85aa2c0959d3408ecaaa9e34ff0415f
+2098043dbda98374e784d3357f71f8e931aea3ac958c042adf0df0fae7bc22a3
+254d3c02bf2b03ad456fa3ad27b4da854e36318fcaf6b6f199fdb3e978a90803
+"
+
+do_build() {
+	(
+		cd ..
+		for a in llvm clang lldb cmark; do
+			ln -sf swift-${a}-swift-${version}-RELEASE ${a}
+		done
+		ln -sf swift-swift-${version}-RELEASE swift
+		sed -i 's|/usr/include/x86_64-linux-gnu|/usr/include|g' clang/lib/Driver/ToolChains.cpp
+	)
+	export LDFLAGS="-ldl -lpthread"
+	utils/build-script -R -t -j${XBPS_MAKEJOBS}
+}
+
+do_install() {
+	vlicense LICENSE.txt
+	cd ../build/Ninja-ReleaseAssert/swift-linux-${XBPS_TARGET_MACHINE}
+	vbin bin/sil-opt
+	vbin bin/sil-extract
+	vbin bin/swift-demangle
+	vbin bin/swift
+	ln -fs swift ${DESTDIR}/usr/bin/swiftc
+	ln -fs swift ${DESTDIR}/usr/bin/swift-autolink-extract
+	vman docs/tools/swift.1
+	vmkdir usr/lib/swift
+	rm -r -f lib/swift/install-tmp
+	rm -f lib/swift/clang
+	vcopy lib/swift/* usr/lib/swift
+	vmkdir usr/lib/swift/clang/include
+	vcopy ../llvm-linux-${XBPS_TARGET_MACHINE}/lib/clang/3.8.0/include/* usr/lib/swift/clang/include
+}

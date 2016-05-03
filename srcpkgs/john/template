@@ -1,9 +1,10 @@
 # Template file for 'john'
 pkgname=john
 version=1.8.0
+revision=6
 _jumbover=1
-revision=5
-wrksrc="${pkgname}-${version}-jumbo-${_jumbover}/src"
+wrksrc="${pkgname}-${version}-jumbo-${_jumbover}"
+build_wrksrc="src"
 build_style=gnu-configure
 configure_args="--disable-native-tests --disable-native-macro"
 hostmakedepends="libgomp-devel pkg-config"
@@ -17,6 +18,7 @@ distfiles="$homepage/j/$pkgname-${version}-jumbo-${_jumbover}.tar.xz"
 checksum=bac93d025995a051f055adbd7ce2f1975676cac6c74a6c7a3ee4cfdd9c160923
 
 pre_configure() {
+	rm rawSHA0_fmt_plug.c # SHA no longer available in libressl
 	sed -i 's|des_|DES_|g' KRB4*.c
 	export AS= LD=
 	export OPENSSL_LIBS="-lssl -lcrypto"

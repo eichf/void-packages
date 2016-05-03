@@ -1,6 +1,6 @@
 # Template file for 'Lutris'
 pkgname=lutris
-version=0.3.6.3
+version=0.3.7.5
 revision=1
 build_style=python-module
 pycompile_module="lutris"
@@ -8,9 +8,9 @@ short_desc="Open gaming platform for managing games in a unified way"
 maintainer="Jan Wey. <janwey.git@gmail.com>"
 homepage="https://lutris.net/"
 license="GPL-3"
-distfiles="http://lutris.net/releases/${pkgname}_${version}.tar.gz"
-checksum=a9061403ef8844b2c1443b1c5f15fe98af224d652d66268b47ae8e215e289058
-depends="python python-gobject python-yaml python-xdg gvfs"
+distfiles="http://lutris.net/releases/${pkgname}_${version}.tar.xz"
+checksum=06ab74bcaa6bef125201a9ff8d8c500ceffc860689f591415f52d8d28f21ddfd
+depends="python python-gobject python-yaml python-xdg python-dbus gvfs xrandr"
 makedepends="python python-devel python-xdg"
-hostmakedepends="python-setuptools"
+hostmakedepends="python-setuptools python-gobject"
 wrksrc=lutris

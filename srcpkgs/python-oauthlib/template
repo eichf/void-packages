@@ -1,6 +1,6 @@
 # Template file for 'python-oauthlib'
 pkgname=python-oauthlib
-version=1.0.3
+version=1.1.1
 revision=1
 noarch=yes
 wrksrc="${pkgname#*-}-${version}"
@@ -14,7 +14,7 @@ maintainer="Eivind Uggedal <eivind@uggedal.com>"
 license="BSD"
 homepage="https://github.com/idan/oauthlib"
 distfiles="${PYPI_SITE}/o/oauthlib/oauthlib-${version}.tar.gz"
-checksum=ef4bfe4663ca3b97a995860c0173b967ebd98033d02f38c9e1b2cbb6c191d9ad
+checksum=2adb8aea38b57b0f997f5165ade8228c8a105ac1a32b485fba04ce545e887e0e
 
 post_install() {
 	vlicense LICENSE

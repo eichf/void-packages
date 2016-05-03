@@ -1,16 +1,20 @@
 # Template file for 'qtkeychain'
 pkgname=qtkeychain
-version=0.5.0
+version=0.6.2
 revision=1
 build_style=cmake
-hostmakedepends="cmake"
 makedepends="icu-devel qt-devel"
 short_desc="Platform-independent Qt API for storing passwords securely"
-maintainer="Duncan Overbruck <mail@duncano.de>"
-license="BSD"
+maintainer="Duncaen <duncaen@voidlinux.eu>"
+license="2-clause-BSD"
 homepage="https://github.com/frankosterfeld/qtkeychain"
 distfiles="https://github.com/frankosterfeld/${pkgname}/archive/v${version}.tar.gz"
-checksum=e62d7ae9c8ae04784d8a5d0f213aaa22f1c02427e800ce88739e997f499bb514
+checksum=ae13459234feeeab3a154457319d9b26ee9600973443517c77e055838ebae63c
+nocross=yes
+
+post_install() {
+	vlicense COPYING
+}
 
 qtkeychain-devel_package() {
 	depends="qtkeychain>=${version}_${revision}"

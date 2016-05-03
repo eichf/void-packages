@@ -1,6 +1,6 @@
 # Template build file for 'grep'.
 pkgname=grep
-version=2.22
+version=2.25
 revision=1
 build_style=gnu-configure
 makedepends="pcre-devel"
@@ -9,4 +9,4 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="GPL-3"
 homepage="http://www.gnu.org/software/grep/"
 distfiles="${GNU_SITE}/$pkgname/$pkgname-$version.tar.xz"
-checksum=ca91d22f017bfcb503d4bc3b44295491c89a33a3df0c3d8b8614f2d3831836eb
+checksum=e21e83bac50450e0d0d61a42c154ee0dceaacdbf4f604ef6e79071cb8e596830

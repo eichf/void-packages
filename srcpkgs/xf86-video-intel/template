@@ -1,11 +1,12 @@
 # Template build file for 'xf86-video-intel'.
 pkgname=xf86-video-intel
-version=2.99.917.24
+version=2.99.917.43
 revision=1
 lib32disabled=yes
 build_style=gnu-configure
+configure_args="--with-default-dri=3"
 hostmakedepends="git automake libtool pkg-config xorg-util-macros"
-makedepends="libudev-devel libdrm-devel libpciaccess-devel libXext-devel
+makedepends="eudev-libudev-devel libdrm-devel libpciaccess-devel libXext-devel
  libXfixes-devel libXv-devel libXvMC-devel xcb-util-devel MesaLib-devel
  xorg-server-devel"
 depends="virtual?xserver-abi-video-20_1 mesa-intel-dri"
@@ -22,8 +23,8 @@ LDFLAGS="-Wl,-z,lazy"
 do_fetch() {
 	git clone git://anongit.freedesktop.org/xorg/driver/xf86-video-intel ${wrksrc}
 	cd ${wrksrc}
-	# Latest commit as of 20151217
-	git reset --hard 82293901da23d
+	# Latest commit as of 20160430
+	git reset --hard e4ef6e9e5b2c8b637356621c60b28d064d40d29c
 }
 pre_configure() {
 	NOCONFIGURE=1 ./autogen.sh

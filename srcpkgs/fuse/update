@@ -1,0 +1,2 @@
+site="$homepage/releases"
+pattern=">fuse \K[\d\.]+(?=</a>)"

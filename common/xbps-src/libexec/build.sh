@@ -100,15 +100,12 @@ fi
 if [ -z "$CHROOT_READY" -a "$PKGNAME" = "base-files" ]; then
     msg_normal "Installing $PKGNAME into masterdir...\n"
     _log=$(mktemp --tmpdir || exit 1)
-    if [ -n "$XBPS_BUILD_FORCEMODE" ]; then
-        _flags="-f"
-    fi
-    $XBPS_INSTALL_CMD ${_flags} -y $PKGNAME >${_log} 2>&1
+    XBPS_ARCH=$XBPS_MACHINE $XBPS_INSTALL_CMD -yf $PKGNAME >${_log} 2>&1
     if [ $? -ne 0 ]; then
         msg_red "Failed to install $PKGNAME into masterdir, see below for errors:\n"
         cat ${_log}
         rm -f ${_log}
-        msg_error "Cannot continue!"
+        msg_error "Cannot continue!\n"
     fi
     rm -f ${_log}
 fi

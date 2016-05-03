@@ -1,0 +1,39 @@
+# Template build file for 'GThumb'.
+pkgname=gthumb
+version=3.4.3
+revision=2
+build_style=gnu-configure
+configure_args="--disable-schemas-compile --disable-static
+ $(vopt_enable tiff) $(vopt_enable clutter)
+ $(vopt_enable gstreamer)  $(vopt_enable soup libsoup)
+ $(vopt_enable brasero libbrasero)"
+hostmakedepends="pkg-config intltool itstool glib-devel"
+makedepends="webkit2gtk-devel json-glib-devel gnome-desktop-devel
+ libsecret-devel librsvg-devel libwebp-devel exiv2-devel
+ $(vopt_if tiff tiff-devel) $(vopt_if clutter clutter-gtk-devel)
+ $(vopt_if gstreamer gstreamer-devel) $(vopt_if soup libsoup-gnome-devel)
+ $(vopt_if brasero-devel)"
+short_desc='An image viewer and browser for the GNOME Desktop'
+maintainer="Enguerrand de Rochefort <voidlinux@rochefort.de>"
+homepage="http://live.gnome.org/gthumb"
+license="GPL-3"
+distfiles="$GNOME_SITE/${pkgname}/${version%.*}/${pkgname}-${version}.tar.xz"
+checksum=c10fd12f3bfea31c390c74e8e08f86f16e2159fbd6c806daa025423e0ded825d
+
+## Package build options
+build_options="brasero clutter gstreamer soup tiff"
+desc_option_brasero="Enable burning discs"
+desc_option_clutter="Enable clutter (for slideshows)"
+desc_option_soup="Enable webservices"
+build_options_default="clutter gstreamer soup tiff"
+
+LDFLAGS="-fPIC"
+
+gthumb-devel_package() {
+	short_desc+=" - development files"
+	depends="${sourcepkg}>=${version}_${revision}"
+	pkg_install() {
+		vmove usr/lib/pkgconfig
+		vmove usr/include
+	}
+}

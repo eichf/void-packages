@@ -1,16 +1,20 @@
 # Template file for 'kodi'
 pkgname=kodi
-version=15.2
-revision=3
+version=16.1
+revision=2
 patch_args="-Np1"
-_codename="Isengard"
+_codename="Jarvis"
 wrksrc="xbmc-${version}-${_codename}"
 short_desc="A software media player and entertainment hub for digital media"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://www.kodi.tv/"
 license="GPL-2"
 distfiles="https://github.com/xbmc/xbmc/archive/${version}-${_codename}.tar.gz"
-checksum=dd8aeb942e6de5d1488e243e1346cff3f6597e21b5131a3ba72ff5cc82037110
+checksum=7d82c8aff2715c83deecdf10c566e26105bec0473af530a1356d4c747ebdfd10
+
+case "${XBPS_TARGET_MACHINE}" in
+	i686*) broken="http://build.voidlinux.eu/builders/i686_builder/builds/21640";;
+esac
 
 lib32disabled=yes
 only_for_archs="i686 i686-musl x86_64 x86_64-musl"
@@ -20,7 +24,7 @@ hostmakedepends="
  automake libtool pkg-config gperf cmake zip unzip nasm yasm python-devel
  gettext-devel libltdl-devel curl"
 makedepends="
- libudev-devel pcre-devel expat-devel libpng-devel libjpeg-turbo-devel
+ eudev-libudev-devel pcre-devel expat-devel libpng-devel libjpeg-turbo-devel
  libXrandr-devel avahi-libs-devel pulseaudio-devel samba-devel tiff-devel
  libmysqlclient-devel libmpeg2-devel wavpack-devel zlib-devel lzo-devel
  libXmu-devel glew-devel fribidi-devel sqlite-devel libcdio-devel freetype-devel
@@ -30,7 +34,7 @@ makedepends="
  libbluetooth-devel yajl-devel libplist-devel librtmp-devel tinyxml-devel
  taglib-devel libcap-devel lame-devel libbluray-devel libnfs-devel ffmpeg-devel
  giflib-devel libxslt-devel gnutls-devel libssh-devel libmicrohttpd-devel
- libcec-devel"
+ libcec-devel dcadec-devel crossguid"
 # The following dependencies are dlopen(3)ed.
 depends="libbluray libmad libvorbis libcurl libflac libmodplug libass libmpeg2
  lame librtmp libnfs>=1.9.7 libplist>=1.12"
@@ -61,6 +65,8 @@ pre_configure() {
 	BOOTSTRAP_STANDALONE=1 make -f bootstrap.mk
 }
 do_configure() {
+	# Do not ship version check.
+	rm -rf addons/service.xbmc.versioncheck
 	./configure ${configure_args} \
 		--disable-debug --enable-optimizations --enable-gl \
 		--enable-sdl --enable-vdpau --enable-vaapi --enable-joystick \

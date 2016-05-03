@@ -1,20 +1,21 @@
 # Template file for 'musl'.
 pkgname=musl
-version=1.1.12
-revision=3
+version=1.1.14
+revision=1
 build_style=gnu-configure
 configure_args="--prefix=/usr --disable-gcc-wrapper"
 conflicts="glibc>=0"
+bootstrap=yes
 short_desc="The musl C library"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="MIT"
 homepage="http://www.musl-libc.org/"
 distfiles="http://www.musl-libc.org/releases/musl-${version}.tar.gz"
-checksum=720b83c7e276b4b679c0bffe9509340d5f81fd601508e607e708177df0d31c0e
+checksum=35f6c00c84a6091bd5dab29eedde7508dae755ead92dcc0239f3677d1055b9b5
 
 nostrip_files="libc.so"
 shlib_provides="libc.so"
-only_for_archs="i686-musl x86_64-musl armv5tel-musl armv6l-musl armv7l-musl aarch64-musl mips-musl mipsel-musl"
+only_for_archs="i686-musl x86_64-musl armv5tel-musl armv6l-musl armv7l-musl aarch64-musl mips-musl mipsel-musl mipselhf-musl"
 
 post_build() {
 	$CC $CFLAGS $LDFLAGS ${FILESDIR}/getent.c -o getent
@@ -36,13 +37,12 @@ do_install() {
 	vman ${FILESDIR}/getent.1
 	vbin getconf
 	vman ${FILESDIR}/getconf.1
+	# Fake ldconfig
+	ln -s true ${DESTDIR}/usr/bin/ldconfig
 	# Create xbps.d(5) arch override file
 	vmkdir usr/share/xbps.d
 	echo "architecture=${XBPS_TARGET_MACHINE}" > ${DESTDIR}/usr/share/xbps.d/musl-arch.conf
 	vlicense COPYRIGHT
-	if [ "$XBPS_TARGET_MACHINE" = mipsel-musl ]; then
-		ln -s libc.so ${DESTDIR}/usr/lib/ld-musl-mipsel.so.1
-	fi
 }
 
 musl-devel_package() {

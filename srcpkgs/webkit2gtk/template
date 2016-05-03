@@ -1,6 +1,6 @@
 # Template file for 'webkit2gtk'
 pkgname=webkit2gtk
-version=2.10.4
+version=2.12.2
 revision=2
 wrksrc="webkitgtk-$version"
 build_style=cmake
@@ -10,7 +10,7 @@ maintainer="Enno Boland <gottox@voidlinux.eu>"
 homepage="http://webkitgtk.org/"
 license="LGPL-2.1, 2-clause-BSD"
 distfiles="${homepage}/releases/webkitgtk-${version}.tar.xz"
-checksum=dbf8260da5cac0c74de2d3cce1fe7c519da3cd816a2c769cb6c6d56addd2f055
+checksum=9dc49b908b1c37da739703e1402a7f07c4ea9093b8ecfb34f20e8f74e328f124
 
 # ETOOHUGE
 nodebug=1

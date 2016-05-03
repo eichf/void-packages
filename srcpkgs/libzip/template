@@ -1,6 +1,6 @@
 # Template file for 'libzip'
 pkgname=libzip
-version=1.0.1
+version=1.1.2
 revision=1
 build_style=gnu-configure
 hostmakedepends="perl"
@@ -10,7 +10,7 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="GPL-2"
 homepage="http://www.nih.at/libzip"
 distfiles="${homepage}/${pkgname}-${version}.tar.gz"
-checksum=0cef914d8f5105ccac44484f61413daa08d7204758e77240a4d20ebf967f3d49
+checksum=59ac7c09b0aa9aa7e21849c236d0a66a97aa6d442d78335c2fdfe0ee16366221
 
 post_install() {
 	ln -sfr ${DESTDIR}/usr/lib/libzip/include/zipconf.h ${DESTDIR}/usr/include/zipconf.h

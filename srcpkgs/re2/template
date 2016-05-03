@@ -1,7 +1,7 @@
 # Template build file for 're2'.
 pkgname=re2
 reverts=20140304_1
-version=2015.11.01
+version=2016.04.01
 revision=1
 wrksrc="${pkgname}-${version//./-}"
 build_style=gnu-makefile
@@ -11,7 +11,9 @@ maintainer="Steve Prybylski <sa.prybylx@gmail.com>"
 license="3-clause-BSD"
 homepage="https://github.com/google/re2"
 distfiles="${homepage}/archive/${version//./-}.tar.gz"
-checksum=4aeca04541b63af1e38682b20440fcde2207a4a8a04466359dd113c8a7d4657e
+checksum=cba63beed3c502bbacd45e22b24550e4becbc27737389f14d7cdcace12c41177
+CXXFLAGS="-std=c++11"
+LDFLAGS="-pthread"
 
 post_install() {
 	vlicense LICENSE

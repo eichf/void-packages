@@ -1,0 +1,29 @@
+# Template file for 'python-apsw'
+pkgname=python-apsw
+_distver=3.12.2
+_patchver=r1
+version=${_distver}${_patchver}
+revision=1
+wrksrc="apsw-${_distver}-${_patchver}"
+build_style=python-module
+python_versions="2.7 3.4"
+hostmakedepends="python-devel python3.4-devel"
+makedepends="python-devel python3.4-devel sqlite-devel"
+short_desc="Another Python SQLite Wrapper (Python2)"
+maintainer="bra1nwave <brainwave@openmailbox.org>"
+license="MIT"
+homepage="https://github.com/rogerbinns/apsw"
+distfiles="https://github.com/rogerbinns/apsw/archive/${_distver}-${_patchver}.tar.gz"
+checksum=ef63f974efa68e4d200464cba4bb9ed52e77e05897b9cd0ff2d1427cabc5cd07
+
+post_install() {
+	vlicense LICENSE
+}
+
+python3.4-apsw_package() {
+	short_desc="${short_desc/Python2/Python3.4}"
+	pkg_install() {
+		vmove usr/lib/python3.4
+		vlicense LICENSE
+	}
+}

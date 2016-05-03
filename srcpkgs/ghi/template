@@ -1,6 +1,6 @@
 # Template file for 'ghi'
 pkgname=ghi
-version=1.0.4
+version=1.2.0
 revision=1
 noarch=yes
 depends="ruby"
@@ -9,9 +9,10 @@ maintainer="Enno Boland <gottox@voidlinux.eu>"
 license="MIT"
 homepage="https://github.com/stephencelis/ghi"
 distfiles="https://github.com/stephencelis/${pkgname}/archive/${version}.tar.gz"
-checksum=6fd0442a4b64a66ee27f0d09caf27bcc117737bd997653b94e8404ef7795f963
+checksum=0d88a3dc21a5d12e0bb3271985e961e068947a14412b18e7d1d498be06ba4cc6
 
 do_install() {
 	vbin ghi
 	vman man/ghi.1
+	vlicense LICENSE
 }

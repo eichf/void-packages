@@ -1,7 +1,7 @@
 # Template file for 'xbps'
 pkgname=xbps
 version=0.51
-revision=1
+revision=9
 bootstrap=yes
 build_style=configure
 short_desc="The XBPS package system utilities"
@@ -40,10 +40,16 @@ do_configure() {
 post_install() {
 	case "$XBPS_TARGET_MACHINE" in
 	*-musl) # XXX different repo location
-		echo "repository=http://muslrepo.voidlinux.eu/current" > \
+		echo "repository=https://repo.voidlinux.eu/current/musl" > \
+			${DESTDIR}/usr/share/xbps.d/00-repository-main.conf
+		;;
+	*)
+		echo "repository=https://repo.voidlinux.eu/current" > \
 			${DESTDIR}/usr/share/xbps.d/00-repository-main.conf
 		;;
 	esac
+	vmkdir etc/xbps.d
+	touch ${DESTDIR}/etc/xbps.d/.empty
 }
 
 libxbps_package() {

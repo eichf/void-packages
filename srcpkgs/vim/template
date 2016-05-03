@@ -1,8 +1,8 @@
 # Template file for 'vim'
 pkgname=vim
-version=7.4.979
+version=7.4.1816
 revision=1
-hostmakedepends="pkg-config"
+hostmakedepends="pkg-config glib-devel"
 makedepends="ncurses-devel acl-devel libXt-devel gtk+-devel perl
  ruby-devel python-devel python3.4-devel lua-devel"
 depends="vim-common>=$version"
@@ -11,7 +11,7 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://www.vim.org"
 license="Vim"
 distfiles="https://github.com/${pkgname}/${pkgname}/archive/v${version}.tar.gz>${pkgname}-${version}.tar.gz"
-checksum=b91bd610a07d6d72cb113fe06f2db722a130f8218568e0958a84c266758bd75b
+checksum=cebc9d73b94101066aa8546772f9d630eea5b6c8417e281e01c82f8f31904a93
 
 subpackages="xxd vim-common vim-x11 gvim"
 # XXX vim-huge cannot be cross compiled for now.
@@ -35,7 +35,7 @@ do_configure() {
 
 	nohuge_args="--disable-perlinterp --disable-pythoninterp
 		--disable-rubyinterp --disable-workshop
-		--disable-netbeans --disable-sniff --disable-gpm
+		--disable-netbeans --disable-gpm
 		--disable-hangulinput"
 
 	if [ "$CROSS_BUILD" ]; then
@@ -63,13 +63,14 @@ do_configure() {
 	# Huge versions
 	if [ -z "$CROSS_BUILD" ]; then
 		cd $wrksrc/vim-huge
-		./configure ${configure_args} ${args} --with-x=no --enable-gui=no \
+		./configure ${configure_args} ${args} --with-x=yes --enable-gui=no \
 			--with-features=huge --enable-perlinterp --enable-pythoninterp \
 			--enable-rubyinterp --enable-luainterp --enable-clientserver
 
 		cd $wrksrc/vim-huge-python3
-		./configure ${configure_args} ${args} --with-x=no --enable-gui=no \
-			--with-features=huge --enable-perlinterp --disable-pythoninterp --enable-python3interp \
+		./configure ${configure_args} ${args} --with-x=yes --enable-gui=no \
+			--with-features=huge --enable-perlinterp \
+			--disable-pythoninterp --enable-python3interp \
 			--enable-rubyinterp --enable-luainterp
 	fi
 }
@@ -119,6 +120,7 @@ vim-common_package() {
 		vmove usr/share/licenses
 		vmove usr/share/vim
 		vinstall ${FILESDIR}/vimrc 644 usr/share/vim
+		vinstall runtime/doc/tags 644 usr/share/vim/vim74/doc
 	}
 }
 vim-x11_package() {

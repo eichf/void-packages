@@ -1,6 +1,6 @@
 # Template file for 'xe'
 pkgname=xe
-version=0.3
+version=0.6
 revision=1
 build_style=gnu-makefile
 short_desc="Execute for every... (a better xargs/apply)"
@@ -8,4 +8,4 @@ maintainer="Christian Neukirchen <chneukirchen@gmail.com>"
 license="Public Domain"
 homepage="https://github.com/chneukirchen/xe"
 distfiles="https://github.com/chneukirchen/${pkgname}/archive/v${version}.tar.gz"
-checksum=0a4453f0c836fbb2652a0217987d9d8e27f52fd1be3e9d075ff0b0151e4abaf6
+checksum=ba826fd9cb175e75f26f536726b176677a594fbef5480bcf673aee1aa4db4a7b

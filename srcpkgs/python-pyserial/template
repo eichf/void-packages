@@ -1,19 +1,36 @@
 # Template file for 'python-pyserial'
-# vim: set ts=4 sw=4 sts=4 et:
-
 pkgname=python-pyserial
-version=2.7
+version=3.0.1
 revision=2
-maintainer="Carlo Dormeletti <carloDOTdormelettiATaliceDOTit>"
-homepage="http://pyserial.sourceforge.net/"
-license="LGPL-2.1"
-short_desc="Python2 module providing access for the serial port"
 noarch=yes
 wrksrc="pyserial-${version}"
 build_style=python-module
-hostmakedepends="python-setuptools"
+python_versions="2.7 3.4"
+hostmakedepends="python-setuptools python3.4-setuptools"
 depends="python"
 pycompile_module="serial"
+short_desc="Python2 module providing access for the serial port"
+maintainer="Juan RP <xtraeme@voidlinux.eu>"
+homepage="https://github.com/pyserial/pyserial"
+license="3-clause-BSD"
 distfiles="${PYPI_SITE}/p/pyserial/pyserial-${version}.tar.gz"
-checksum=3542ec0838793e61d6224e27ff05e8ce4ba5a5c5cc4ec5c6a3e8d49247985477
+checksum=969cb6405d1d87f8960cf9c10f597ae58f85da2fb9769dba96f4aeeaade54656
+alternatives="pyserial:miniterm:/usr/bin/miniterm.py2.7"
 
+post_install() {
+	vlicense LICENSE.txt LICENSE
+}
+
+python3.4-pyserial_package() {
+	noarch=yes
+	depends="python3.4"
+	pycompile_version="3.4"
+	pycompile_module="serial"
+	short_desc="${short_desc/Python2/Python3.4}"
+	alternatives="pyserial:miniterm:/usr/bin/miniterm.py3.4"
+	pkg_install() {
+		vmove usr/bin/miniterm.py3.4
+		vmove usr/lib/python3.4
+		vlicense LICENSE.txt LICENSE
+	}
+}

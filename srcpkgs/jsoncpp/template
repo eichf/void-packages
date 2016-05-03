@@ -1,7 +1,7 @@
 # Template build file for 'jsoncpp'.
 pkgname=jsoncpp
-version=1.6.5
-revision=2
+version=1.7.2
+revision=1
 build_style="cmake"
 hostmakedepends="cmake"
 configure_args="-DCMAKE_BUILD_TYPE=Release -DBUILD_STATIC_LIBS=ON
@@ -11,7 +11,11 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="Public Domain or MIT"
 homepage="http://jsoncpp.sourceforge.net/"
 distfiles="https://github.com/open-source-parsers/${pkgname}/archive/${version}.tar.gz"
-checksum=a2b121eaff56ec88cfd034d17685821a908d0d87bc319329b04f91a6552c1ac2
+checksum=2179a7df19c1c6dc87e02c65b847efc914625a9b87df3e443d9610fc70c0f557
+
+post_install() {
+	vlicense LICENSE
+}
 
 jsoncpp-devel_package() {
 	depends="jsoncpp>=${version}_${revision}"

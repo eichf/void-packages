@@ -1,6 +1,6 @@
 # Template build file for 'vte3'.
 pkgname=vte3
-version=0.42.1
+version=0.42.5
 revision=1
 wrksrc=vte-${version}
 build_style=gnu-configure
@@ -15,7 +15,7 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://www.gnome.org"
 license="LGPL-2.1"
 distfiles="${GNOME_SITE}/vte/${version%.*}/vte-${version}.tar.xz"
-checksum=9e00e2e9e94f4202b979c871f407a8815890bc0f4a8448a08534f76ab0fc9d34
+checksum=53cc15c5315d73b69f7848e07a5c512cd40b7caf0323e3d0e0d75d7ae65deee7
 
 # Suppress warnings as errors for NULL format strings (musl libc)
 CXXFLAGS="-Wno-error=format="

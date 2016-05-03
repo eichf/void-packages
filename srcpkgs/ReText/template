@@ -1,6 +1,6 @@
 # Template file for 'ReText'
 pkgname=ReText
-version=5.2.1
+version=5.3.1
 revision=1
 noarch=yes
 build_style="python-module"
@@ -15,7 +15,7 @@ maintainer="Enno Boland <gottox@voidlinux.eu>"
 license="GPL-3"
 homepage="http://retext.sourceforge.net"
 distfiles="${SOURCEFORGE_SITE}/retext/ReText-${version%.*}/ReText-${version}.tar.gz"
-checksum=02164ae2bba6f47a2ec5e11aa06aefbcd96bea1b84a96c5673dbe18d8ccb2a69
+checksum=515b1aaa57615453f8933f997753072a5c4691793da2280e70d1b333b53904c6
 
 post_install() {
 	lrelease locale/*.ts

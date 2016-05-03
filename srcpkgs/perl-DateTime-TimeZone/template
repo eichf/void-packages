@@ -1,0 +1,16 @@
+# Template file for 'perl-DateTime-TimeZone'
+pkgname=perl-DateTime-TimeZone
+version=1.98
+revision=1
+noarch=yes
+wrksrc="${pkgname/perl-/}-${version}"
+build_style=perl-module
+hostmakedepends="perl"
+makedepends="${hostmakedepends}"
+depends="perl-Class-Singleton perl-Module-Runtime perl-Params-Validate perl-Try-Tiny"
+short_desc="Time zone object base class and factory"
+maintainer="John Regan <john@jrjrtech.com>"
+homepage="http://search.cpan.org/dist/DateTime-TimeZone"
+license="Artistic, GPL-1"
+distfiles="${CPAN_SITE}/DateTime/${pkgname/perl-/}-$version.tar.gz"
+checksum=8d6a8289b2535d0dbe1579cc426bab95788eb482dd039b164aed01ad2e5b65c2

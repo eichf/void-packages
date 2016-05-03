@@ -37,6 +37,8 @@ show_pkg() {
         [ -n "$i" ] && echo "conflicts:	$i"
     done
     [ -n "$long_desc" ] && echo "long_desc: $long_desc"
+
+    return 0
 }
 
 show_pkg_deps() {
@@ -61,8 +63,12 @@ show_pkg_build_deps() {
     # build time deps
     for f in ${host_build_depends} ${build_depends} ${run_depends}; do
         # ignore virtual deps
-        if [ "${f%\?*}" = "virtual" ]; then
-            continue
+        local _rpkg="${f%\?*}"
+        local _vpkg="${f#*\?}"
+
+        # ignore virtual dependencies
+        if [ "${_rpkg}" != "${_vpkg}" ]; then
+            f="${_vpkg}"
         fi
         unset found
         # check for subpkgs

@@ -4,7 +4,7 @@
 # A CYCLIC DEPENDENCY: qt -> cups -> poppler -> qt.
 #
 pkgname=poppler-qt4
-version=0.38.0
+version=0.41.0
 revision=1
 wrksrc="poppler-${version}"
 build_style=gnu-configure
@@ -21,7 +21,7 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="GPL-2"
 homepage="http://poppler.freedesktop.org"
 distfiles="${homepage}/poppler-$version.tar.xz"
-checksum=6f0c0d49c8346d7c0cfe6348124e7f19cc901b5d35c9cd89944aac6e454e8a8b
+checksum=420abaab63caed9e1ee28964a0ba216d1979506726164bc99ad5ade289192a1b
 
 post_install() {
 	rm -f ${DESTDIR}/usr/lib/libpoppler.*

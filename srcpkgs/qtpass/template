@@ -1,6 +1,6 @@
 # Template file for 'qtpass'
 pkgname=qtpass
-version=1.0.6
+version=1.1.1
 revision=1
 build_style=qmake
 hostmakedepends="qt5-qmake qt5-tools"
@@ -11,7 +11,7 @@ maintainer="annejan <brouwer@annejan.com>"
 license="GPL-3"
 homepage="http://qtpass.org/"
 distfiles="https://github.com/IJHack/${pkgname}/archive/v${version}.tar.gz"
-checksum=ccad9a06e3efa23278fa3e958185bf24fb3800874d8165be4ae6649706a2ab1c
+checksum=9a312281d40941c0eb1ae90fdaa19d0c07bbad8b3cee559d5fb61ffb171f274f
 
 do_install() {
 	vbin qtpass

@@ -1,25 +1,26 @@
 # Template file for 'mpv'
 pkgname=mpv
-version=0.14.0
-revision=1
+version=0.17.0
+revision=2
 short_desc="Video player based on MPlayer/mplayer2"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
-license="GPL-2"
+license="GPL-3"
 homepage="http://mpv.io"
 build_style=waf
 configure_args="--confdir=/etc/mpv --docdir=/usr/share/examples/mpv
- --enable-cdda --enable-libmpv-shared --disable-oss-audio --disable-sdl2"
+ --enable-cdda --enable-libmpv-shared --disable-oss-audio --disable-sdl2
+ --enable-gpl3 --enable-vapoursynth"
 hostmakedepends="pkg-config python-docutils perl"
 makedepends="
  ffmpeg-devel libass-devel lcms2-devel libXinerama-devel lua52-devel v4l-utils-devel
  libXv-devel libxkbcommon-devel libva-glx-devel libvdpau-devel alsa-lib-devel
  pulseaudio-devel libbluray-devel libcdio-paranoia-devel libdvdread-devel
  MesaLib-devel harfbuzz-devel libXScrnSaver-devel jack-devel libdvdnav-devel
- wayland-devel libuuid-devel libguess-devel libXrandr-devel samba-devel"
-depends="desktop-file-utils hicolor-icon-theme"
-conf_files="/etc/mpv/encoding-profiles.conf"
+ wayland-devel libuuid-devel libguess-devel libXrandr-devel samba-devel
+ rubberband-devel vapoursynth-devel zimg-devel python3.4-devel"
+depends="desktop-file-utils hicolor-icon-theme youtube-dl vapoursynth-mvtools"
 distfiles="https://github.com/mpv-player/${pkgname}/archive/v${version}.tar.gz"
-checksum=042937f483603f0c3d1dec11e8f0045e8c27f19eee46ea64d81a3cdf01e51233
+checksum=602cd2b0f5fc7e43473234fbb96e3f7bbb6418f15eb8fa720d9433cce31eba6e
 
 if [ -z "$CROSS_BUILD" ]; then
 	configure_args+=" --enable-zsh-comp"
@@ -27,7 +28,6 @@ fi
 
 pre_configure() {
 	python bootstrap.py
-	sed -i 's,/usr/local/etc/mpv.conf,/etc/mpv/mpv.conf,' etc/example.conf
 }
 
 mpv-devel_package() {

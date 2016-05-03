@@ -1,17 +1,20 @@
 # Template file for 'python-futures'
 pkgname=python-futures
-version=3.0.3
+version=3.0.5
 revision=1
 noarch=yes
 wrksrc="futures-${version}"
 build_style=python-module
-python_versions="2.7"
 pycompile_module="concurrent"
 hostmakedepends="python-setuptools"
 depends="python"
 short_desc="Backport of the concurrent.futures package from Python 3.2"
 maintainer="Eivind Uggedal <eivind@uggedal.com>"
-license="BSD"
-homepage="https://code.google.com/p/pythonfutures/"
+license="2-clause-BSD"
+homepage="https://github.com/agronholm/pythonfutures"
 distfiles="${PYPI_SITE}/f/futures/futures-${version}.tar.gz"
-checksum=2fe2342bb4fe8b8e217f0d21b5921cbe5408bf966d9f92025e707e881b198bed
+checksum=0542525145d5afc984c88f914a0c85c77527f65946617edb5274f72406f981df
+
+post_install() {
+	vlicense LICENSE
+}

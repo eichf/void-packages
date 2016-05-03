@@ -1,16 +1,16 @@
 # Template file for 'nss'
 pkgname=nss
-version=3.21
+version=3.23
 revision=1
 hostmakedepends="perl"
 makedepends="zlib-devel nspr-devel sqlite-devel"
-depends="nspr>=4.11"
+depends="nspr>=4.12"
 short_desc="Mozilla Network Security Services"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://www.mozilla.org/projects/security/pki/nss/"
 license="MPL-2.0, GPL-2, LGPL-2.1"
 distfiles="${MOZILLA_SITE}/security/nss/releases/NSS_${version//\./_}_RTM/src/nss-${version}.tar.gz"
-checksum=3f7a5b027d7cdd5c0e4ff7544da33fdc6f56c2f8c27fff02938fd4a6fbe87239
+checksum=94b383e31c9671e9dfcca81084a8a813817e8f05a57f54533509b318d26e11cf
 
 do_build() {
 	# Respect LDFLAGS

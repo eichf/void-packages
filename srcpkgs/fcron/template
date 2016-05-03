@@ -1,7 +1,7 @@
 # Template file for 'fcron'
 pkgname=fcron
 version=3.2.0
-revision=5
+revision=7
 build_style=gnu-configure
 configure_args="
 	--sysconfdir=/etc/fcron
@@ -32,6 +32,11 @@ homepage="http://fcron.free.fr"
 distfiles="$homepage/archives/$pkgname-$version.src.tar.gz"
 checksum=eb13b86ed96805d117e19847f1da30b834f1990f7ef4c38f5007234d44679564
 
+alternatives="
+ crond:crond:/etc/sv/fcron
+ crond:crontab:/usr/bin/fcrontab
+ "
+
 system_accounts="fcron"
 fcron_homedir="/var/spool/fcron"
 fcron_shell="/bin/sh"
@@ -46,7 +51,7 @@ conf_files="
 ## me: fcron installer is not the king. I'm.
 ## fcron: Wine is coming.
 CFLAGS="-DHAVE_LIBPAM=1"
-LDFLAGS="-lpam"
+LDFLAGS="-Wl,--no-as-needed -lpam"
 pre_configure() {
 	sed -i 's|$(CFLAGS)|$(CFLAGS) $(LDFLAGS)|g' Makefile.in # pass LDFLAGS for PIE
 	autoupdate

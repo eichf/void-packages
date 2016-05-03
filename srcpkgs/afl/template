@@ -1,18 +1,21 @@
 # Template file for 'afl'
 pkgname=afl
-version=1.95b
+version=2.12b
 revision=1
 build_style=gnu-makefile
 # x86 only currently
 only_for_archs="i686 i686-musl x86_64 x86_64-musl"
+hostmakedepends="llvm clang"
 short_desc="American fuzzy lop - a brute-force fuzzer"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="Apache-2.0"
 homepage="http://lcamtuf.coredump.cx/afl/"
 distfiles="http://lcamtuf.coredump.cx/afl/releases/afl-${version}.tgz"
-checksum=21ec6bb8c182fd821d25c8b67283f81a632c4f74419c9db5fec0135dd0c9ae2a
+checksum=7fdc2d7f6ff7ff7ada27b84fec07f7e7910facb468c94db14861c295a9f830ba
 
-pre_build() {
-	sed -i 's/^\(CFLAGS *+=\)/override \1/' Makefile
-	sed -i 's/^  \(LDFLAGS *+=\)/override \1/' Makefile
+nostrip_files="small_archive.a small_exec.elf"
+
+do_build() {
+	make PREFIX=/usr
+	make PREFIX=/usr CC=clang CXX=clang++ -C llvm_mode
 }

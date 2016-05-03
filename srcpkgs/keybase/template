@@ -1,0 +1,20 @@
+# Template file for 'keybase'
+pkgname=keybase
+version=1.0.15
+revision=2
+wrksrc="client-${version}"
+build_style=go
+go_import_path="github.com/keybase/client"
+go_package="${go_import_path}/go/keybase"
+go_build_tags="production"
+depends="gnupg2"
+short_desc="Client for keybase.io"
+maintainer="Toyam Cox <Vaelatern@gmail.com>"
+license="BSD"
+homepage="https://keybase.io/"
+distfiles="https://github.com/keybase/client/archive/v${version}.tar.gz"
+checksum=6fe66b07772ca000879bda65cb9d112d2dbbc301d6afa4d4b46055d385f86e36
+
+post_install() {
+	vlicense LICENSE
+}

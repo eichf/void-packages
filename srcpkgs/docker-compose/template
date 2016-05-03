@@ -1,0 +1,28 @@
+# Template file for 'docker-compose'
+pkgname=docker-compose
+version=1.6.2
+revision=1
+noarch=yes
+wrksrc="compose-${version}"
+build_style=python-module
+hostmakedepends="python-setuptools"
+depends="python-setuptools python-jsonschema python-docker-py python-dockerpty
+ python-websocket-client python-requests python-docopt python-yaml python-six
+ python-enum34 python-texttable python-cached-property"
+pycompile_module="compose"
+short_desc="Tool to define and run multi-container Docker applications"
+maintainer="pancake <pancake@nopcode.org>"
+homepage="https://docs.docker.com/compose/"
+license="Apache-2.0"
+distfiles="https://github.com/docker/compose/archive/${version}.tar.gz"
+checksum=1c318cdf12bdc97e079224fb0cab45ed0f6ec2d1ce87599eff549b1aafa27837
+
+pre_build() {
+	sed -i '/requests/s|, < 2.8||' setup.py
+}
+post_install() {
+	vinstall contrib/completion/bash/docker-compose 644 \
+		usr/share/bash-completion/completions docker-compose
+	vinstall contrib/completion/zsh/_docker-compose 644 \
+		usr/share/zsh/site-functions _docker-compose
+}

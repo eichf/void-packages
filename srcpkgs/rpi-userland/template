@@ -1,22 +1,22 @@
 # Template file for 'rpi-firmware'
-_githash="cfa3df1420a1839eb4a1da12e744a4beb8e7e7b6"
+_githash="17c28b9d1d234893b73adeb95efc4959b617fc85"
 _gitshort="${_githash:0:7}"
 
 pkgname=rpi-userland
-version=20151218
+version=20160425
 revision=1
 wrksrc="userland-${_githash}"
 build_style=cmake
 hostmakedepends="cmake"
+configure_args="-DCMAKE_INSTALL_RPATH=/opt/vc/lib"
 short_desc="Raspberry Pi GPU userland libraries and utilities (git ${_gitshort})"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="3-clause-BSD"
 homepage="https://github.com/raspberrypi/userland"
 distfiles="https://github.com/raspberrypi/userland/archive/${_githash}.tar.gz"
-checksum=3840ad2ee366ac86373e7a0794518862d15fb16eacc2b6189a3816fbd33941cb
+checksum=83108789f946ab8957499dd58f1cacd099630979ec8fccb54be9240c4ff14210
 
 LDFLAGS="-Wl,--no-as-needed"
-
 only_for_archs="armv6l armv6l-musl armv7l armv7l-musl"
 
 shlib_provides="
@@ -37,14 +37,16 @@ shlib_provides="
  libGLESv2.so
  libEGL.so"
 
+pre_configure() {
+	for f in $(find ${wrksrc} -type f -name CMakeLists.txt); do
+		sed -i 's,-Werror,,g' $f
+	done
+}
 post_install() {
 	vmkdir usr/lib/pkgconfig
 	vcopy ${FILESDIR}/*.pc usr/lib/pkgconfig
 	rm -rf ${DESTDIR}/etc
 	rm -rf ${DESTDIR}/opt/vc/share
-
-	vmkdir etc/ld.so.conf.d
-	echo "/opt/vc/lib" > ${DESTDIR}/etc/ld.so.conf.d/${pkgname}.conf
 }
 
 rpi-userland-devel_package() {

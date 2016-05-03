@@ -1,0 +1,31 @@
+# Template file for 'opencollada'
+pkgname=opencollada
+version=1.6.10
+revision=1
+wrksrc="OpenCOLLADA-${version}"
+build_style=cmake
+configure_args="-DUSE_SHARED=TRUE"
+hostmakedepends="cmake pkg-config"
+makedepends="libxml2-devel pcre-devel"
+short_desc="Stream based reader and writer library for COLLADA files"
+maintainer="Jürgen Buchmüller <pullmoll@t-online.de>"
+license="GPL-3"
+homepage="https://github.com/KhronosGroup/OpenCOLLADA"
+distfiles="https://github.com/KhronosGroup/OpenCOLLADA/archive/v${version}.tar.gz>${pkgname}-${version}.tar.gz"
+checksum=94767334a2d4b7dbf5700e4f48310c2678f5d52cdec5005628eb39f3f432f352
+
+post_install() {
+	# Move libraries to /usr/lib to avoid adding to /etc/ld.so.conf.d
+	mv ${DESTDIR}/usr/lib/opencollada/* ${DESTDIR}/usr/lib
+}
+
+opencollada-devel_package() {
+	short_desc+=" - development files"
+	depends="${sourcepkg}>=${version}_${revision}"
+	pkg_install() {
+		vmove usr/include
+		# usr/lib contains only unversioned *.so files
+		vmove usr/lib/*.a
+		vmove usr/lib/cmake
+	}
+}

@@ -1,20 +1,22 @@
 # Template file for 'feh'
 pkgname=feh
-version=2.14
+version=2.15.3
 revision=1
 hostmakedepends="pkg-config"
 makedepends="giblib-devel libcurl-devel libexif-devel
  libpng-devel libjpeg-turbo-devel libXinerama-devel libXt-devel"
+depends="libjpeg-turbo-tools"
 short_desc="Fast and light imlib2-based image viewer"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="MIT"
 homepage="http://feh.finalrewind.org/"
 distfiles="${homepage}/feh-${version}.tar.bz2"
-checksum=3829cd8995ec7cc08095a2b22a6c98d1e2638bd87c8b4f0e85a059c6f0edbc48
+checksum=629d5aa17bd519281abf9e2bed0fdfc3b0e3eaa4f1739dab6f995733406d21fc
 
 do_build() {
 	make ${makejobs} CC=$CC PREFIX=/usr exif=1 help=1
 }
 do_install() {
 	make PREFIX=/usr DESTDIR=${DESTDIR} install
+	vlicense COPYING
 }

@@ -1,12 +1,12 @@
 # Template file for 'bluez'
 pkgname=bluez
-version=5.37
+version=5.39
 revision=1
 build_style=gnu-configure
 configure_args="--with-udevdir=/usr/lib/udev --disable-systemd
  --enable-pie --enable-threads --enable-library"
 hostmakedepends="automake libtool pkg-config flex"
-makedepends="libglib-devel libudev-devel dbus-devel
+makedepends="libglib-devel eudev-libudev-devel dbus-devel
  cups-devel libical-devel readline-devel"
 conf_files="/etc/bluetooth/main.conf"
 short_desc="Bluetooth tools and daemons"
@@ -14,7 +14,7 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://www.bluez.org/"
 license="GPL-2"
 distfiles="${KERNEL_SITE}/bluetooth/$pkgname-$version.tar.xz"
-checksum=c14ba9ddcb0055522073477b8fd8bf1ddf5d219e75fdfd4699b7e0ce5350d6b0
+checksum=21d1bc9150d3576296595217efb98a746b592389d25d5637e8bee5da7272593b
 
 pre_configure() {
 	autoreconf -fi

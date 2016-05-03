@@ -1,6 +1,6 @@
 # Template file for 'freetds'
 pkgname=freetds
-version=0.95.78
+version=0.95.95
 revision=1
 build_style=gnu-configure
 configure_args="--sysconfdir=/etc/$pkgname"
@@ -12,7 +12,7 @@ maintainer="Diogo Leal <diogo@diogoleal.com>"
 license="LGPL-3"
 homepage="http://www.freetds.org/"
 distfiles="ftp://ftp.freetds.org/pub/freetds/stable/${pkgname}-${version}.tar.gz"
-checksum=c1a6faad3f3aee30346013435f0aab7d5cac27e1a9066d3e3258641f410277ab
+checksum=be7c90fc771f30411eff6ae3a0d2e55961f23a950a4d93c44d4c488006e64c70
 
 freetds-devel_package() {
 	short_desc+=" - development files"

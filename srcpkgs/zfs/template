@@ -1,22 +1,22 @@
 # Template file for 'zfs'
 pkgname=zfs
-version=0.6.5.3
+version=0.6.5.6
 revision=1
+patch_args="-Np1"
 wrksrc="${pkgname}-${pkgname}-${version/r/-}"
 build_style=gnu-configure
 configure_args="--with-config=user --with-mounthelperdir=/usr/bin
  --with-udevdir=/usr/lib/udev --with-udevruledir=/usr/lib/udev/rules.d
- --with-dracutdir=/usr/lib/dracut"
-hostmakedepends="dracut automake libtool"
-makedepends="spl-devel zlib-devel libuuid-devel libblkid-devel"
+ --with-dracutdir=/usr/lib/dracut --with-tirpc --with-blkid"
+hostmakedepends="dracut automake libtool pkg-config"
+makedepends="spl-devel zlib-devel libuuid-devel libblkid-devel libtirpc-devel"
 conf_files="/etc/zfs/zed.d/zed.rc"
 short_desc="Z File System -- userland and kernel modules (using DKMS)"
-maintainer="Christian Neukirchen <chneukirchen@gmail.com>"
+maintainer="Toyam Cox <Vaelatern@gmail.com>"
 license="CDDL"
 homepage="http://zfsonlinux.org/"
 distfiles="https://github.com/zfsonlinux/${pkgname}/archive/${pkgname}-${version/r/-}.tar.gz"
-checksum=8ec72b5c8439ec977e193ebcb716430e74e90bbf4cd8625cfe985700c9bb4e60
-nocross=yes
+checksum=07226a03de84d37bf38393f73f32a881e2090bfb16abf9c9ff0871e67ddb2ecc
 
 triggers="dkms"
 dkms_modules="zfs ${version/r/-}"
@@ -35,6 +35,9 @@ post_install() {
 	scripts/dkms.mkconf -v ${version/r/-} -f ${DESTDIR}/usr/src/${pkgname}-${version/r/-}/dkms.conf -n zfs
 
 	vsv zfs-import
+
+	rm -rf ${DESTDIR}/usr/lib/systemd
+	rm -rf ${DESTDIR}/usr/share/initramfs-tools
 }
 zfs-devel_package() {
 	depends="${sourcepkg}>=${version}_${revision}"

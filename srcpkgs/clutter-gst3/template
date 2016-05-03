@@ -1,7 +1,7 @@
 # Template file for 'clutter-gst3'
 pkgname=clutter-gst3
-version=3.0.14
-revision=2
+version=3.0.18
+revision=1
 wrksrc="clutter-gst-$version"
 build_options="gir"
 build_style=gnu-configure
@@ -14,7 +14,7 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://www.gtk.org/"
 license="GPL-2"
 distfiles="${GNOME_SITE}/clutter-gst/${version%.*}/clutter-gst-${version}.tar.xz"
-checksum=f7c8a7dc479759cad5ff7483cb5a1abbe3efd0b4f83ed0e443dc602430a82de2
+checksum=0aec0d0c6020cd19a5bb0dab1165a92748f81a9a3acdfabb0f966d5f53bc8093
 
 if [ -z "$CROSS_BUILD" ]; then
 	build_options_default="gir"

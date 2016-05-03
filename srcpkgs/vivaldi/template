@@ -1,6 +1,6 @@
 # Template file for 'vivaldi'
 pkgname=vivaldi
-version=1.0.344.37
+version=1.1.453.47
 revision=1
 _release=1
 only_for_archs="i686 x86_64"
@@ -13,16 +13,15 @@ restricted=yes
 
 if [ "${XBPS_TARGET_MACHINE}" = "x86_64" ];then
 	_debarch=amd64
-	checksum=f23c4616446e6b1b3e4f532fb336d3d586974ee2fe46ada17be65d23216817be
+	checksum=982f5cd3f5811becf6f915ff1252ff4d7e7c958dd44491008e4c364fa26e6a26
 else
 	_debarch=i386
-	checksum=04755b7feb3ed03eb4f4d0dd52ef713a22479fb412bedeadc31087ea42e3234e
+	checksum=e3a3e3eb3d7d928b38866c15836a4ec89a0c6cdb850c09be36ef4e0b2f08a42c
 fi
 
-distfiles="https://vivaldi.com/download/stable/vivaldi-beta_${version}-${_release}_${_debarch}.deb"
-
+distfiles="https://downloads.vivaldi.com/stable/vivaldi-stable_${version}-${_release}_${_debarch}.deb"
 do_extract() {
-	ar x ${XBPS_SRCDISTDIR}/${pkgname}-${version}/vivaldi-beta_${version}-${_release}_${_debarch}.deb
+	ar x ${XBPS_SRCDISTDIR}/${pkgname}-${version}/vivaldi-stable_${version}-${_release}_${_debarch}.deb
 	cd ${wrksrc}
 	tar xfJ data.tar.xz
 }
@@ -31,7 +30,7 @@ do_install() {
 	vcopy opt/ /opt
 	vcopy usr /
 	for res in 24 48 64; do
-		vinstall opt/vivaldi-beta/product_logo_${res}.png 0644\
+		vinstall opt/vivaldi/product_logo_${res}.png 0644\
 		/usr/share/icons/hicolor/${res}x${res}/apps/vivaldi.png
 	done
 }

@@ -1,13 +1,13 @@
 # Template file for 'ffmpeg'
 pkgname=ffmpeg
-version=2.8.4
+version=2.8.7
 revision=1
 short_desc="Decoding, encoding and streaming software"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="GPL-3"
 homepage="http://www.ffmpeg.org"
 distfiles="${homepage}/releases/ffmpeg-${version}.tar.bz2"
-checksum=83cc8136a7845546062a43cda9ae3cf0a02f43ef5e434d2f997f055231a75f8e
+checksum=8777ce4a335640fdd13680ba423ef6da330ff5071bfbe27cdbb452379167efe5
 
 hostmakedepends="pkg-config perl yasm"
 makedepends="zlib-devel bzip2-devel freetype-devel alsa-lib-devel libXfixes-devel
@@ -16,9 +16,10 @@ makedepends="zlib-devel bzip2-devel freetype-devel alsa-lib-devel libXfixes-deve
  libcdio-paranoia-devel libvpx-devel librtmp-devel freetype-devel libmodplug-devel
  speex-devel celt-devel harfbuzz-devel libass-devel opus-devel pulseaudio-devel
  ocl-icd-devel $(vopt_if x265 x265-devel) $(vopt_if vaapi libva-devel)
- $(vopt_if vdpau libvdpau-devel) $(vopt_if v4l2 v4l-utils-devel)"
+ $(vopt_if vdpau libvdpau-devel) $(vopt_if v4l2 v4l-utils-devel) libbs2b-devel
+ libvidstab-devel"
 
-build_options="x265 v4l2 vaapi vdpau"
+build_options="x265 v4l2 vaapi vdpau nonfree_possible"
 build_options_default="v4l2"
 
 case "$XBPS_TARGET_MACHINE" in
@@ -46,12 +47,15 @@ do_configure() {
 		--enable-shared --enable-static --enable-x11grab --enable-librtmp \
 		--enable-libpulse --enable-libfreetype --enable-libmodplug \
 		--enable-libspeex --enable-libcelt --enable-libass \
+		--enable-libopus --enable-librtmp --enable-libmodplug \
+		$(vopt_if nonfree_possible --enable-libfaac\ --enable-nonfree) \
 		--disable-libopencore_amrnb --disable-libopencore_amrwb \
 		--disable-libschroedinger --disable-libopenjpeg \
 		--enable-postproc --enable-opencl ${_args} \
 		$(vopt_if x265 '--enable-libx265' '--disable-libx265') \
 		$(vopt_if v4l2 '--enable-libv4l2' '--disable-libv4l2') \
-		$(vopt_enable vaapi) $(vopt_enable vdpau)
+		$(vopt_enable vaapi) $(vopt_enable vdpau) \
+		--enable-libbs2b --enable-avresample --enable-libvidstab
 }
 do_build() {
 	rm ${XBPS_WRAPPERDIR}/strip
@@ -72,6 +76,12 @@ libavdevice_package() {
 	short_desc="FFmpeg device handling library"
 	pkg_install() {
 		vmove "usr/lib/libavdevice.so.*"
+	}
+}
+libavresample_package() {
+	short_desc="FFmpeg audio resampling library"
+	pkg_install() {
+		vmove "usr/lib/libavresample.so.*"
 	}
 }
 libavformat_package() {
@@ -119,7 +129,8 @@ ffmpeg-devel_package() {
 		libavfilter>=${version}_${revision}
 		libpostproc>=${version}_${revision}
 		libswscale>=${version}_${revision}
-		libswresample>=${version}_${revision}"
+		libswresample>=${version}_${revision}
+		libavresample>=${version}_${revision}"
 	short_desc+=" - development files"
 	pkg_install() {
 		vmove usr/include

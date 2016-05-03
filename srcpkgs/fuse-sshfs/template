@@ -1,15 +1,19 @@
 # Template file for 'fuse-sshfs'
 pkgname=fuse-sshfs
-version=2.5
-revision=4
-wrksrc="sshfs-fuse-${version}"
+version=2.7
+revision=1
+wrksrc="sshfs-${version}"
 build_style=gnu-configure
-hostmakedepends="pkg-config"
+hostmakedepends="automake pkg-config"
 makedepends="libglib-devel fuse-devel"
 depends="openssh"
 short_desc="FUSE client based on the SSH File Transfer Protocol"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
-homepage="http://fuse.sourceforge.net/sshfs.html"
 license="GPL-2"
-distfiles="${SOURCEFORGE_SITE}/fuse/sshfs-fuse-$version.tar.gz"
-checksum=e9171452e5d0150b9c6a2158fd2e2dcefb5d5d03ba4d208949e00a3a46c6e63e
+homepage="https://github.com/libfuse/sshfs"
+distfiles="https://github.com/libfuse/sshfs/releases/download/sshfs-${version}/sshfs-${version}.tar.gz"
+checksum=ce5f9d390934fc88c287dd937a39d15c2b40cbea6967ba24ad93ed90e0027128
+
+pre_configure() {
+	autoreconf -fi
+}

@@ -1,6 +1,6 @@
 # Template file for 'at-spi2-atk'
 pkgname=at-spi2-atk
-version=2.18.1
+version=2.20.1
 revision=1
 build_style=gnu-configure
 hostmakedepends="automake libtool pkg-config intltool glib-devel"
@@ -10,7 +10,7 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://www.gnome.org"
 license="LGPL-2"
 distfiles="${GNOME_SITE}/$pkgname/${version%.*}/$pkgname-$version.tar.xz"
-checksum=c4b15f9386d34d464ddad5f6cc85669742c016df87141ceee93513245979c12d
+checksum=2358a794e918e8f47ce0c7370eee8fc8a6207ff1afe976ec9ff547a03277bf8e
 
 pre_configure() {
 	autoreconf -fi

@@ -1,18 +1,18 @@
 # Template file for 'rpi-kernel'
 #
-_githash="853eff4e9b369cdc20be7c538bc5a5291eeab31d"
+_githash="fe7ad6aa5c6940817fe971d80a7b2a1d6052190a"
 _gitshort="${_githash:0:7}"
 
 pkgname=rpi-kernel
-version=4.1.15
-revision=2
+version=4.4.8
+revision=1
 wrksrc="linux-${_githash}"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://www.kernel.org"
 license="GPL-2"
 short_desc="The Linux kernel for Raspberry Pi (${version%.*} series [git ${_gitshort}])"
 distfiles="https://github.com/raspberrypi/linux/archive/${_githash}.tar.gz"
-checksum=662f048916c109e53d47f7a1108a14a163790746f08004a85a9fc0035de98f0f
+checksum=337f7e6cd6428072f58471cb60ae76201eb80c218b1c62b660554a42e335b5ae
 
 _kernver="${version}_${revision}"
 
@@ -23,7 +23,7 @@ noshlibprovides=yes
 
 # RPi and RPi2
 only_for_archs="armv6l armv6l-musl armv7l armv7l-musl"
-hostmakedepends="perl kmod uboot-mkimage libressl-openssl bc"
+hostmakedepends="perl kmod uboot-mkimage libressl bc"
 makedepends="ncurses-devel"
 triggers="kernel-hooks"
 # These files could be modified when an external module is built.
@@ -91,7 +91,7 @@ do_install() {
 	esac
 
 	vmkdir boot/overlays
-	mv arch/arm/boot/dts/overlays/*.dtb ${DESTDIR}/boot/overlays
+	mv arch/arm/boot/dts/overlays/*.dtbo ${DESTDIR}/boot/overlays
 	mv arch/arm/boot/dts/*.dtb ${DESTDIR}/boot
 
 	hdrdest=${DESTDIR}/usr/src/${sourcepkg}-headers-${_kernver}

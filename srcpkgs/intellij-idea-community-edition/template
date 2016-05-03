@@ -1,14 +1,14 @@
 # Template file for 'intellij-idea-community-edition'
 pkgname=intellij-idea-community-edition
-version=14.1.4
-revision=2
+version=2016.1
+revision=1
 depends="virtual?java-environment giflib libXtst"
 short_desc="Java integrated development environment"
-maintainer="Adrian Siekierka <kontakt@asie.pl>"
+maintainer="Adrian Siekierka <asiekierka@gmail.com>"
 license="Apache-2.0"
 homepage="http://www.jetbrains.org/"
 distfiles="http://download.jetbrains.com/idea/ideaIC-${version}.tar.gz"
-checksum=bd13fdd487ff37fb8b1d6aa713a6ff2c642b8b2ed74d292a8b624ab55c1ba9fb
+checksum=d8d889c42dfde1f41030e9d3f5850d364109df73a6a35081edc72d7d95f22fbf
 only_for_archs="i686 x86_64"
 
 post_extract() {
@@ -25,6 +25,7 @@ do_install() {
 	rm ${DESTDIR}/usr/share/intellij-idea/plugins/gradle/lib/native-platform-freebsd-amd64-0.10.jar
 	rm ${DESTDIR}/usr/share/intellij-idea/plugins/gradle/lib/native-platform-osx-amd64-0.10.jar
 	rm ${DESTDIR}/usr/share/intellij-idea/plugins/gradle/lib/native-platform-windows-amd64-0.10.jar
+	rm ${DESTDIR}/usr/share/intellij-idea/bin/fsnotifier-arm
 	if [ "$XBPS_TARGET_MACHINE" = "x86_64" ]; then
 		rm ${DESTDIR}/usr/share/intellij-idea/bin/libbreakgen.so
 		rm ${DESTDIR}/usr/share/intellij-idea/bin/fsnotifier

@@ -1,10 +1,10 @@
 # Template file for 'oracle-jre'
 pkgname=oracle-jre
-version=8u66
-revision=5
+version=8u91
+revision=1
 
-_longVersion=1.8.0_66
-_build=17
+_longVersion=1.${version%u*}.0_${version#*u}
+_build=14
 
 short_desc="Java Runtime Environment (JRE)"
 maintainer="Enno Boland <gottox@voidlinux.eu>"
@@ -21,12 +21,12 @@ case "${XBPS_TARGET_MACHINE}" in
 x86_64)
 	_arch=amd64
 	_filename=jre-${version}-linux-x64.tar.gz
-	checksum="f2249370a6ac4ca8977b66d7665179f0fef4df732f3af80b0f34567d594588bf"
+	checksum="66d8971b240bbd03d114308958fff0fb8068d0589122885d9591727e5472137f"
 	;;
 i686)
 	_arch=i386
 	_filename=jre-${version}-linux-i586.tar.gz
-	checksum="70ee96be46d1cdeb15720b58a74c4dff0eecb6fcdded91d887b16779789f3596"
+	checksum="02071642f1628136516c88c11e46664a8cc363e685e9f066123b41d741567f43"
 	;;
 esac
 

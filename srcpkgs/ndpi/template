@@ -1,0 +1,33 @@
+# Template file for 'ndpi'
+pkgname=ndpi
+version=1.7
+revision=1
+wrksrc=nDPI-${version}
+build_style=gnu-configure
+hostmakedepends="libtool automake pkg-config"
+makedepends="libpcap-devel json-c-devel"
+short_desc="Open Source Deep Packet Inspection Software Toolkit"
+maintainer="Toyam Cox <Vaelatern@gmail.com>"
+license="GPL-3"
+homepage="http://www.ntop.org/products/ndpi/"
+distfiles="https://github.com/ntop/nDPI/archive/${version}.tar.gz"
+checksum=109ec948c869022258db9188df48e985c285b3d9a43d160bb5fb5da5986e27ea
+
+pre_configure() {
+	autoreconf -fi
+}
+
+post_install() {
+	vdoc doc/nDPI_QuickStartGuide.pdf
+}
+
+ndpi-devel_package() {
+	short_desc+=" - development files"
+	depends="${sourcepkg}>=${version}_${revision}"
+	pkg_install() {
+		vmove usr/include
+		vmove usr/lib/*.a
+		vmove usr/lib/*.so
+		vmove usr/lib/pkgconfig
+	}
+}

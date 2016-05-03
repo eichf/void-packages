@@ -4,7 +4,7 @@
 # TODO: find giflib patch for --with-giflib=system
 
 _java_ver=8
-_jdk_update=76
+_jdk_update=102
 _jdk_build=00
 _repo_ver="jdk${_java_ver}u${_jdk_update}-b${_jdk_build}"
 _openjdk_version="openjdk-1.8.0_${_jdk_update}"
@@ -12,7 +12,7 @@ _openjdk_version="openjdk-1.8.0_${_jdk_update}"
 # Template file for 'openjdk'
 pkgname=openjdk
 version=${_java_ver}u${_jdk_update}
-revision=3
+revision=1
 nocross=yes
 wrksrc=jdk8u-jdk8u${_jdk_update}-b${_jdk_build}/
 build_style=gnu-configure
@@ -26,7 +26,7 @@ configure_args="
  $(vopt_if oracle_bootstrap --with-boot-jdk=/usr/lib/jvm/oracle-jdk \
 			    --with-boot-jdk=/usr/lib/jvm/openjdk)"
 make_build_args="DEBUG_BINARIES=true docs all"
-hostmakedepends="pkg-config cpio unzip zip ca-certificates libressl-openssl"
+hostmakedepends="pkg-config cpio unzip zip ca-certificates libressl"
 case "$XBPS_MACHINE" in
 	arm*) hostmakedepends+=" $(vopt_if oracle_bootstrap oracle-jdk-arm openjdk)";;
 	*) hostmakedepends+=" $(vopt_if oracle_bootstrap oracle-jdk openjdk)";;
@@ -54,14 +54,14 @@ distfiles="
  http://hg.openjdk.java.net/jdk8u/jdk8u/langtools/archive/${_repo_ver}.tar.gz>langtools-${_repo_ver}.tar.gz
  http://hg.openjdk.java.net/jdk8u/jdk8u/nashorn/archive/${_repo_ver}.tar.gz>nashorn-${_repo_ver}.tar.gz"
 
-checksum="878659af51338538c595e6f7f6da5c5ef45698fef7d8d87b18a5b58d42cdfcaf
- 033d76e8bfb6e16ae4dac909c6b91f95ac855391d04a98e9f85fb222ba28883a
- c815e0d0d02bb6dffca5715ef70a4bf1c57a9f45c84f9164cb756bc99306c7c5
- 508dbde102a055fd1e4401b2e8b9d5c63d0a787ed3511f5db0f947edca1d1487
- c4e393c04a9c5b4c9da3bf5089a65c24b8a46b69974786153ba57cbad72258b4
- 125c4538297e210febf5ec21b6fc049749b99c02638623c4f6b3bf770e232d5b
- 24255174a0a09afc39bd987f0c6332859bedf8c809aa8d4ea650e507cff28f10
- 0603fa53c93d6652ba17b2f720008ecaf247de00f416dc0987105b32ffdc2d86"
+checksum="1f5774a545c45c8c632629653c921595a14977bb2b37d6a6a13961f022a94944
+ cca9416a3384cb357940c329db05086ac7e8ee8a15a26ffbd24ff92c8d87fa47
+ f11c4e553ec48eef5aa05905c4935e7d58836bb0b879f24cfdbb290a96304c12
+ 74db706165ab3d082dee2e719a7d674954996e4320cc66d2d78482a3c0c47663
+ cc4cdc20137820a9375b56dcdaa6e33db6b4f798f89fdee3123ae27d0057a9f0
+ 2e82909331c2c7070f7c2140bcd9a2c7719c2023fe14fa0752f45e3554a3c9cd
+ 2f08ff03d4f730bc256a4eaaa9ddee31ce200b6a91a954918fdc3603f045e5a7
+ 7edb054fd2180067852126274ca335e39f11615efc5e28f9817496d0f19b80b4"
 
 # Build is still parallel, but don't use -jN.
 disable_parallel_build=yes

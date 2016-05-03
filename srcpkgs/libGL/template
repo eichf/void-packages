@@ -1,6 +1,6 @@
 # Template build file for 'libGL'.
 pkgname=libGL
-version=11.0.7
+version=11.2.1
 revision=1
 wrksrc="mesa-${version}"
 build_style=gnu-configure
@@ -13,13 +13,13 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://www.mesa3d.org/"
 license="MIT, LGPL-2.1"
 distfiles="ftp://ftp.freedesktop.org/pub/mesa/${version}/mesa-${version}.tar.xz"
-checksum=e7e90a332ede6c8fd08eff90786a3fd1605a4e62ebf3a9b514047838194538cb
+checksum=a65207e9ae5c5f1c29f863c6a2cc98a7ab99762a24b82a248337f0ea9cfce01b
 
 hostmakedepends="
  automake libtool flex pkg-config llvm python-Mako libxml2-python wayland-devel"
 makedepends="
  glproto dri2proto dri3proto presentproto libXext-devel libXxf86vm-devel
- libudev-devel libdrm-devel expat-devel talloc-devel libvdpau-devel libva-devel
+ eudev-libudev-devel libdrm-devel expat-devel talloc-devel libvdpau-devel libva-devel
  libXdamage-devel libXvMC-devel libxshmfence-devel wayland-devel
  elfutils-devel ncurses-devel zlib-devel libffi-devel libressl-devel"
 conf_files="/etc/drirc"
@@ -30,7 +30,7 @@ subpackages="libglapi libgbm libEGL libGLES libOSMesa libwayland-egl"
 case "$XBPS_TARGET_MACHINE" in
 i686*|x86_64*)
 	# Enable all x86 drivers.
-	configure_args+=" --with-gallium-drivers=r300,r600,radeonsi,svga,swrast,nouveau"
+	configure_args+=" --with-gallium-drivers=r300,r600,radeonsi,svga,swrast,nouveau,virgl"
 	configure_args+=" --with-dri-drivers=i915,i965,r200,radeon,nouveau,swrast"
 	configure_args+=" --enable-xa --enable-dri3 --enable-nine"
 	configure_args+=" --enable-opencl --enable-opencl-icd --enable-r600-llvm-compiler"

@@ -1,7 +1,6 @@
 # Template file for 'linux4.1'
-#
 pkgname=linux4.1
-version=4.1.15
+version=4.1.23
 revision=1
 wrksrc="linux-${version}"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
@@ -9,7 +8,7 @@ homepage="http://www.kernel.org"
 license="GPL-2"
 short_desc="The Linux kernel and modules (${version%.*} series)"
 distfiles="${KERNEL_SITE}/kernel/v4.x/linux-${version}.tar.xz"
-checksum=472288cc966188c5d7c511c6be0f78682843c9ca2d5d6c4d67d77455680359a3
+checksum=15b13213052596f9af040dc25e01a88e950a0901cec38fabb8f38b6a661e8c74
 
 nocross=yes
 nodebug=yes
@@ -19,7 +18,7 @@ noshlibprovides=yes
 preserve=yes
 
 only_for_archs="i686 i686-musl x86_64 x86_64-musl armv7l armv7l-musl aarch64 aarch64-musl"
-hostmakedepends="bc perl kmod libressl-openssl uboot-mkimage"
+hostmakedepends="bc perl kmod uboot-mkimage"
 triggers="kernel-hooks"
 
 _kernver="${version}_${revision}"

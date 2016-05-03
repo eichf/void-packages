@@ -1,0 +1,20 @@
+# Template file for 'scaleway-cli'
+pkgname=scaleway-cli
+version=1.9.0
+revision=2
+build_style="go"
+go_import_path="github.com/scaleway/scaleway-cli"
+go_package="github.com/scaleway/scaleway-cli/cmd/scw"
+short_desc="Interact with the Scaleway API from the command line"
+maintainer="Michael Gehring <mg@ebfe.org>"
+license="MIT"
+homepage="https://github.com/scaleway/scaleway-cli"
+distfiles="https://github.com/scaleway/scaleway-cli/archive/v${version}.tar.gz"
+checksum=2cf48fb0985d8767330cf4eb48b321101bd9ffde5c479c66e1abe0fee50aec4b
+
+post_install() {
+	vinstall contrib/completion/bash/scw 0644 usr/share/bash-completion/completions
+	vinstall contrib/completion/zsh/_scw 0644 usr/share/zsh/site-functions
+	vdoc README.md README
+	vlicense LICENSE.md LICENSE
+}

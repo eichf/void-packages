@@ -1,6 +1,6 @@
 # Template file for 'gnome-online-accounts'
 pkgname=gnome-online-accounts
-version=3.18.2.1
+version=3.18.4
 revision=1
 build_style=gnu-configure
 configure_args="$(vopt_enable gir introspection)
@@ -16,8 +16,8 @@ short_desc="GNOME service to access online accounts"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://www.gnome.org"
 license="GPL-2"
-distfiles="${GNOME_SITE}/$pkgname/${version%.*.*}/$pkgname-$version.tar.xz"
-checksum=ca0a9c58ea5ac08437ed68fea9e8c3de69a8804e670ccf5a578c6786096ecfac
+distfiles="${GNOME_SITE}/$pkgname/${version%.*}/$pkgname-$version.tar.xz"
+checksum=9f23460aa6b1d8a63a8f3e979cba791cc88b5e07116f07da59fdcea09d79c74d
 
 build_options="gir"
 if [ -z "$CROSS_BUILD" ]; then

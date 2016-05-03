@@ -1,6 +1,6 @@
 # Template file for 'openresolv'
 pkgname=openresolv
-version=3.7.2
+version=3.8.0
 revision=1
 noarch=yes
 build_style=gnu-configure
@@ -11,5 +11,5 @@ conf_files="/etc/resolvconf.conf"
 hostmakedepends="runit"
 homepage="http://roy.marples.name/projects/openresolv/home"
 distfiles="http://roy.aydogan.net/${pkgname}/${pkgname}-${version}.tar.xz"
-checksum=8eac062f3c67d636bd0e898893bd5c7368ad0c470d511110be2d0e73c14de037
+checksum=cf1c3c6fd6f54806808262e8a57cdf4f81fde0add782c0bccfa22f49a9d589bd
 configure_args="--bindir=/usr/bin"

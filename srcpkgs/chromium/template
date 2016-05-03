@@ -1,22 +1,18 @@
 # Template file for 'chromium'
 pkgname=chromium
 # See http://www.chromium.org/developers/calendar for the latest version
-version=47.0.2526.73
-revision=2
+version=49.0.2623.112
+revision=1
 short_desc="Google's attempt at creating a safer, faster, and more stable browser"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://www.chromium.org/"
 license="BSD"
-distfiles="https://commondatastorage.googleapis.com/${pkgname}-browser-official/${pkgname}-${version}.tar.xz"
-checksum=6d66d01c8ddff6562ff13d30ed65ef0cdc2888d9e4924be615d576b7eb15f4f5
+distfiles="https://commondatastorage.googleapis.com/chromium-browser-official/${pkgname}-${version}.tar.xz"
+checksum=443b6d5f0d07f336783e700edc4ecae96769e105d0f8553e98fefae747302cf0
 
-only_for_archs="i686 i686-musl x86_64 x86_64-musl"
+only_for_archs="i686 x86_64 x86_64-musl"
 lib32disabled=yes
 nodebug=yes
-
-case "$XBPS_TARGET_MACHINE" in
-	i686) broken=http://build.voidlinux.eu/builders/i686_builder/builds/18981/steps/shell_3/logs/stdio
-esac
 
 hostmakedepends="yasm python pkg-config perl gperf bison ninja hwids icu-devel"
 makedepends="libpng-devel gtk+-devel nss-devel pciutils-devel
@@ -98,7 +94,7 @@ do_configure() {
 	# -Duse_system_protobuf
 	# -Duse_system_v8=1
 	# -Duse_system_zlib=1
-	# -Duse_system_livbpx=1
+	# -Duse_system_libvpx=1
 	conf+="
 		-Dclang_use_chrome_plugins=0
 		-Dpython_ver=2.7
@@ -122,11 +118,13 @@ do_configure() {
 		-Duse_system_icu=1
 		-Duse_system_libvpx=0
 		-Duse_cups=1
-		-Dlinux_link_cups=1
 		-Duse_pulseaudio=1
-		-Dlinux_link_pulseaudio=1
 		-Duse_mojo=0
-		-Duse_gconf=0"
+		-Duse_gconf=0
+		-Duse_sysroot=0
+		-Denable_widevine=1
+		-Denable_hangout_services_extension=1"
+
 	if [ "$CROSS_BUILD" ]; then
 		conf+=" -Denable_webrtc=0"
 		conf+=" -Duse_system_libwebp=0"
@@ -136,6 +134,8 @@ do_configure() {
 
 	# Use explicit library dependencies instead of dlopen.
 	conf+="
+		-Dlinux_link_cups=1
+		-Dlinux_link_pulseaudio=1
 		-Dlinux_link_gsettings=1
 		-Dlinux_link_libpci=1
 		-Dlinux_link_libspeechd=1
@@ -144,8 +144,8 @@ do_configure() {
 	# TODO: use the file at run time instead of effectively compiling it in.
 	conf+=" -Dusb_ids_path=/usr/share/hwdata/usb.ids"
 
-	# Never use bundled binutils/gold binary. Disable gold linker flags for now.
-	conf+=" -Dlinux_use_bundled_binutils=0 -Dlinux_use_gold_binary=0 -Dlinux_use_gold_flags=0"
+	# Never use bundled binutils/gold binary.
+	conf+=" -Dlinux_use_bundled_binutils=0 -Dlinux_use_bundled_gold=0 -Dlinux_use_gold_flags=1"
 
 	# Always support proprietary codecs.
 	conf+=" -Dproprietary_codecs=1"
@@ -172,15 +172,16 @@ do_configure() {
 			conf+=" -Ddisable_nacl=1 -Ddisable_pnacl=1"
 			conf+=" -Duse_allocator=none -Dtarget_arch=ia32"
 			;;
+		i686)
+			conf+=" -Ddisable_nacl=1 -Ddisable_pnacl=1"
+			;;
 		arm*)
 			conf+=" -Ddisable_nacl=1 -Ddisable_pnacl=1"
 			conf+=" -Dtarget_arch=arm -Dv8_use_arm_eabi_hardfloat=true"
 			conf+=" -Darm_float_abi=hard"
 			if [ "$CROSS_BUILD" ]; then
 				sed -i "s/arm-linux-gnueabihf-/${XBPS_CROSS_TRIPLET}-/g" build/common.gypi
-				conf+=" -Dsysroot=${XBPS_CROSS_BASE}"
-			else
-				conf+=" -Dsysroot="
+				conf+=" -Duse_sysroot=1 -Dsysroot=${XBPS_CROSS_BASE}"
 			fi
 			;;
 	esac
@@ -202,7 +203,7 @@ do_configure() {
 			-Dv8_can_use_vfp_instructions=false
 			-Dv8_can_use_vfp2_instructions=true";;
 	esac
-	
+
 	build/linux/unbundle/replace_gyp_files.py ${conf}
 	build/gyp_chromium --depth=. ${conf} -Drelease_extra_cflags="${CFLAGS}"
 }

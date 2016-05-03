@@ -1,0 +1,17 @@
+# Template file for 'neofetch'
+pkgname=neofetch
+version=1.6
+revision=1
+noarch=yes
+build_style=gnu-makefile
+depends="bash xprop ImageMagick w3m-img"
+short_desc="Simple system information script"
+maintainer="Muhammad Herdiansyah <herdiansyah@opmbx.org>"
+homepage="https://github.com/dylanaraps/neofetch"
+license="MIT"
+distfiles="${homepage}/archive/${version}/${pkgname}-${version}.tar.gz"
+checksum=d48f581473fbfc37d250509f8dc2b10bc48df8eafef2429b2a48865d14c88092
+
+post_install() {
+	vlicense LICENSE.md
+}

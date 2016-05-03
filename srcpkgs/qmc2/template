@@ -1,6 +1,6 @@
 # Template file for 'qmc2'
 pkgname=qmc2
-version=0.59
+version=0.63
 revision=1
 wrksrc=${pkgname}
 build_style=gnu-makefile
@@ -16,7 +16,7 @@ maintainer="Jürgen Buchmüller <pullmoll@t-online.de>"
 license="GPL-2"
 homepage="http://qmc2.arcadehits.net/wordpress/"
 distfiles="${SOURCEFORGE_SITE}/${pkgname}/${pkgname}/${version}/${pkgname}-${version}.tar.bz2"
-checksum=16ac5c51e3c6c5b3b2b1663f13a82b45eb4375591c8c8f78fc1563f0d277d470
+checksum=320faec68e8704e7b5c8c7035b0dc2f7d92a69cc87a5906cb86586d49b4a4928
 
 pre_build() {
 	# Replace sdl-config with sdl2-config
@@ -51,7 +51,7 @@ do_install() {
 	# Install translations
 	vmkdir usr/share/${pkgname}/lng
 	for qm in $(find ${wrksrc}/data/lng -name "*.qm"); do
-		vinstall $qm 644 ${DESTDIR}/usr/share/${pkgname}/lng
+		vinstall $qm 644 /usr/share/${pkgname}/lng
 	done
 
 	# Install qchdman and img

@@ -1,19 +1,19 @@
 # Template file for 'dhcpcd'
 pkgname=dhcpcd
-version=6.9.4
+version=6.10.3
 revision=1
 lib32disabled=yes
 build_style=configure
 configure_args="--prefix=/usr --sbindir=/usr/bin --sysconfdir=/etc --rundir=/run"
 hostmakedepends="ntp pkg-config"
-makedepends="libudev-devel"
+makedepends="eudev-libudev-devel"
 conf_files="/etc/dhcpcd.conf"
 short_desc="RFC2131 compliant DHCP client"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="2-clause-BSD"
 homepage="http://roy.marples.name/projects/dhcpcd"
 distfiles="http://roy.marples.name/downloads/dhcpcd/dhcpcd-${version}.tar.xz"
-checksum=c3f3ff7473ef158a1e71db9aea7424df2c3477ad064e2b542f27948a5abc9ba0
+checksum=b586c1f770373f83e3f574c683c66bea217a6d6c89b8e91dbdb6f75aa654c8d5
 
 pre_install() {
 	# make wpa_supplicant log to syslog rather than stdout

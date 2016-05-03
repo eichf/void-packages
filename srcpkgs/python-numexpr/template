@@ -1,7 +1,7 @@
 # Template file for 'python-numexpr'
 pkgname=python-numexpr
-version=2.4.6
-revision=2
+version=2.5.2
+revision=1
 wrksrc="numexpr-${version}"
 build_style=python-module
 python_versions="2.7 3.4"
@@ -14,11 +14,8 @@ maintainer="Alessio Sergi <al3hex@gmail.com>"
 homepage="https://github.com/pydata/numexpr"
 license="MIT"
 distfiles="${PYPI_SITE}/n/numexpr/numexpr-${version}.tar.gz"
-checksum=052397670dc56d7845ff894cd7d858e4f115491ecd93bcc0eda5cb83990c5da3
+checksum=7e85595cf65c8c9a850fdcb073b46f29f52a9a8ab4d0e13161b73bee1229664d
 
-pre_build() {
-	sed -i '/^#!/d' numexpr/cpuinfo.py
-}
 post_install() {
 	vlicense LICENSE.txt LICENSE
 }

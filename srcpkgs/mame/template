@@ -1,28 +1,30 @@
 # Template file for 'mame'
 pkgname=mame
-version=0169
-revision=1
+version=0173
+revision=2
 wrksrc="mame-mame${version}"
 homepage="http://mamedev.org"
 distfiles="https://github.com/mamedev/mame/archive/mame${version}.tar.gz"
 short_desc="The Multiple Arcade Machine Emulator"
 maintainer="Jürgen Buchmüller <pullmoll@t-online.de>"
-license="mame"
-checksum=3c71d44260899ee01a1f85bd173d57edcc98f2973f8f068e038e30ad4d1ba5dc
+license="GPL-2"
+checksum=499172e28eb53f30b3036a036c3834f0a865d5505f7234aebd49145358621654
 
 hostmakedepends="perl pkg-config python automoc4"
-makedepends="SDL2_ttf-devel fontconfig-devel $(vopt_if qt qt5-devel) lua-devel
- libjpeg-turbo-devel libflac-devel sqlite-devel portaudio-devel portmidi-devel"
+makedepends="SDL2_ttf-devel $(vopt_if qt qt5-devel) lua-devel libjpeg-turbo-devel
+ libflac-devel libuv-devel sqlite-devel portaudio-devel portmidi-devel"
 depends="liberation-fonts-ttf"
 nocross=yes
-repository="nonfree"
 replaces="sdlmame>=0 sdlmess>=0"
+
+CXXFLAGS="-DUSE_INTERNAL_CBEGIN_CEND=1 -I${XBPS_CROSS_BASE}/usr/include/lua5.3"
+LDFLAGS="-Wl,-fuse-ld=gold"
 
 build_options="qt"
 if [ -z "$CROSS_BUILD" ]; then
 	build_options_default="qt"
 fi
-CXXFLAGS="-I${XBPS_CROSS_BASE}/usr/include/lua5.3"
+
 do_build() {
 	local opts="REGENIE=1"
 	opts+=" NOWERROR=1"
@@ -36,6 +38,8 @@ do_build() {
 	opts+=" USE_SYSTEM_LIB_SQLITE3=1"
 	opts+=" USE_SYSTEM_LIB_PORTMIDI=1"
 	opts+=" USE_SYSTEM_LIB_PORTAUDIO=1"
+	opts+=" USE_SYSTEM_LIB_UV=1"
+	opts+=" USE_SYSTEM_LIB_SDL2=1"
 	if [ "$build_option_qt" ]; then
 		opts+=" USE_QTDEBUG=1"
 	fi
@@ -43,39 +47,51 @@ do_build() {
 		# Doesn't work yet
 		opts+=" CROSS_BUILD=1 OVERRIDE_CC=${CC} OVERRIDE_CXX=${CXX} OVERRIDE_LD=${CC}"
 	fi
-	make ${opts} ${makejobs}
+	case "$XBPS_TARGET_MACHINE" in
+		i686*)	# Build mamearcade and mess separately to
+			# overcome linker memory exhaustion
+			make ${opts} SUBTARGET=arcade ${makejobs}
+			make ${opts} SUBTARGET=mess ${makejobs}
+			;;
+		*)	# Build all in one mame[64]
+			make ${opts} ${makejobs}
+			;;
+	esac
 }
 do_install() {
+	local f
+
 	# Install the mame script
 	vbin ${FILESDIR}/${pkgname}.sh ${pkgname}
 
-	# Install the applications and the UI font in /usr/share
-	if [ -r mame64 ]; then
-		vinstall mame64 755 usr/share/${pkgname} ${pkgname}
-	else
-		vinstall mame 755 usr/share/${pkgname} ${pkgname}
-	fi
-
-	for f in chdman jedutil regrep romcmp testkeys src2html srcclean \
-		ldverify ldresample unidasm castool floptool imgtool; do
-		vinstall ${f} 755 usr/share/${pkgname}
-		if [ -f src/osd/sdl/man/${f}.1 ]; then
-			vman src/osd/sdl/man/${f}.1
+	# Install the main application(s)
+	for f in mame mame64 mamearcade mamearcade64; do
+		if [ -r ${f} ]; then
+			vinstall ${f} 755 usr/share/${pkgname} mame
 		fi
 	done
-	vman src/osd/sdl/man/mame.6
-	# Currently mess.6 still exists, so install it as well
-	vman src/osd/sdl/man/mess.6
+	for f in mess mess64; do
+		if [ -r ${f} ]; then
+			vinstall ${f} 755 usr/share/${pkgname} mess
+		fi
+	done
+
+	# Install the tools
+	for f in chdman jedutil regrep pngcmp romcmp src2html srcclean \
+		ldverify ldresample unidasm castool floptool imgtool; do
+		vinstall ${f} 755 usr/share/${pkgname}
+		if [ -f docs/man/${f}.1 ]; then
+			vman docs/man/${f}.1
+		fi
+	done
+	for f in mame mess; do
+		if [ -r docs/man/${f}.6 ]; then
+			vman docs/man/${f}.6
+		fi
+	done
 
 	# Install the extra bits
-	install -d ${DESTDIR}/usr/share/${pkgname}/{artwork,ctrlr,keymaps,shader}
-	install -m644 src/osd/modules/opengl/shader/glsl*.*h \
-		${DESTDIR}/usr/share/${pkgname}/shader
-
-	install -m644 artwork/* ${DESTDIR}/usr/share/${pkgname}/artwork
-	install -m644 src/osd/sdl/keymaps/* \
-		${DESTDIR}/usr/share/${pkgname}/keymaps
-
-	# Include the license
-	vlicense docs/mamelicense.txt LICENSE
+	for f in artwork bgfx docs hash hlsl keymaps plugins samples; do
+		vcopy ${f} usr/share/${pkgname}
+	done
 }

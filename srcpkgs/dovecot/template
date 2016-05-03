@@ -1,6 +1,7 @@
 # Template file for 'dovecot'
+# revbump dovecot-plugin-pigeonhole when updating dovecot!
 pkgname=dovecot
-version=2.2.21
+version=2.2.24
 revision=1
 build_style=gnu-configure
 configure_args="--with-moduledir=/usr/lib/dovecot/modules --with-sql=plugin
@@ -13,7 +14,7 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="LGPL-2.1"
 homepage="http://dovecot.org"
 distfiles="${homepage}/releases/2.2/${pkgname}-${version}.tar.gz"
-checksum=7ab7139e59e1f0353bf9c24251f13c893cf1a6ef4bcc47e2d44de437108d0b20
+checksum=71c86891ea8deb5703d3dbbc3ea31ce2cbf7638f1aa395d9e8794d3ff7aebeb7
 
 makedepends="
  lz4-devel zlib-devel bzip2-devel liblzma-devel libressl-devel mit-krb5-devel
@@ -56,7 +57,7 @@ post_install() {
 		${DESTDIR}/etc/dovecot/conf.d
 	install -m644 ${DESTDIR}/${econfdir}/dovecot.conf ${DESTDIR}/etc/dovecot
 	vinstall doc/dovecot-openssl.cnf 644 etc/ssl
-	vinstall doc/mkcert.sh 755 usr/bin dovecot-mkcert.sh
+	vbin doc/mkcert.sh dovecot-mkcert.sh
 	rm ${DESTDIR}/etc/dovecot/README
 
 	vsv dovecot

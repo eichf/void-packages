@@ -1,7 +1,7 @@
 # Template file for 'nsd'
 pkgname=nsd
-version=4.1.7
-revision=1
+version=4.1.9
+revision=2
 build_style=gnu-configure
 configure_args="--enable-ratelimit-default-is-off
  --with-libevent=${XBPS_CROSS_BASE}/usr
@@ -15,7 +15,7 @@ maintainer="Christian Neukirchen <chneukirchen@gmail.com>"
 license="BSD"
 homepage="http://www.nlnetlabs.nl/projects/nsd/"
 distfiles="http://www.nlnetlabs.nl/downloads/${pkgname}/${pkgname}-${version}.tar.gz"
-checksum=7ba8beb29b495ab795e927d9aa82a5bb1b66296a78f61ed47d6ccfe59e9b1a8a
+checksum=b811224d635331de741f1723aefc41adda0a0a3a499ec310aa01dd3b4b95c8f2
 
 post_install() {
 	vsv nsd

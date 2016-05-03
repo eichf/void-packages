@@ -1,8 +1,8 @@
 # Template file for 'stack'
 pkgname=stack
-version=0.1.10.0
+version=1.0.2
 revision=1
-_stackage="lts-3.17"
+_stackage="lts-5.0"
 hostmakedepends="cabal-install"
 makedepends="zlib-devel pcre-devel"
 depends="git iana-etc"
@@ -13,8 +13,8 @@ homepage="http://haskellstack.org"
 distfiles="https://github.com/commercialhaskell/stack/archive/v${version}.tar.gz
  https://www.stackage.org/${_stackage}/cabal.config>cabal.config-${_stackage}"
 skip_extraction="cabal.config-${_stackage}"
-checksum="caa05fe0b5da10b34989ce2c3b86a72e540de10530792e49caf3055fd57b33fd
- 9e5b3aa042710cd0d6988d8db7a677af0ffaff346633e6d6500b4015031c22ff"
+checksum="611e96aab0df2a2ad717cfbfe6018e67a90ecb1fb478c9e3c6d90478125986f0
+ 06dbb17fc55beeb432f4f16b43505c7a285b69b43f6bc732da2049250726a139"
 nocross=yes
 nopie=yes  # network-2.6.2.1 build fails with a relocation
 

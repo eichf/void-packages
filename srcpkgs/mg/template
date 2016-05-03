@@ -1,14 +1,20 @@
 # Template file for 'mg'
 pkgname=mg
-version=20150323
+version=20160421
 revision=1
-makedepends="clens libbsd-devel ncurses-devel"
+makedepends="libbsd-devel ncurses-devel"
 homepage="http://homepage.boetes.org/software/mg"
 short_desc="Micro GNU/emacs"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="Public Domain"
 distfiles="$homepage/mg-$version.tar.gz"
-checksum=d71b24d47d3e1426f162e446d92dfa457df96dd47c1289419cba9fd14c2c3afb
+checksum=b5dd8fbecb8a0ff0f32588c448f22f25fafcbfb297857e76d2883598a3e63a9a
+
+CFLAGS="-DTCSASOFT=0"
+
+case "$XBPS_TARGET_MACHINE" in
+	*-musl) CFLAGS+=" -DREG_STARTEND=0";;
+esac
 
 do_configure() {
 	sed -i "s,\(BSD_CPPFLAGS:=\).*,\1 -isystem ${XBPS_CROSS_BASE}/usr/include/bsd -DLIBBSD_OVERLAY,g" GNUmakefile

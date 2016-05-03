@@ -1,14 +1,14 @@
 # Template build file for 'thunderbird'.
 pkgname=thunderbird
-version=38.4.0
-revision=1
+version=38.7.2
+revision=2
 wrksrc="comm-esr${version/.*/}"
 short_desc="Standalone Mail/News reader"
 maintainer="Enno Boland <gottox@voidlinux.eu>"
 homepage="http://www.mozilla.org/thunderbird/"
 license="MPL-1.1, GPL-2, LGPL-2.1"
 distfiles="${MOZILLA_SITE}/${pkgname}/releases/${version}/source/${pkgname}-${version}.source.tar.bz2"
-checksum=326a4408d6dc79890cba8466dbc337acf99df76b58dadb0ed453e5e42af7fdbe
+checksum=e2b1453ac193615586e350bc729278db8c8a61a8d4ac089db370754af47d4493
 
 nopie=yes
 lib32disabled=yes
@@ -96,8 +96,11 @@ do_configure() {
 		--disable-profiling --disable-profilelocking
 }
 do_build() {
+	if [ "$SOURCE_DATE_EPOCH" ]; then
+		mozdate="MOZ_BUILD_DATE=$(date --date "@$SOURCE_DATE_EPOCH" "+%Y%m%d%H%M%S")"
+	fi
 	cd xbps-build
-	SHELL=/bin/bash make ${makejobs}
+	SHELL=/bin/bash make ${mozdate} ${makejobs}
 }
 do_install() {
 	cd xbps-build
