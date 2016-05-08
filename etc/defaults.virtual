@@ -20,13 +20,14 @@
 # NOTE: Create your own etc/virtual file to override these defaults.
 
 awk gawk
+emacs emacs
 java-environment openjdk
 java-runtime openjdk-jre
 libudev eudev-libudev
 ntp-daemon chrony
 phonon-backend phonon-backend-gstreamer
 phonon-qt5-backend phonon-qt5-backend-gstreamer
-rkt-stage1 rkt-stage1-kvm
+rkt-stage1 rkt-stage1-coreos
 smtp-server opensmtpd
 texlive texlive-bin
 xserver-abi-input xorg-server

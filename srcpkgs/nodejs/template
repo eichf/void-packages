@@ -1,8 +1,7 @@
 # Template file for 'nodejs'
 pkgname=nodejs
 version=6.0.0
-revision=1
-patch_args="-Np1"
+revision=2
 wrksrc=node-v${version}
 hostmakedepends="pkg-config python"
 makedepends="zlib-devel python-devel
@@ -21,6 +20,7 @@ desc_option_libuv="Enable shared libuv"
 desc_option_http_parser="Enable shared http-parser"
 build_options_default="libuv http_parser"
 
+broken="openssl broke it"
 replaces="iojs>=0"
 
 do_configure() {

@@ -11,7 +11,7 @@ if [ "$XBPS_MACHINE" = "x86_64" ]; then
 	_distcksum=39c57f57468dff12a982a3f8fb5b9d5b85f5730d542cf361d7087868e4d3b164
 else
 	_disttarball="${_url}/install_flash_player_11_linux.i386.tar.gz"
-	_distcksum=475d9853b25a58b3893f56db92a3de429475c3c59f4633a79aad6cf70e691b9a
+	_distcksum=607d12307bb2d8b03475e317873bc7f4c577a3383e5e79190444fb9089ece744
 fi
 distfiles="${_eula} ${_disttarball}"
 checksum="${_eulacksum} ${_distcksum}"
