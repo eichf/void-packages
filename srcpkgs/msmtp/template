@@ -1,6 +1,6 @@
 # Template file for 'msmtp'
 pkgname=msmtp
-version=1.6.4
+version=1.6.6
 revision=2
 build_style=gnu-configure
 # Package build options
@@ -17,4 +17,9 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://msmtp.sourceforge.net"
 license="GPL-3"
 distfiles="${SOURCEFORGE_SITE}/${pkgname}/${pkgname}-${version}.tar.xz"
-checksum=9b49c022a5440d41b6782c97ef2977d0346c3dae05aa8836243a9953e982d1cd
+checksum=da15db1f62bd0201fce5310adb89c86188be91cd745b7cb3b62b81a501e7fb5e
+
+post_install() {
+	vsconf doc/msmtprc-system.example
+	vsconf doc/msmtprc-user.example
+}

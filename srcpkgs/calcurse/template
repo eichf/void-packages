@@ -1,15 +1,15 @@
 # Template file for 'calcurse'
-pkgname="calcurse"
-version="4.1.0"
+pkgname=calcurse
+version=4.3.0
 revision=1
 build_style=gnu-configure
 short_desc="Ncurses planner"
 makedepends="ncurses-devel"
 maintainer="silvernode <mollusk@homebutter.com>"
-license="BSD"
+license="2-clause-BSD"
 homepage="http://calcurse.org"
 distfiles="http://calcurse.org/files/${pkgname}-${version}.tar.gz"
-checksum=ca423f8c8dfbb92cd63281305fa23c2909a6aefcee9e86317584fff7619b42c4
+checksum=31ecc3dc09e1e561502b4c94f965ed6b167c03e9418438c4a7ad5bad2c785f9a
 
 post_install() {
 	vlicense COPYING

@@ -1,7 +1,9 @@
 # Template file for 'cdrtools'
+nocross=yes
+
 pkgname=cdrtools
 version=3.01
-revision=2
+revision=5
 makedepends="acl-devel"
 conf_files="/etc/default/rscsi /etc/default/cdrecord"
 short_desc="Highly portable CD/DVD/BluRay command line recording software"
@@ -13,12 +15,14 @@ checksum=ed282eb6276c4154ce6a0b5dee0bdb81940d0cbbfc7d03f769c4735ef5f5860f
 
 do_build() {
 	sed -i 's|INSDIR=.*|INSDIR=bin|' rscsi/Makefile
-	make CC=$CC RUNPATH= LDPATH= NOWARN=1
+	make CC="$CC" COPTX="$CFLAGS" LDOPTX="$LDFLAGS" RUNPATH= LDPATH= NOWARN=1
 }
 do_install() {
 	make INS_BASE=/usr MANDIR=/man DESTDIR=${DESTDIR} install
 	# Remove useless stuff
 	rm -rf ${DESTDIR}/usr/include
 	rm -rf ${DESTDIR}/usr/lib/lib* ${DESTDIR}/usr/lib/profiled
-	rm -rf ${DESTDIR}/usr/share/man/man3
+	rm -rf ${DESTDIR}/usr/share/man/man3 ${DESTDIR}/usr/share/man/man5
+	vmkdir usr/lib/modules-load.d
+	echo sg > ${DESTDIR}/usr/lib/modules-load.d/cdrtools.conf
 }

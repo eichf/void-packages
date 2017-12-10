@@ -1,16 +1,17 @@
 # Template file for 'libgit2'
 pkgname=libgit2
-version=0.24.1
-revision=2
+version=0.26.0
+revision=1
 build_style=cmake
-hostmakedepends="cmake python git pkg-config"
+hostmakedepends="python git pkg-config"
 makedepends="zlib-devel libressl-devel http-parser-devel libssh2-devel"
 short_desc="The Git linkable library"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://libgit2.github.com/"
 license="GPL-2 with Linking Exception"
 distfiles="https://github.com/libgit2/libgit2/archive/v${version}.tar.gz"
-checksum=60198cbb34066b9b5c1613d15c0479f6cd25f4aef42f7ec515cd1cc13a77fede
+checksum=6a62393e0ceb37d02fe0d5707713f504e7acac9006ef33da1e88960bd78b6eac
+configure_args="-DTHREADSAFE=ON"
 
 case "$XBPS_TARGET_MACHINE" in
 	*-musl)

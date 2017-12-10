@@ -1,21 +1,21 @@
 # Template file for 'gettext'
 pkgname=gettext
-version=0.19.7
-revision=1
+version=0.19.8.1
+revision=3
 bootstrap=yes
 build_style=gnu-configure
 configure_args="--disable-java --disable-native-java --disable-csharp
  --disable-libasprintf --enable-threads=posix --disable-rpath --without-emacs
- --disable-openmp --with-included-libxml --with-included-libcroco
  --disable-acl --with-included-glib --with-included-libcroco --without-git
- --with-included-libxml --disable-openmp --disable-curses
- --without-examples --enable-nls gl_cv_func_gettimeofday_clobber=no"
+ --with-included-libxml --with-included-libunistring --disable-openmp
+ --disable-curses --without-examples --enable-nls
+ gl_cv_func_gettimeofday_clobber=no"
 short_desc="Internationalized Message Handling Library and tools"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://www.gnu.org/software/gettext/"
 license="GPL-3"
-distfiles="http://ftp.gnu.org/pub/gnu/${pkgname}/${pkgname}-${version}.tar.gz"
-checksum=5386d2a40500295783c6a52121adcf42a25519e2d23675950619c9e69558c23f
+distfiles="${GNU_SITE}/${pkgname}/${pkgname}-${version}.tar.gz"
+checksum=ff942af0e438ced4a8b0ea4b0b6e0d6d657157c5e2364de57baa279c1c125c43
 
 case "$XBPS_TARGET_MACHINE" in
 	# force libintl
@@ -28,6 +28,7 @@ if [ "$CROSS_BUILD" ]; then
 		autoreconf -fi
 	}
 fi
+
 
 post_install() {
 	# Fix conflict with musl.

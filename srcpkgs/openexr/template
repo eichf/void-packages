@@ -1,7 +1,7 @@
 # Template file for 'openexr'
 pkgname=openexr
 version=2.2.0
-revision=3
+revision=5
 build_style=gnu-configure
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://www.openexr.com/"
@@ -13,6 +13,13 @@ distfiles="${NONGNU_SITE}/${pkgname}/${pkgname}-${version}.tar.gz"
 checksum="36a012f6c43213f840ce29a8b182700f6cf6b214bea0d5735594136b44914231"
 
 LDFLAGS="-lrt"
+
+case "$XBPS_TARGET_MACHINE" in
+aarch64-musl)
+	CFLAGS="-Os"
+	CXXFLAGS=-"Os"
+	;;
+esac
 
 post_configure() {
 	if [ "$CROSS_BUILD" ]; then
@@ -29,7 +36,7 @@ post_configure() {
 	fi
 }
 
-post_install(){
+post_install() {
 	vlicense LICENSE
 }
 

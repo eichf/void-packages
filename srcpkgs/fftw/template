@@ -1,22 +1,30 @@
 # Template file for 'fftw'
 pkgname=fftw
-version=3.3.4
-revision=3
+version=3.3.7
+revision=1
 hostmakedepends="libtool automake"
+makedepends="libgomp-devel"
 short_desc="Library for computing the discrete Fourier transform (DFT)"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="GPL-2"
 homepage="http://www.fftw.org/"
 distfiles="${homepage}/fftw-${version}.tar.gz"
-checksum=8f0cde90929bc05587c3368d2f15cd0530a60b8a9912a8e2979a72dbe5af0982
+checksum=3b609b7feba5230e8f6dd8d245ddbefac324c5a6ae4186947670d9ac2cd25573
 
 pre_configure() {
 	sed -e 's,AM_CONFIG_HEADER,AC_CONFIG_HEADERS,g' -i configure.ac
+	if [ "$CROSS_BUILD" ]; then
+		# Remove test which does not work when cross compiling
+		case "$XBPS_TARGET_MACHINE" in
+		armv[78]*|aarch64*) sed -i configure.ac \
+			-e "/dnl Check for not-always-available (not quite) cycle counters/,+26d"
+		esac
+	fi
 	autoreconf -fi
 }
 
 do_configure() {
-	local CARGS="--enable-shared --enable-threads"
+	local CARGS="--enable-shared --enable-threads --enable-openmp"
 
 	case "$XBPS_TARGET_MACHINE" in
 		i686*|x86_64*) _sse="--enable-sse"; _sse2="--enable-sse2";;

@@ -1,6 +1,6 @@
 # Template file for 'vis'
 pkgname=vis
-version=0.2
+version=0.4
 revision=1
 build_style=gnu-configure
 makedepends="libtermkey-devel ncurses-devel lua-devel"
@@ -9,8 +9,8 @@ short_desc="Tiny vim like editor"
 maintainer="Diogo Leal <diogo@diogoleal.com>"
 license="BSD"
 homepage="https://github.com/martanne/vis"
-distfiles="http://www.brain-dump.org/projects/vis/vis-${version}.tar.gz"
-checksum=3e5b81d760849c56ee378421e9ba0f653c641bf78e7594f71d85357be99a752d
+distfiles="https://github.com/martanne/vis/archive/v${version}.tar.gz"
+checksum=f11ba41cfb86dd39475960abfd12469de4da0ccfdb941f1d7680d89d987694c5
 conflicts="outils" # /usr/bin/vis
 
 post_install() {

@@ -1,6 +1,6 @@
 # Template build file for 'gmp'
 pkgname=gmp
-version=6.1.0
+version=6.1.2
 revision=1
 bootstrap=yes
 build_style=gnu-configure
@@ -12,7 +12,7 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="LGPL-3"
 homepage="http://gmplib.org/"
 distfiles="https://gmplib.org/download/gmp/gmp-${version}.tar.xz"
-checksum=68dadacce515b0f8a54f510edf07c1b636492bcdb8e8d54c56eb216225d16989
+checksum=87b565e89a9a684fe4ebeeddb8399dce2599f9c9049854ca8c0dfbdea0e21912
 
 subpackages="gmpxx gmpxx-devel gmp-devel"
 
@@ -22,6 +22,7 @@ if [ "$CROSS_BUILD" ]; then
 		autoreconf -if
 	}
 fi
+
 
 gmpxx_package() {
 	short_desc+=" - C++ support"

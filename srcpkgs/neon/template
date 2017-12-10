@@ -1,7 +1,7 @@
 # Template file for 'neon'
 pkgname=neon
-version=0.30.1
-revision=7
+version=0.30.2
+revision=5
 build_style=gnu-configure
 configure_args="--with-expat --with-ssl=openssl --enable-shared
  --with-ca-bundle=/etc/ssl/certs/ca-certificates.crt --disable-static"
@@ -12,8 +12,10 @@ short_desc="HTTP and WebDAV client library, with a C interface"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://www.webdav.org/neon/"
 license="LGPL-2.1"
-distfiles="http://www.webdav.org/neon/neon-$version.tar.gz"
-checksum=00c626c0dc18d094ab374dbd9a354915bfe4776433289386ed489c2ec0845cdd
+# The website www.webdav.org is (temporarily?) gone
+# distfiles="http://www.webdav.org/neon/neon-$version.tar.gz"
+distfiles="http://download.openpkg.org/components/cache/${pkgname}/${pkgname}-${version}.tar.gz"
+checksum=db0bd8cdec329b48f53a6f00199c92d5ba40b0f015b153718d1b15d3d967fbca
 
 neon-devel_package() {
 	depends="${makedepends} neon>=${version}_${revision}"

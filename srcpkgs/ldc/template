@@ -1,25 +1,25 @@
 # Template file for 'ldc'
-#
 pkgname=ldc
-version=0.15.1
+version=1.5.0
 revision=1
 wrksrc="ldc-${version}-src"
 build_style=cmake
 configure_args="-DINCLUDE_INSTALL_DIR=/usr/include/dlang/ldc -DBUILD_SHARED_LIBS=ON"
-hostmakedepends="cmake llvm perl pkg-config"
-makedepends="zlib-devel libconfig-devel libffi-devel libcurl-devel"
-conf_files="/etc/ldc2.rebuild.conf /etc/ldc2.conf"
+hostmakedepends="dmd llvm perl pkg-config"
+makedepends="libcurl-devel libffi-devel ncurses-devel zlib-devel"
+depends="ldc-runtime"
+conf_files="/etc/ldc2.conf"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://wiki.dlang.org/LDC"
-license="BSD"
+license="3-clause-BSD, Boost Software License 1.0"
 short_desc="Portable D programming language compiler based on LLVM"
 distfiles="https://github.com/ldc-developers/ldc/releases/download/v${version}/ldc-${version}-src.tar.gz"
-checksum=ff7ea55309d678c20524779091617aa1d4bdbaa39e1a650927020fe1627f4b0f
+checksum=03659a4b9cafff0cf8d537469dd15579f097c7748a342ea2a5770fa0edd3a084
+nopie=yes
+nocross=yes
 
 post_install() {
-	vmkdir usr/share/bash-completion/completions
-	mv ${DESTDIR}/etc/bash_completion.d/* \
-		${DESTDIR}/usr/share/bash-completion/completions
+	vlicense LICENSE
 }
 
 ldc-runtime_package() {

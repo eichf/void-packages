@@ -1,14 +1,14 @@
 # Template build file for 'perl-Proc-ProcessTable'
 pkgname=perl-Proc-ProcessTable
 version=0.53
-revision=2
+revision=4
 wrksrc="Proc-ProcessTable-$version"
 build_style=perl-module
 hostmakedepends="perl"
 makedepends="perl"
 depends="perl"
 short_desc="Proc::ProcessTable - Perl extension to access the unix process table"
-maintainer="Dominik Honnef <dominik@honnef.co>"
+maintainer="Orphaned <orphan@voidlinux.eu>"
 homepage="http://search.cpan.org/~jwb/Proc-ProcessTable/"
 license="Artistic, GPL-1"
 distfiles="${CPAN_SITE}/Proc/Proc-ProcessTable-${version}.tar.gz"

@@ -1,9 +1,9 @@
 # Template file for 's3fs-fuse'
 pkgname=s3fs-fuse
-version=1.79
-revision=4
+version=1.82
+revision=1
 build_style=gnu-configure
-configure_args="--with-openssl"
+configure_args="--with-openssl ac_cv_file__git=no"
 hostmakedepends="automake libtool pkg-config"
 makedepends="libressl-devel libcurl-devel fuse-devel libxml2-devel"
 short_desc="FUSE-based file system backed by Amazon S3"
@@ -11,7 +11,7 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="GPL-2.1"
 homepage="https://github.com/s3fs-fuse/s3fs-fuse/wiki"
 distfiles="https://github.com/s3fs-fuse/s3fs-fuse/archive/v${version}.tar.gz"
-checksum=61c179f958ce236c6612bf6ffc7bdb6478393ac6e5ec0b04788000fc9f9dbf66
+checksum=8a40f0b11b558b6d733eeff4fcc025cc416df37b6732001bb0c630f6d6d760dd
 
 pre_configure() {
 	NOCONFIGURE=1 ./autogen.sh

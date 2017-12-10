@@ -1,0 +1,34 @@
+# Template file for 'influxdb'
+pkgname=influxdb
+version=1.4.2
+revision=1
+build_style=go
+go_import_path="github.com/influxdata/influxdb"
+go_package="${go_import_path}/cmd/influx
+ ${go_import_path}/cmd/influxd
+ ${go_import_path}/cmd/influx_tsm
+ ${go_import_path}/cmd/influx_inspect
+ ${go_import_path}/cmd/influx_stress"
+go_ldflags="-X main.version=${version}"
+hostmakedepends="git go-gdm"
+system_accounts="_influxdb"
+_influxdb_homedir="/var/lib/influxdb"
+make_dirs="${_influxdb_homedir} 0755 _influxdb _influxdb"
+conf_files="/etc/${pkgname}/${pkgname}.conf"
+short_desc="Scalable datastore for metrics, events, and real-time analytics"
+maintainer="Michael Aldridge <maldridge@VoidLinux.eu>"
+license="MIT"
+homepage="https://influxdata.com/time-series-platform/influxdb/"
+distfiles="https://${go_import_path}/archive/v${version}.tar.gz"
+checksum=7ff8d0464bbb96c3bbe9b07147d0e9153dfea9fc1590109d724eb80574209e6f
+
+pre_build() {
+	cd $GOSRCPATH
+	gdm restore
+}
+
+post_install() {
+	vlicense LICENSE
+	vsv ${pkgname}
+	vinstall etc/config.sample.toml 644 etc/${pkgname} ${pkgname}.conf
+}

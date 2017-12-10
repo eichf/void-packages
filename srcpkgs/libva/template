@@ -1,21 +1,18 @@
 # Template file for 'libva'
 pkgname=libva
-version=1.7.0
+version=1.8.3
 revision=1
 build_style=gnu-configure
-configure_args="--disable-static --enable-x11 --disable-egl --disable-glx"
-hostmakedepends="automake pkg-config libtool"
+configure_args="--disable-egl --disable-glx"
+hostmakedepends="pkg-config wayland-devel"
 makedepends="libXfixes-devel libXext-devel libdrm-devel wayland-devel"
 short_desc="Video Acceleration (VA) API"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
-homepage="http://freedesktop.org/wiki/Software/vaapi"
+homepage="https://01.org/linuxmedia"
 license="MIT"
-distfiles="${FREEDESKTOP_SITE}/vaapi/releases/libva/libva-${version}.tar.bz2"
-checksum=a689bccbcc81a66b458e448377f108c057d3eee44a2e21a23c92c549dc8bc95f
+distfiles="https://github.com/01org/libva/releases/download/${version}/libva-${version}.tar.bz2"
+checksum=56ee129deba99b06eb4a8d4f746b117c5d1dc2ec5b7a0bfc06971fca1598ab9b
 
-pre_configure() {
-	autoreconf -fi
-}
 post_install() {
 	vlicense COPYING
 }

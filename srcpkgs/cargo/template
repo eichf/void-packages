@@ -1,35 +1,63 @@
 # Template file for 'cargo'
 pkgname=cargo
-version=0.10.0
-revision=2
-_githash_installer=c37d3747da75c280237dc2d6b925078e69555499
-build_style=gnu-configure
-make_build_args="VERBOSE=1"
+version=0.23.0
+revision=1
+_githash_installer=4f994850808a572e2cc8d43f968893c8e942e9bf
 hostmakedepends="rust python curl cmake pkg-config"
 makedepends="libcurl-devel libgit2-devel"
 depends="rust"
 short_desc="Rust package manager"
-maintainer="Christian Neukirchen <chneukirchen@gmail.com>"
+maintainer="Leah Neukirchen <leah@vuxu.org>"
 license="MIT, Apache-2.0"
 homepage="https://crates.io/"
-distfiles="https://github.com/rust-lang/${pkgname}/archive/${version}.tar.gz
+distfiles="https://github.com/rust-lang/cargo/archive/${version}.tar.gz
  https://github.com/rust-lang/rust-installer/archive/${_githash_installer}.tar.gz"
-checksum="1e73c038681fe308195427b71322a6350c65d3b8cbea199e45c7b672b4754e0e
- 6326434c225d25c6bfd28ff8bbc3108e331ae65e89a5c38dac8a2c8ffa09732b"
+checksum="f4bbe2a8719dbb8da20842235093f7f70f034d01633189e83f75897d68cd274f
+ dc7240d60a869fa24a68c8734fb7c810c27cca0a6dad52df6279865e4e8e7fae"
 nocross=yes
+
+case "$XBPS_MACHINE" in
+x86_64-musl)
+	distfiles+="
+	 https://repo.voidlinux.eu/distfiles/cargo-0.18.0-x86_64-unknown-linux-musl.tar.gz"
+	checksum+="
+	 28f2ee839f14f8b3edf3f4e4cc8600ac99ea50905ee8fb91116bba676728c2e9"
+	;;
+x86_64)
+	distfiles+="
+	 https://static.rust-lang.org/dist/cargo-0.20.0-x86_64-unknown-linux-gnu.tar.gz"
+	checksum+="
+	 a677d13b01d00ad13edf75c7d1b484421c7fc09338bf9ed6d456b4685bb42ed1"
+	;;
+i686)
+	distfiles+="
+	 https://static.rust-lang.org/dist/cargo-0.20.0-i686-unknown-linux-gnu.tar.gz"
+	checksum+="
+	 1a6b45f04d63d54c5d265e8bf1d647df171c1624ca1c081d75971eb8bb741d53"
+	;;
+esac
 
 post_extract() {
 	rm -rf src/rust-installer
 	mv ../rust-installer-${_githash_installer} src/rust-installer
-	sed -i 's,/etc/bash_completion.d,/share/bash-completion/completions,g' Makefile.in
+	mkdir -p target/snapshot
+	cp ../cargo-*/cargo/bin/cargo cargo
+	rm Cargo.lock  # unlock rust-openssl 0.9.4
 }
-pre_configure() {
-	configure_args+=" --host=${XBPS_TRIPLET/-pc-/-unknown-} --build=${XBPS_TRIPLET/-pc-/-unknown-}"
-	sed -i '/not recognized/s/err/warn/' configure
+do_build() {
 	export LIBGIT2_SYS_USE_PKG_CONFIG=yes
+	export CARGO_HOME="${wrksrc}/.cargo"
+	export RUST_BACKTRACE=1
+	./cargo build --release
 }
-post_install() {
-	rm -rf ${DESTDIR}/usr/lib/rustlib ${DESTDIR}/usr/share/doc/cargo
+do_install() {
+	vbin target/release/cargo
+	for f in src/etc/man/*.?; do
+		vman $f
+	done
+	vinstall src/etc/cargo.bashcomp.sh 0644 usr/share/bash-completion/completions cargo
+	vinstall src/etc/_cargo 0644 usr/share/zsh/site-functions
+	
 	vlicense LICENSE-APACHE
 	vlicense LICENSE-MIT
 	vlicense LICENSE-THIRD-PARTY

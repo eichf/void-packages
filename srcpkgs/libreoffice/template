@@ -1,79 +1,116 @@
 # Template file for 'libreoffice'
 pkgname=libreoffice
-version=5.1.2.2
-revision=4
+version=5.4.3.2
+revision=1
 build_style=gnu-configure
 configure_args="--disable-werror"
-nopie=yes
 nocross=yes
+
 #
-# XXX: mit-krb5-devel nasm openjdk vlc hamcrest
-#      iwyu ogl-math libgltf telepathy-glib-devel
+# XXX: mit-krb5-devel nasm firebird3 hamcrest iwyu ogl-math
 # Missing, required libraries are downloaded and built internally
 #
 hostmakedepends="automake libtool pkg-config bison flex gperf icu
  perl-Archive-Zip hyphen openldap sane ucpp unzip zip wget"
-makedepends="apr-devel boost-devel cups-devel libcurl-devel
- dbus-glib-devel libjpeg-turbo-devel libpng-devel glu-devel graphite-devel
- gst-plugins-base1-devel gtk+-devel gtk+3-devel harfbuzz-devel icu-devel
- libatomic_ops-devel lcms2-devel librsvg-devel libxml2-devel libxslt-devel
- MesaLib-devel neon-devel nss-devel python3.4-devel libressl-devel libgcrypt-devel
- libgpg-error-devel poppler-cpp-devel postgresql-libs-devel redland-devel
- lpsolve-devel unixodbc-devel libXt-devel
- avahi-libs-devel hunspell-devel hyphen-devel libabw-devel libcdr-devel CoinMP-devel
- libcmis-devel libcppunit-devel libe-book-devel libfbclient-devel libfreehand-devel
- libexttextcat-devel liblangtag-devel libldap-devel libmspub-devel libmwaw-devel
- glew-devel glyphy-devel libodfgen-devel liborcus10-devel libpagemaker-devel
- librevenge-devel libvisio-devel libetonyek-devel libwpd-devel libwpg-devel
- libwps-devel mdds0 mythes-devel opencollada-devel vigra-devel"
+makedepends="apr-devel gst-plugins-base1-devel gtk+-devel gtk+3-devel
+ libatomic_ops-devel librsvg-devel nss-devel python3-devel libgcrypt-devel
+ gpgmepp-devel poppler-cpp-devel postgresql-libs-devel redland-devel
+ liborcus-devel lpsolve-devel unixodbc-devel libXt-devel neon-devel
+ avahi-libs-devel hunspell-devel hyphen-devel libabw-devel libcdr-devel
+ CoinMP-devel libbluetooth-devel libcmis-devel libe-book-devel libfreehand-devel
+ libexttextcat-devel libgltf-devel libldap-devel libmspub-devel libmwaw-devel
+ glew-devel glyphy-devel gst-plugins-base1-devel libodfgen-devel
+ libpagemaker-devel libvisio-devel libetonyek-devel libwpg-devel telepathy-glib-devel
+ libwps-devel glm mdds0 mythes-devel opencollada-devel sane-devel vigra-devel vlc-devel"
 depends="hyphen openldap sane"
 short_desc="Productivity suite, formerly OpenOffice.org"
 maintainer="Jürgen Buchmüller <pullmoll@t-online.de>"
 license="LGPL-3"
 homepage="http://www.libreoffice.org/"
+
+# Additional zip archives
+_ooop_fonts_md5hash=a10aa597411643326e27d7fc128af12d
+_ooop_fonts_version=2.9.0.0
+_ooop_gallery_md5hash=af9314c5972d95a5d6da23ffad818f68
+_ooop_gallery_version=2.8.0.0
+_ooop_samples_md5hash=a6bccacf44914969e6e7b2f8faf4132c
+_ooop_samples_version=2.7.0.0
+_ooop_templates_md5hash=1be202fbbbc13f10592a98f70a4a87fb
+_ooop_templates_version=2.9.0.0
+# Extra gallery, samples and templates
+_ooopurl="http://ooo.itc.hu/oxygenoffice/download/libreoffice"
+# Source, dictionary, help and translations
 _baseurl="http://download.documentfoundation.org/${pkgname}/src/${version%.*}"
+
 distfiles="
  ${_baseurl}/${pkgname}-${version}.tar.xz
  ${_baseurl}/${pkgname}-dictionaries-${version}.tar.xz
  ${_baseurl}/${pkgname}-help-${version}.tar.xz
- ${_baseurl}/${pkgname}-translations-${version}.tar.xz"
+ ${_baseurl}/${pkgname}-translations-${version}.tar.xz
+ ${_ooopurl}/${_ooop_fonts_md5hash}-OOOP-fonts-pack-${_ooop_fonts_version}.zip
+ ${_ooopurl}/${_ooop_gallery_md5hash}-OOOP-gallery-pack-${_ooop_gallery_version}.zip
+ ${_ooopurl}/${_ooop_samples_md5hash}-OOOP-samples-pack-${_ooop_samples_version}.zip
+ ${_ooopurl}/${_ooop_templates_md5hash}-OOOP-templates-pack-${_ooop_templates_version}.zip
+"
 checksum="
- 54ecdc9e0201a64fb6a0898b2e5ebd6c6e22c36965e3eb797ae351219e441781
- c500d21160a22808986b80230c71a1eff8b2f2102e2d5f9d1d543dcfa698a03e
- dc4d9fd6ca78ad89069ca1f0187f274c9cd83fb8849716193d25bce6ca072953
- 7fbf0d742df7d9a5cf567bb8b8d78e16160936a6f339b9d035e0ac9e1d2455f0"
+ d59526dc6adf96c53cd7ed3c0235d9a876cbd1af07ab653456395ea94479d931
+ 4caa0315cd9b953d7543beb37d8c335de5cab5822ae65dcebc5e0f38bb31438a
+ 85dd76aabc205e8b30f9622bc5300156df6debf4ac0364eb732ced92932d30e4
+ 7249cc6f87f7d2448e2c23356c2ae260a9aeaaa88ca75fa8ac66b42a3626fd2d
+ cf21b8a0a58c0f0af562869846ce2af4c68b13a7178b9b74ee7be7480a87c84c
+ c95f6c398e81ee7def378e51e4c7b5bdeba526f28ff281e79ca3795e6d467159
+ 1834aa0632499134f98ce85057d6d67604b9ed3b7efa7f13e76046f5886a3a2d
+ c31a4b1ab988a6b016654cc91e9652727cbb0fcbe9b09ee4b3d93b57a57901e0
+"
 skip_extraction="
  ${pkgname}-dictionaries-${version}.tar.xz
  ${pkgname}-help-${version}.tar.xz
- ${pkgname}-translations-${version}.tar.xz"
+ ${pkgname}-translations-${version}.tar.xz
+ ${_ooop_fonts_md5}-OOOP-fonts-pack-${_ooop_fonts_ver}.zip
+ ${_ooop_gallery_md5}-OOOP-gallery-pack-${_ooop_gallery_ver}.zip
+ ${_ooop_samples_md5}-OOOP-samples-pack-${_ooop_samples_ver}.zip
+ ${_ooop_templates_md5}-OOOP-templates-pack-${_ooop_templates_ver}.zip
+"
 
-case "$XBPS_TARGET_MACHINE" in
-	i686*) # Unit tests failure - unknown reason
-		broken="http://build.voidlinux.eu/builders/i686_builder/builds/22276/steps/shell_3/logs/stdio"
-		;;
-esac
+build_options="java"
+desc_option_java="Enable Java support"
 
 if [ -z "$CROSS_BUILD" ]; then
 	# mariadbclient can't currently be cross compiled
 	makedepends+=" libmariadbclient-devel"
-	configure_args+=" --with-system-mariadb"
 fi
 
 case "$XBPS_TARGET_MACHINE" in
+	i686)	# Broken unit tests
+		CXXFLAGS+=" -DDISABLE_CVE_TESTS=1"
+		makedepends+=" clucene-devel"
+		;;
 	*-musl)	# use shipped clucene, because CLucene/analysis/cjk/CJKAnalyzer.h
 		# is missing in the musl clucene-devel files
+		# make no checks because they fail on the builder
+		make_build_args="build-nocheck"
 		;;
-	*)	configure_args+=" --with-system-clucene"
+	x86_64)	build_options_default="java"
+		makedepends+=" apache-ant openjdk "
 		makedepends+=" clucene-devel"
+		;;
+	*)	makedepends+=" clucene-devel"
 		;;
 esac
 
 post_fetch() {
-	local srcdistdir=${XBPS_SRCDISTDIR}/${pkgname}-${version}
+	local srcdistdir=${XBPS_SRCDISTDIR}/${pkgname}-${version} pkg
 	mkdir -p ${wrksrc}/external/tarballs
-	ln -sf ${srcdistdir}/${pkgname}-dictionaries-${version}.tar.xz ${wrksrc}/external/tarballs/
-	ln -sf ${srcdistdir}/${pkgname}-help-${version}.tar.xz ${wrksrc}/external/tarballs/
-	ln -sf ${srcdistdir}/${pkgname}-translations-${version}.tar.xz ${wrksrc}/external/tarballs/
+	for pkg in \
+ 		${pkgname}-dictionaries-${version}.tar.xz \
+ 		${pkgname}-help-${version}.tar.xz \
+ 		${pkgname}-translations-${version}.tar.xz \
+ 		${_ooop_fonts_md5hash}-OOOP-fonts-pack-${_ooop_fonts_version}.zip \
+ 		${_ooop_gallery_md5hash}-OOOP-gallery-pack-${_ooop_gallery_version}.zip \
+ 		${_ooop_samples_md5hash}-OOOP-samples-pack-${_ooop_samples_version}.zip \
+ 		${_ooop_templates_md5hash}-OOOP-templates-pack-${_ooop_templates_version}.zip; do
+		ln -sf ${srcdistdir}/${pkg} ${wrksrc}/external/tarballs/
+	done
 }
 
 pre_configure() {
@@ -82,6 +119,18 @@ pre_configure() {
 		-i bin/distro-install-desktop-integration
 	sed -e "/distro-install-file-lists/d" -i Makefile.in
 	chmod +x bin/unpack-sources
+	mkdir -p external/firebird
+	# Add musl patch
+	cp ${FILESDIR}/musl-os_utils_h.patch external/firebird/
+	sed -i external/firebird/UnpackedTarball_firebird.mk \
+		-e's;\(.*external/firebird\)/libc++.patch\(.*\)$;\1/libc++.patch\2\n\1/musl-os_utils_h.patch\2;'
+
+	case "$XBPS_TARGET_MACHINE" in
+		i686*)	# Don't run broken tests
+			sed -i "/CppunitTest_sw_ooxmlexport9/d" sw/Module_sw.mk
+			make_build_args="build-nocheck"
+			;;
+	esac
 }
 
 do_configure() {
@@ -97,83 +146,62 @@ do_configure() {
 	configure_args+=" --with-vendor='VoidLinux'"
 	configure_args+=" --with-help"
 	configure_args+=" --with-alloc=system"
-	configure_args+=" --without-java"
 	configure_args+=" --without-system-dicts"
 	configure_args+=" --disable-odk"
 	configure_args+=" --enable-python=system"
 	configure_args+=" --enable-gtk3"
+	configure_args+=" --enable-vlc"
 	configure_args+=" --disable-dependency-tracking"
 	configure_args+=" --enable-release-build=yes"
 	configure_args+=" --disable-dconf"
-	configure_args+=" --with-tls=nss"
-	configure_args+=" --with-system-cairo"
-	configure_args+=" --with-myspell-dicts"
-	configure_args+=" --with-system-zlib"
-	configure_args+=" --with-system-jpeg"
-	configure_args+=" --with-system-expat"
-	configure_args+=" --with-system-icu"
-	configure_args+=" --with-system-icu-for-build=yes"
-	configure_args+=" --with-system-ucpp"
+	# New strategy: enable all libs and headers, then disable what's missing
+	configure_args+=" --with-system-libs"
+	configure_args+=" --with-system-headers"
 	configure_args+=" --with-system-opencollada"
-	configure_args+=" --with-system-poppler"
-	configure_args+=" --with-system-curl"
-	configure_args+=" --with-system-boost"
-	configure_args+=" --with-system-mdds"
-	configure_args+=" --with-system-glew"
-	configure_args+=" --with-system-glyphy"
-	configure_args+=" --with-system-nss"
-	configure_args+=" --with-system-graphite"
-	configure_args+=" --with-system-orcus"
-	configure_args+=" --with-system-harfbuzz"
-	configure_args+=" --with-system-apr"
-	configure_args+=" --with-system-neon"
-	configure_args+=" --with-system-openssl"
-	configure_args+=" --with-system-redland"
-	configure_args+=" --with-system-libexttextcat"
-	configure_args+=" --with-system-libpng"
-	configure_args+=" --with-system-lpsolve"
-	configure_args+=" --with-system-coinmp"
-	configure_args+=" --with-system-liblangtag"
-	configure_args+=" --with-system-lcms2"
-	configure_args+=" --with-system-cppunit"
-	configure_args+=" --with-system-hunspell"
-	configure_args+=" --with-system-libabw"
-	configure_args+=" --with-system-libatomic_ops"
-	configure_args+=" --with-system-libcdr"
-	configure_args+=" --with-system-libcmis"
-	configure_args+=" --with-system-libebook"
-	configure_args+=" --with-system-libetonyek"
-	configure_args+=" --with-system-libfreehand"
-	configure_args+=" --with-system-libmspub"
-	configure_args+=" --with-system-libmwaw"
-	configure_args+=" --with-system-libodfgen"
-	configure_args+=" --with-system-libpagemaker"
-	configure_args+=" --with-system-librevenge"
-	configure_args+=" --with-system-libvisio"
-	configure_args+=" --with-system-libwpd"
-	configure_args+=" --with-system-libwpg"
-	configure_args+=" --with-system-libwps"
-	configure_args+=" --with-system-libxml"
-	configure_args+=" --with-system-mythes"
-	configure_args+=" --with-system-altlinuxhyph"
-	configure_args+=" --with-system-odbc"
-	configure_args+=" --with-system-openldap"
-	configure_args+=" --with-system-openssl"
-	configure_args+=" --with-system-postgresql"
-	configure_args+=" --with-system-firebird"
-	configure_args+=" --with-system-vigra"
+	case "$XBPS_TARGET_MACHINE" in
+	i686*|*-musl)
+		# Can't use system clucence
+		configure_args+=" --without-system-clucene"
+		;;
+	x86_64)	configure_args+=" --enable-ext-mariadb-connector"
+		configure_args+=" --enable-ext-ct2n"
+		configure_args+=" --enable-ext-numbertext"
+		configure_args+=" --enable-ext-nlpsolver"
+		configure_args+=" --enable-ext-languagetool"
+		;;
+	esac
+
+	if [ "$build_option_java" ]; then
+		configure_args+=" --with-java"
+		configure_args+=" --with-jdk-home=/usr/lib/jvm/openjdk"
+		configure_args+=" --without-junit"
+	else
+		configure_args+=" --without-java"
+	fi
+	configure_args+=" --with-tls=nss"
+	# xmlsec1-nss is missing, thus don't use system-xmlsec
+	configure_args+=" --without-system-xmlsec"
+	configure_args+=" --without-system-libzmf"
+	configure_args+=" --without-system-libstaroffice"
+	configure_args+=" --without-system-mysql-cppconn"
+	# libreoffice want's firebird3
+	configure_args+=" --without-system-firebird"
+	configure_args+=" --without-system-libtommath"
+	configure_args+=" --without-system-jfreereport"
+	configure_args+=" --without-system-apache-commons"
+	configure_args+=" --without-system-beanshell"
+	configure_args+=" --with-myspell-dicts"
+	configure_args+=" --with-system-icu-for-build=yes"
 	configure_args+=" --with-external-hyph-dir=${XBPS_CROSS_BASE}/usr/share/hyphen"
 	configure_args+=" --with-parallelism=${XBPS_MAKEJOBS}"
 
-	# In theory we could use --with-lang=ALL but then
-	# building the package then takes ages.
+	# In theory we could use --with-lang=ALL but building the package then takes ages.
 	OPENCOLLADA_CFLAGS="-I${incdir}/opencollada/COLLADABaseUtils -I${incdir}/opencollada/COLLADAFramework -I${incdir}/opencollada/COLLADASaxFrameworkLoader -I${incdir}/opencollada/COLLADAStreamWriter -I${incdir}/opencollada/GeneratedSaxParser" \
 	OPENCOLLADA_LIBS="-L${XBPS_CROSS_BASE}/usr/lib -lGeneratedSaxParser -lMathMLSolver -lOpenCOLLADABaseUtils -lOpenCOLLADAFramework -lOpenCOLLADASaxFrameworkLoader -lOpenCOLLADAStreamWriter -lUTF -lbuffer -lftoa" \
 	./configure ${configure_args} --with-lang='en-US de es fr it pl pt'
-}
 
-do_build() {
-	make build
+	# Disable slowchecks target
+	sed -i Makefile -e "/gb_Top_MODULE_CHECK_TARGETS /s/ slowchecks//"
 }
 
 do_install() {
@@ -184,11 +212,17 @@ do_install() {
 	mkdir -p ${INSTDIR}/share/appdata
 	cp -p sysui/desktop/appstream-appdata/*.xml ${INSTDIR}/share/appdata/
 
-	# Move bash completion to the right place
-	vmkdir usr/share/bash-completion/completions
-	mv ${DESTDIR}/etc/bash_completion.d/libreoffice.sh \
-		${DESTDIR}/usr/share/bash-completion/completions/libreoffice
-
 	# Remove unwanted libreoffice packaging files from the root directory
 	rm -f ${DESTDIR}/gid_Module*
+
+	# Remove useless directory usr/lib32
+	rm -rf ${DESTDIR}/usr/lib32
+}
+
+post_install() {
+	case "$XBPS_TARGET_MACHINE" in
+		i686*)	# correct desktop files
+			sed -i "s/libreoffice5.4/libreoffice/" ${DESTDIR}/usr/lib/libreoffice/share/xdg/*.desktop
+			;;
+	esac
 }

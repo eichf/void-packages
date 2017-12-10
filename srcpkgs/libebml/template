@@ -1,6 +1,6 @@
 # Template file for 'libebml'
 pkgname=libebml
-version=1.3.3
+version=1.3.5
 revision=1
 build_style=gnu-configure
 hostmakedepends="automake libtool pkg-config"
@@ -8,8 +8,8 @@ short_desc="Extensible Binary Meta Language library"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://dl.matroska.org/downloads/libebml/"
 license="LGPL-2.1"
-distfiles="http://dl.matroska.org/downloads/libebml/libebml-${version}.tar.bz2"
-checksum=35fb44daa41961f94a0ac1b8f06801e88cc9bf2ad6f562ced8ab7c1f1a875499
+distfiles="http://dl.matroska.org/downloads/libebml/libebml-${version}.tar.xz"
+checksum=d818413f60742c2f036ba6f582c5e0320d12bffec1b0fc0fc17a398b6f04aa00
 
 pre_configure() {
 	autoreconf -if

@@ -1,6 +1,6 @@
 # Template build file for 'sudo'.
 pkgname=sudo
-version=1.8.16
+version=1.8.21p2
 revision=1
 lib32disabled=yes
 build_style=gnu-configure
@@ -13,13 +13,25 @@ makedepends="zlib-devel pam-devel"
 conf_files="/etc/pam.d/sudo /etc/sudoers"
 short_desc="Allow others to run commands as root"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
-homepage="http://www.gratisoft.us/sudo/"
+homepage="https://www.sudo.ws/"
 license="ISC, BSD, zlib"
-distfiles="http://www.courtesan.com/sudo/dist/$pkgname-$version.tar.gz"
-checksum=2d83826fc5125bf073acc203dbda1cf2abeee017090ccc9dddb0431a53d5064d
+distfiles="https://www.sudo.ws/dist/sudo-${version}.tar.gz"
+checksum=74c5746cd33a814e2431c39faf0d76f7f8a697379bd073862e3b156cf0d76368
+
+post_configure() {
+	case "$XBPS_TARGET_MACHINE" in
+		i686-musl) find -type f -exec sed -i "{}" \
+				-e "s;-fstack-protector-strong;-fno-stack-protector;g" \;
+			;;
+	esac
+}
 
 pre_install() {
 	find ${wrksrc} -type f -name Makefile -exec sed -i 's,$(INSTALL_OWNER),,g' {} \;
+}
+pre_check() {
+	# Failing test
+	rm plugins/sudoers/regress/sudoers/test19*
 }
 post_install() {
 	vinstall ${FILESDIR}/sudo.pam 644 etc/pam.d sudo

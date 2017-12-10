@@ -1,25 +1,14 @@
 # Template file for 'cdogs'
 pkgname=cdogs-sdl
-version=0.6.0
-revision=2
+version=0.6.6
+revision=1
 build_style=cmake
-hostmakedepends="cmake"
-makedepends="physfs-devel SDL2-devel SDL2_mixer-devel SDL2_image-devel SDL2_net-devel yajl-devel"
+hostmakedepends="pkg-config"
+makedepends="SDL2-devel SDL2_mixer-devel SDL2_image-devel SDL2_net-devel"
 short_desc="A classic overhead run-and-gun game"
 maintainer="Enno Boland <gottox@voidlinux.eu>"
 homepage="http://cxong.github.io/cdogs-sdl/"
-license="GPL2"
+license="GPL-2"
 distfiles="https://github.com/cxong/cdogs-sdl/archive/$version.tar.gz"
-checksum="ac7c6ca6275bd4de16078d417b77fcc3bec0ea5555b342d8a3901da397736fa6"
+checksum=5552327ed7ca358acfbb20e9cf4d92443e70f624ca356c744724478cb7e9eb21
 configure_args="-DCDOGS_DATA_DIR=/usr/share/cdogs/"
-
-pre_configure() {
-	# Install data to /usr/share/cdogs/ instead of cwd.
-	sed -i '/^set(INSTALL_PREFIX/ s#.*#set(INSTALL_PREFIX "/usr/share/cdogs/")#' CMakeLists.txt
-	# Do not build shipped yajl.
-	sed -i '/add_subdirectory(yajl)/d' src/cdogs/CMakeLists.txt
-}
-
-post_install() {
-	mv $DESTDIR/usr/share/cdogs/bin $DESTDIR/usr/bin
-}

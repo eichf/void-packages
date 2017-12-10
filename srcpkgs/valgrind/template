@@ -1,10 +1,10 @@
 # Template file for 'valgrind'
 pkgname=valgrind
-version=3.11.0
-revision=4
+version=3.13.0
+revision=2
 only_for_archs="i686 x86_64 armv7l i686-musl x86_64-musl armv7l-musl"
 build_style=gnu-configure
-configure_args="--enable-tls --with-mpicc=/dev/null"
+configure_args="--enable-tls --without-mpicc"
 hostmakedepends="automake perl pkg-config"
 makedepends="libgomp-devel"
 depends="perl"
@@ -12,13 +12,12 @@ short_desc="Tool for finding memory management bugs in programs"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://valgrind.org/"
 license="GPL-2"
-distfiles="http://www.valgrind.org/downloads/${pkgname}-${version}.tar.bz2"
-checksum=6c396271a8c1ddd5a6fb9abe714ea1e8a86fce85b30ab26b4266aeb4c2413b42
+distfiles="https://sourceware.org/pub/${pkgname}/${pkgname}-${version}.tar.bz2"
+checksum=d76680ef03f00cd5e970bbdcd4e57fb1f6df7d2e2c071635ef2be74790190c3b
 
 CFLAGS="-fno-stack-protector"
 CXXFLAGS="-fno-stack-protector"
 
-nopie=yes
 lib32files="/usr/lib/valgrind/*-x86-linux
  /usr/lib/valgrind/default.supp"
 lib32symlinks="

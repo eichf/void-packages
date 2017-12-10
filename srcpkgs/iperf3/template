@@ -1,17 +1,17 @@
 # Template file for 'iperf3'
 pkgname=iperf3
-version=3.1.2
+version=3.3
 revision=1
 wrksrc="iperf-${version}"
 build_style=gnu-configure
 CFLAGS="-D_GNU_SOURCE"
 make_build_args="iperf3_profile_LDFLAGS= iperf3_profile_CFLAGS="
 short_desc="Active measurements of the maximum achievable bandwidth on IP networks"
-maintainer="Christian Neukirchen <chneukirchen@gmail.com>"
-license="BSD"
+maintainer="Leah Neukirchen <leah@vuxu.org>"
+license="3-clause-BSD"
 homepage="http://software.es.net/iperf/"
 distfiles="http://downloads.es.net/pub/iperf/iperf-${version}.tar.gz"
-checksum=f9dbdb99f869c077d14bc1de78675f5e4b8d1bf78dc92381e96c3eb5b1fd7d86
+checksum=6f596271251056bffc11bbb8f17d4244ad9a7d4a317c2459fdbb853ae51284d8
 
 post_extract() {
 	sed -i '1i#include <stdint.h>' src/timer.h src/cjson.h

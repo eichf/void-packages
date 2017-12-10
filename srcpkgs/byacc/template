@@ -1,15 +1,15 @@
 # Template file for 'byacc'
 pkgname=byacc
-version=20160324
+version=20170709
 revision=1
 build_style=gnu-configure
 configure_args="--program-transform=s,^,b,"
 short_desc="Berkeley yacc, a LALR(1) parser generator"
-maintainer="Christian Neukirchen <chneukirchen@gmail.com>"
+maintainer="Leah Neukirchen <leah@vuxu.org>"
 license="Public Domain"
 homepage="http://invisible-island.net/byacc/"
 distfiles="ftp://invisible-island.net/${pkgname}/${pkgname}-${version}.tgz"
-checksum=178e08f7ab59edfb16d64902b7a9d78592d2d8d3ee30ab7a967188d969589b5a
+checksum=27cf801985dc6082b8732522588a7b64377dd3df841d584ba6150bc86d78d9eb
 
 alternatives="
  yacc:yacc:/usr/bin/byacc

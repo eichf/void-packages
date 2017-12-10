@@ -1,25 +1,26 @@
 # Template file for 'ibus'
 pkgname=ibus
-version=1.5.13
+version=1.5.17
 revision=1
 build_style=gnu-configure
 configure_args="--enable-ui --enable-gtk3 --disable-python
  --disable-tests --disable-schemas-compile --enable-memconf
  --disable-schemas-install --enable-dconf --disable-gconf
+ --disable-emoji-dict
  $(vopt_enable gir introspection) $(vopt_enable ibus_setup setup)"
 hostmakedepends="automake gettext-devel libtool pkg-config intltool
  dconf GConf python glib-devel $(vopt_if gir gobject-introspection)"
-makedepends="dconf-devel librsvg-devel gtk+-devel gtk+3-devel
+makedepends="dconf-devel librsvg-devel gtk+-devel gtk+3-devel json-glib-devel
  vala-devel libnotify-devel hicolor-icon-theme iso-codes dbus-x11 python-xdg"
 depends="hicolor-icon-theme iso-codes dbus-x11 python-xdg
  $(vopt_if ibus_setup 'python-gobject>=3.12.1_3')"
 triggers="gtk-immodules gtk3-immodules"
 short_desc="Intelligent Input Bus"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
-homepage="http://ibus.googlecode.com"
+homepage="https://github.com/ibus/ibus"
 license="LGPL-2.1"
 distfiles="https://github.com/ibus/ibus/releases/download/${version}/ibus-${version}.tar.gz"
-checksum=ed73d80542dfdcca190b7958431048cd6830c2ce25c467384630b6a7e957a5f1
+checksum=0347a8055977ca458e8add750af5f9b76e1a524844cc3b0e2fad70ce153dd219
 
 # Package build options
 build_options="gir ibus_setup"

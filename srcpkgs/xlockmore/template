@@ -1,21 +1,27 @@
 # Template file for 'xlockmore'
 pkgname=xlockmore
-version=5.32
-revision=5
+version=5.55
+revision=2
 build_style=gnu-configure
-configure_args="--enable-appdefaultdir=/usr/share/X11/app-defaults"
 hostmakedepends="pkg-config"
 makedepends="freetype-devel libXt-devel libXext-devel"
 short_desc="Provides the 'xlock' X screen locker"
-maintainer="Tj Vanderpoel (bougyman) <tj@rubyists.com>"
+maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="BSD"
-homepage="http://www.ibiblio.org/pub/Linux/X11/screensavers/"
-distfiles="${homepage}/${pkgname}-${version}.tar.bz2"
-checksum=a0e67fd292579b0da2ded37bf05c31615020d0f7d638ff7a7eb2dc5cdc900870
+homepage="http://sillycycle.com/xlockmore.html"
+distfiles="http://sillycycle.com/xlock/xlockmore-${version}.tar.xz"
+checksum=d4f1fa5b19efc20262d77207636aa54fc66ba40aa867119f03a15981b3396ef8
+CFLAGS="-D_DEFAULT_SOURCE"
 
+pre_configure() {
+	export X_EXTRA_LIBS="$LDFLAGS"
+}
 do_install() {
 	make INSTPGMFLAGS= xapploaddir=${DESTDIR}/usr/share/X11/app-defaults \
 		bindir=${DESTDIR}/usr/bin mandir=${DESTDIR}/usr/share/man/man1 \
 		prefix=${DESTDIR}/usr install
 	chmod u+s ${DESTDIR}/usr/bin/xlock
+
+	sed -n 56,74p xlock/xlock.h > LICENSE
+	vlicense LICENSE
 }

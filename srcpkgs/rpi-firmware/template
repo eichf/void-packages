@@ -1,9 +1,9 @@
 # Template file for 'rpi-firmware'
-_githash="cc6d7bf8b4c03a2a660ff9fdf4083fc165620866"
+_githash="08abc0bd01367f141bc1858eae3b9e4e12d13272"
 _gitshort="${_githash:0:7}"
 
 pkgname=rpi-firmware
-version=20160507
+version=20170427
 revision=1
 noarch=yes
 wrksrc="firmware-${_githash}"
@@ -12,7 +12,7 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="3-clause-BSD"
 homepage="https://github.com/raspberrypi/firmware"
 distfiles="https://github.com/raspberrypi/firmware/archive/${_githash}.tar.gz"
-checksum=6e055f59d7cac5a84e325ffdfd4423bce08eae58f08dfd4c9fe4d79be521b11b
+checksum=255f908bb19bab2a004f54b308ebbc5019505b7962668eae3a971d07f618452a
 
 conf_files="/boot/cmdline.txt /boot/config.txt"
 

@@ -1,24 +1,26 @@
 # Template file for 'sysdig'
 pkgname=sysdig
-version=0.9.0
+version=0.19.1
 revision=1
 build_style=cmake
 configure_args="-DSYSDIG_VERSION=${version} -DUSE_BUNDLED_DEPS=OFF
- -DUSE_BUNDLED_B64=ON -DBUILD_DRIVER=OFF"
-hostmakedepends="cmake"
+ -DUSE_BUNDLED_B64=ON -DUSE_BUNDLED_JQ=ON -DBUILD_DRIVER=OFF"
+hostmakedepends="wget"
 makedepends="jsoncpp-devel libcurl-devel libressl-devel LuaJIT-devel
  ncurses-devel zlib-devel"
 depends="dkms"
 triggers="dkms"
 dkms_modules="sysdig ${version}"
 short_desc="Open source system-level exploration and troubleshooting tool"
-maintainer="Christian Neukirchen <chneukirchen@gmail.com>"
+maintainer="Leah Neukirchen <leah@vuxu.org>"
 license="GPL-2"
 homepage="http://www.sysdig.org/"
+_changelog="https://github.com/draios/sysdig/releases"
 distfiles="https://github.com/draios/${pkgname}/archive/${version}.tar.gz"
-checksum=72a809b32153713e6d8697e86ee821eb969fa0ec486fa7432471374feb0f1da5
+checksum=480d5d8fd7e7373c08008c30bd8e2c7595d5c45d710bf07bd15a522021b560f6
 nocross=yes
 disable_parallel_build=yes
+only_for_archs="i686 x86_64"
 
 post_extract() {
 	sed -i 's,"${DIR_ETC}/bash_completion.d",share/bash-completion/completions,g' scripts/CMakeLists.txt

@@ -1,9 +1,10 @@
 # Template file for 'gdb'
 pkgname=gdb
-version=7.11
+version=8.0.1
 revision=1
 patch_args="-Np1"
 build_style=gnu-configure
+pycompile_dirs="/usr/share/gdb"
 configure_args="--disable-werror --disable-nls --with-system-readline
  --with-system-gdbinit=/etc/gdb/gdbinit --with-system-zlib $(vopt_enable gdbserver)
  $(vopt_if static 'CFLAGS=-static') $(vopt_with python)"
@@ -14,14 +15,15 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://www.gnu.org/software/gdb/"
 license="GPL-3"
 distfiles="${GNU_SITE}/$pkgname/$pkgname-$version.tar.xz"
-checksum=7a434116cb630d77bb40776e8f5d3937bed11dea56bafebb4d2bc5dd389fe5c1
-# Else build on musl breaks...
-# http://build.voidlinux.eu/builders/x86_64-musl_builder/builds/5766
-disable_parallel_build=yes
+checksum=3dbd5f93e36ba2815ad0efab030dcd0c7b211d7b353a40a53f4c02d7d56295e3
+
+CFLAGS="-D_GLIBCXX_USE_C99_STDIO=1"
+CXXFLAGS="$CFLAGS"
 
 if [ "${CROSS_BUILD}" ]; then
 	# Make python2.7 detection work in cross builds
 	CFLAGS+=" -I${XBPS_CROSS_BASE}/usr/include/python2.7"
+	CXXFLAGS+=" -I${XBPS_CROSS_BASE}/usr/include/python2.7"
 fi
 # Package build options
 build_options="gdbserver static python"
@@ -33,6 +35,9 @@ vopt_conflict gdbserver static
 
 post_extract() {
 	sed -i 's,sgidefs.h,asm/sgidefs.h,' gdb/mips-linux-nat.c
+}
+pre_configure() {
+	configure_args="${configure_args/with-sysroot/with-build-sysroot}"
 }
 pre_build() {
 	export gl_cv_func_gettimeofday_clobber=no

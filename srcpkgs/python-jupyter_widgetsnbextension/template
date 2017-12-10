@@ -1,0 +1,28 @@
+# Template file for 'python-jupyter_widgetsnbextension'
+pkgname=python-jupyter_widgetsnbextension
+version=3.0.6
+revision=1
+noarch=yes
+wrksrc="widgetsnbextension-${version}"
+build_style=python-module
+pycompile_module="widgetsnbextension"
+replaces="python-ipython_widgetsnbextension>=0"
+hostmakedepends="python-setuptools python3-setuptools"
+depends="python-jupyter_notebook"
+short_desc="Interactive HTML widgets for Jupyter notebooks (Python2)"
+maintainer="Alessio Sergi <al3hex@gmail.com>"
+homepage="https://pypi.python.org/pypi/widgetsnbextension"
+license="3-clause-BSD"
+distfiles="${PYPI_SITE}/w/widgetsnbextension/widgetsnbextension-${version}.tar.gz"
+checksum=3fbedb4ae0883f48af2397c65a8f9fbf8ed868f1808db70f8aa72f25d391fa9b
+
+python3-jupyter_widgetsnbextension_package() {
+	noarch=yes
+	pycompile_module="widgetsnbextension"
+	replaces="python3-ipython_widgetsnbextension>=0"
+	depends="python3-jupyter_notebook"
+	short_desc="${short_desc/Python2/Python3}"
+	pkg_install() {
+		vmove usr/lib/python3*
+	}
+}

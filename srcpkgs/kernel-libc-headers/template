@@ -1,7 +1,7 @@
 # Template file for 'kernel-libc-headers'
 pkgname=kernel-libc-headers
-version=4.1.15
-revision=1
+version=4.9.8
+revision=3
 bootstrap=yes
 nostrip=yes
 noverifyrdeps=yes
@@ -10,8 +10,8 @@ wrksrc=linux-${version}
 short_desc="The Linux API headers for userland development"
 license="GPL-2"
 homepage="http://www.kernel.org"
-distfiles="http://www.kernel.org/pub/linux/kernel/v4.x/linux-${version}.tar.xz"
-checksum=472288cc966188c5d7c511c6be0f78682843c9ca2d5d6c4d67d77455680359a3
+distfiles="$KERNEL_SITE/kernel/v4.x/linux-${version}.tar.xz"
+checksum=150bb7f2dd4849b5d21b8ccd8d05294a48229e1fcb93a22e7b806a79ec0b0e45
 
 if [ "$CHROOT_READY" ]; then
 	hostmakedepends="perl"
@@ -21,6 +21,7 @@ case "$XBPS_TARGET_MACHINE" in
 	i686*|x86_64*) _arch="x86";;
 	arm*) _arch="arm";;
 	aarch64*) _arch="arm64";;
+	mips*) _arch="mips";;
 	*) msg_error "$pkgname: unknown architecture.\n";;
 esac
 

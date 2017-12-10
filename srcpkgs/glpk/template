@@ -1,0 +1,23 @@
+# Template file for 'glpk'
+pkgname=glpk
+version=4.64
+revision=1
+build_style=gnu-configure
+configure_args="--with-gmp"
+makedepends="gmp-devel"
+short_desc="GNU Linear Programming Kit to solve LP, MIP and other problems"
+maintainer="Leah Neukirchen <leah@vuxu.org>"
+license="GPL-3"
+homepage="http://www.gnu.org/software/glpk/glpk.html"
+distfiles="${GNU_SITE}/glpk/${pkgname}-${version}.tar.gz"
+checksum=539267f40ea3e09c3b76a31c8747f559e8a097ec0cda8f1a3778eec3e4c3cc24
+
+glpk-devel_package() {
+	short_desc+=" - development files"
+	depends="${sourcepkg}>=${version}_${revision}"
+	pkg_install() {
+		vmove usr/include
+		vmove usr/lib/*.a
+		vmove usr/lib/*.so
+	}
+}

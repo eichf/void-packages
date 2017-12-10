@@ -1,6 +1,6 @@
 # Template file for 'abcm2ps'
 pkgname=abcm2ps
-version=8.11.5
+version=8.13.12
 revision=1
 build_style=configure
 hostmakedepends="pkg-config"
@@ -10,11 +10,11 @@ maintainer="lemmi <lemmi@nerd2nerd.org>"
 license="GPL-2"
 homepage="http://moinejf.free.fr/"
 distfiles="${homepage}/abcm2ps-${version}.tar.gz"
-checksum=7f82c58ee48d7602c04f14659a28145b3cfa31bd38507c4a590836b997963bd9
+checksum=e77ec701148ad406e540bf3975a22e8dd184f71f7aac1d5cee2e305eaa8eefdb
 
 pre_configure() {
-	sed -i configure \
-	-e 's/CFLAGS=.*/CFLAGS=\"${CFLAGS}\"/' \
-	-e 's:prefix=/usr/local:prefix=/usr:' \
-	-e 's/CC=.*/CC=${CC}/'
+	echo CC=${CC} >> custom
+	echo CFLAGS+=\" $CFLAGS\" >> custom
+	echo prefix=/usr >> custom
+	echo 'docdir=${prefix}/share/doc' >> custom
 }

@@ -1,6 +1,6 @@
 # Template file for 'mate-themes'
 pkgname=mate-themes
-version=3.20.6
+version=3.22.14
 revision=1
 noarch=yes
 build_style=gnu-configure
@@ -9,7 +9,7 @@ makedepends="gtk+-devel gtk+3-devel"
 depends="gtk2-engines gtk-engine-murrine librsvg mate-icon-theme"
 short_desc="Default themes for the MATE desktop"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
-license="LGPL-2"
-homepage="http://mate-desktop.org"
-distfiles="http://pub.mate-desktop.org/releases/themes/${version%.*}/${pkgname}-${version}.tar.xz"
-checksum=034a087b29f9a6702a2791d52b79cc3498454777b138d08c8592e7f6fe6ae17c
+license="LGPL-2.1"
+homepage="https://mate-desktop.org"
+distfiles="https://pub.mate-desktop.org/releases/themes/${version%.*}/${pkgname}-${version}.tar.xz"
+checksum=53b59fdc40fd5c35b85119231cd8e1d490d8e7f369cb43b31a87ed5c2dddd825

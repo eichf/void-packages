@@ -1,13 +1,13 @@
 # Template file for 'postfix'
 pkgname=postfix
-version=3.1.0
-revision=3
+version=3.2.4
+revision=1
 short_desc="High-performance mail transport agent"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="IBM Public License 1.0, BSD-alike"
 homepage="http://www.postfix.org/"
 distfiles="ftp://ftp.porcupine.org/mirrors/postfix-release/official/$pkgname-$version.tar.gz"
-checksum=88ac3e92755629077d9363319b1fa0db406efb10c2f22cdbb941bd8ab36fd733
+checksum=ec55ebaa2aa464792af8d5ee103eb68b27a42dc2b36a02fee42dafbf9740c7f6
 
 hostmakedepends="perl"
 makedepends="icu-devel libressl-devel db-devel pcre-devel libsasl-devel
@@ -17,10 +17,6 @@ if [ "$CROSS_BUILD" ]; then
 	# XXX postfix-install needs native binaries.
 	hostmakedepends+=" ${pkgname}"
 fi
-
-case "${XBPS_TARGET_MACHINE}" in
-	*-musl) CFLAGS+=" -DNO_NIS" ;;
-esac
 
 system_accounts="postfix"
 postfix_homedir="/var/spool/postfix"
@@ -61,6 +57,7 @@ do_build() {
 
 	make makefiles CCARGS=" \
 		-DUSE_SASL_AUTH -DUSE_CYRUS_SASL -I${XBPS_CROSS_BASE}/usr/include/sasl \
+		-DNO_NIS \
 		-DHAS_LDAP \
 		-DUSE_TLS \
 		-DHAS_EAI -I${XBPS_CROSS_BASE}/usr/include \

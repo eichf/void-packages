@@ -1,21 +1,19 @@
-diff --git src/hashcat-cli.c src/hashcat-cli.c
-index 8c9c951..c2b53ed 100644
---- src/hashcat-cli.c
-+++ src/hashcat-cli.c
-@@ -17,7 +17,7 @@
- 
- // for interactive status prompt
- #ifdef POSIX
--#ifndef OSX
-+#ifdef __GLIBC__
- 
- #include <termio.h>
- 
-@@ -25,6 +25,7 @@
- 
- #include <termios.h>
- #include <sys/ioctl.h>
-+#define termio termios
- 
- #endif
- #endif
+--- include/sort_r.h.orig
++++ include/sort_r.h
+@@ -187,10 +187,15 @@
+         /* no qsort_r in glibc before 2.8, need to use nested qsort */
+         sort_r_simple(base, nel, width, compar, arg);
+
+-      #else
++      #elif defined __GLIBC__
+
+         qsort_r(base, nel, width, compar, arg);
+
++      #else
++
++        /* Fall back to our own quicksort implementation */
++        sort_r_simple(base, nel, width, compar, arg);
++
+       #endif
+
+     #elif defined _SORT_R_BSD

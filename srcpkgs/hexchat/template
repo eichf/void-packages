@@ -1,24 +1,28 @@
 # Template file for 'hexchat'
 pkgname=hexchat
-version=2.12.1
-revision=1
+version=2.12.4
+revision=3
 lib32disabled=yes
 build_style=gnu-configure
-hostmakedepends="pkg-config intltool glib-devel gdk-pixbuf-devel"
+hostmakedepends="automake libtool gettext-devel pkg-config intltool glib-devel
+ gdk-pixbuf-devel perl-XML-Parser autoconf-archive"
 makedepends="gtk+-devel libressl-devel dbus-glib-devel perl python-devel
  libnotify-devel libcanberra-devel libxml2-devel pciutils-devel libproxy-devel
  lua-devel"
 depends="desktop-file-utils enchant iso-codes"
-configure_args=" --enable-openssl --enable-dbus --disable-textfe --enable-ipv6
+configure_args="--enable-openssl --enable-dbus --disable-textfe
  --enable-perl --enable-python"
 short_desc="A GTK+ based IRC client successor of Xchat"
-maintainer="Carlo Dormeletti <carloDOTdormelettiATaliceDOTit>"
+maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://hexchat.github.io/"
 license="GPL-2"
 distfiles="http://dl.hexchat.net/hexchat/${pkgname}-${version}.tar.xz"
-checksum=5201b0c6d17dcb8c2cb79e9c39681f8e052999ba8f7b5986d5c1e7dc68fa7c6b
+checksum=fa35913158bbc7d0d99de79371b6df3e8d21802f1d2c7c92f0e5db694acf2c3a
 nocross=yes
 
+pre_configure() {
+	autoreconf -fi
+}
 post_install() {
 	# Remove useless files.
 	rm -rf ${DESTDIR}/usr/include
@@ -26,6 +30,7 @@ post_install() {
 }
 
 hexchat-perl_package() {
+	lib32disabled=yes
 	short_desc+=" - perl plugin"
 	depends="${sourcepkg}-${version}_${revision}"
 	pkg_install() {
@@ -33,6 +38,7 @@ hexchat-perl_package() {
 	}
 }
 hexchat-python_package() {
+	lib32disabled=yes
 	short_desc+=" - python plugin"
 	depends="${sourcepkg}-${version}_${revision}"
 	pkg_install() {
@@ -41,6 +47,7 @@ hexchat-python_package() {
 }
 
 hexchat-lua_package() {
+	lib32disabled=yes
 	short_desc+=" - lua plugin"
 	depends="${sourcepkg}-${version}_${revision}"
 	pkg_install() {

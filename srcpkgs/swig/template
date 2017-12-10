@@ -1,6 +1,6 @@
 # Template file for 'swig'
 pkgname=swig
-version=3.0.8
+version=3.0.12
 revision=1
 build_style=gnu-configure
 configure_args="--with-pcre-prefix=${XBPS_CROSS_BASE}/usr"
@@ -11,4 +11,4 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://www.swig.org"
 license="GPL-3"
 distfiles="${SOURCEFORGE_SITE}/$pkgname/$pkgname-$version.tar.gz"
-checksum=58a475dbbd4a4d7075e5fe86d4e54c9edde39847cdb96a3053d87cb64a23a453
+checksum=7cf9f447ae7ed1c51722efc45e7f14418d15d7a1e143ac9f09a668999f4fc94d

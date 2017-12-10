@@ -1,9 +1,9 @@
 # Template file for 'mate-notification-daemon'
 pkgname=mate-notification-daemon
-version=1.14.0
+version=1.18.1
 revision=1
 build_style=gnu-configure
-configure_args="--with-gtk=3.0 --disable-static"
+configure_args="--disable-static"
 hostmakedepends="pkg-config intltool itstool glib-devel dbus-glib-devel"
 makedepends="gtk+3-devel libnotify-devel dbus-glib-devel libwnck-devel libcanberra-devel"
 depends="dconf hicolor-icon-theme desktop-file-utils"
@@ -12,4 +12,4 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="LGPL-2"
 homepage="http://mate-desktop.org"
 distfiles="http://pub.mate-desktop.org/releases/${version%.*}/${pkgname}-${version}.tar.xz"
-checksum=0b34c612dce698fa3f5a68606e865029e16a82369c6f6f4e6268a5eaebfe3c61
+checksum=258654cee02e58fc657b232b459a15c160bad8a3edbd10f8e62e385b4dab5680

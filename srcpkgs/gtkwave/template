@@ -1,15 +1,19 @@
 # Template file for 'gtkwave'
 pkgname=gtkwave
-version=3.3.72
-revision=1
+version=3.3.86
+revision=2
 build_style=gnu-configure
 hostmakedepends="pkg-config gperf"
-makedepends="gtk+-devel tcl-devel tk-devel liblzma-devel"
-short_desc="A waveform viewer"
+makedepends="gtk+-devel tk-devel liblzma-devel"
+short_desc="Fully featured GTK+ based wave viewer"
 maintainer="allan <mail@may.mooo.com>"
-license="GPL-2"
+license="GPL-2 MIT"
 homepage="http://gtkwave.sourceforge.net/"
 distfiles="${SOURCEFORGE_SITE}/$pkgname/$pkgname-$version.tar.gz"
-checksum=de252180532c2fe3316580304636e0da8dc8a97fc4fdc58a71770b17b194cb3f
+checksum=dd012485d60b519c9fe2361777be412b483ad87938c9daee9ab99d09e18c30d0
+configure_args="--with-tcl=${XBPS_CROSS_BASE}/usr/lib --with-tk=${XBPS_CROSS_BASE}/usr/lib"
 
-nocross="http://build.voidlinux.eu/builders/armv7l_builder/builds/21190/steps/shell_3/logs/stdio"
+post_install() {
+	# MIT license
+	vlicense LICENSE.TXT
+}

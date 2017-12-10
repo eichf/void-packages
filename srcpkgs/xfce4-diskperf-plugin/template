@@ -1,6 +1,6 @@
 # Template file for 'xfce4-diskperf-plugin'
 pkgname=xfce4-diskperf-plugin
-version=2.5.5
+version=2.6.1
 revision=1
 build_style=gnu-configure
 hostmakedepends="pkg-config intltool"
@@ -10,13 +10,11 @@ maintainer="Alexander Mamay <alexander@mamay.su>"
 license="2-clause-BSD"
 homepage="http://goodies.xfce.org/projects/panel-plugins/xfce4-diskperf-plugin"
 distfiles="http://archive.xfce.org/src/panel-plugins/${pkgname}/${version%.*}/${pkgname}-${version}.tar.bz2"
-checksum=cbeb0c00f97362eef3f135afb77947aef73e938bae0386250a122ac6644b521b
+checksum=212ddc742be3eecb6ad5554e1b1df03d5685cb71f48a558d5f895de37c57e4fa
 
 pre_build() {
 	sed -i '/<stdlib.h>/a#include <sys\/types.h>' panel-plugin/devperf.c
 }
-
 post_install() {
 	vlicense COPYING
 }
-

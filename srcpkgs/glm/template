@@ -1,24 +1,18 @@
 # Template file for 'glm'
 pkgname=glm
-version=0.9.7.4
+version=0.9.8.5
 revision=1
 noarch=yes
+build_style=cmake
 hostmakedepends="unzip"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="MIT"
 short_desc="A C++ mathematics library for graphics programming"
 homepage="http://glm.g-truc.net"
 distfiles="https://github.com/g-truc/glm/releases/download/${version}/glm-${version}.zip"
-checksum=d48a0d732776b0fbfd17f01c830a08b50f07a3226f0cab95fcca5591982a43f2
+checksum=9f9f520ec7fb8c20c69d6b398ed928a2448c6a3245cbedb8631a56a987c38660
 wrksrc=${pkgname}
 
-do_install() {
-	vmkdir usr/include/glm
-	vmkdir usr/share/doc
-	vcopy glm usr/include
-	vcopy doc usr/share/doc/glm
-	rm -f ${DESTDIR}/usr/include/glm/CMakeLists.txt
-	find ${DESTDIR} -type f -exec chmod 644 {} \;
-	find ${DESTDIR} -type d -exec chmod 755 {} \;
+post_install() {
 	vlicense copying.txt
 }

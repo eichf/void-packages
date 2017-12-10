@@ -1,16 +1,16 @@
 # Template file for 's6-networking'
 pkgname=s6-networking
-version=2.1.1.0
+version=2.3.0.2
 revision=1
 build_style=gnu-configure
-makedepends="execline-devel skalibs-devel s6-devel s6-dns-devel"
-configure_args="--libdir=/usr/lib"
+makedepends="execline-devel libressl-devel skalibs-devel s6-devel s6-dns-devel"
+configure_args="--libdir=/usr/lib --enable-ssl=libressl --with-sysdeps=${XBPS_CROSS_BASE}/usr/lib/skalibs/sysdeps --with-lib=${XBPS_CROSS_BASE}/usr/lib"
 short_desc="Suite of small network utilities for Unix systems"
 maintainer="lemmi <lemmi@nerd2nerd.org>"
 license="ISC"
 homepage="http://skarnet.org/software/${pkgname}/"
 distfiles="http://skarnet.org/software/${pkgname}/${pkgname}-${version}.tar.gz"
-checksum=dce137678cf3cc33725119ab2eddc145d847f14b2179c9944d844c41c1760f65
+checksum=d81968756abbcecde6a872c89d82f643cd621a0c295c2c57650705dbe875481a
 
 post_install() {
 	vlicense COPYING

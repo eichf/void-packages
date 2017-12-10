@@ -1,6 +1,6 @@
 # Template file for 'bmake'
 pkgname=bmake
-version=20160315
+version=20171126
 revision=1
 create_wrksrc=yes
 short_desc="Portable version of the NetBSD make build tool"
@@ -8,10 +8,11 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="BSD"
 homepage="http://www.crufty.net/help/sjg/bmake.html"
 distfiles="http://www.crufty.net/ftp/pub/sjg/bmake-${version}.tar.gz"
-checksum=372475f0ab78da5341a1a61af505aaba76356107a1914b3345d79344275cbbe9
+checksum=6559660f6296e5297316562b73e07944b1aa9b90ab14efd8ea187e3d1328c32b
 
 do_configure() {
 	cd bmake
+	sed -i 's/op_test() {/& return 0;/' boot-strap
 	sed -i '1s,:,#!/bin/sh,g' install-sh
 	if [ "$CROSS_BUILD" ]; then
 		mkdir -p bmake-host

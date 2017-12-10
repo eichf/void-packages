@@ -1,31 +1,38 @@
 # Template file for 'python-attrs'
 pkgname=python-attrs
-version=15.2.0
-revision=2
-noarch==yes
+version=17.3.0
+revision=1
+noarch=yes
 wrksrc="attrs-${version}"
 build_style=python-module
-python_versions="2.7 3.4"
-pycompile_module="attrs"
-hostmakedepends="python-setuptools python3.4-setuptools"
-short_desc="Python2 attributes without boilerplate"
-maintainer="Michael Gehring <mg@ebfe.org>"
+pycompile_module="attr"
+hostmakedepends="python-setuptools python3-setuptools"
+depends="python"
+short_desc="Attributes without boilerplate (Python2)"
+maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="MIT"
-homepage="https://attrs.readthedocs.org/"
+homepage="https://attrs.readthedocs.io/"
 distfiles="${PYPI_SITE}/a/attrs/attrs-${version}.tar.gz"
-checksum=9f895d2ecefa0be054e29375769f1d0ee88e93ce820088cf5c49390529bf7ee7
+checksum=c78f53e32d7cf36d8597c8a2c7e3c0ad210f97b9509e152e4c37fa80869f823c
 
 post_install() {
 	vlicense LICENSE
 }
 
-python3.4-attrs_package() {
+python3-attrs_package() {
 	noarch=yes
-	pycompile_version="3.4"
-	pycompile_module="attrs"
-	short_desc="${short_desc/Python2/Python3.4}"
+	depends="python3"
+	pycompile_module="attr"
+	replaces="python3.4-attrs>=0"
+	short_desc="${short_desc/Python2/Python3}"
 	pkg_install() {
 		vlicense LICENSE
-		vmove usr/lib/python3.4
+		vmove usr/lib/python3*
 	}
+}
+python3.4-attrs_package() {
+	noarch=yes
+	build_style=meta
+	short_desc="${short_desc/Python2/Python3.4} (transitional dummy package)"
+	depends="python3-attrs>=${version}_${revision}"
 }

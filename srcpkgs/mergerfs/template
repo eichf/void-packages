@@ -1,0 +1,29 @@
+# Template file for 'mergerfs'
+pkgname="mergerfs"
+version=2.23.1
+revision=1
+build_style=gnu-makefile
+makedepends="fuse-devel attr-devel"
+hostmakedepends="automake libtool pkg-config"
+short_desc="FUSE union filesystem"
+maintainer="Orphaned <orphan@voidlinux.eu>"
+license="ISC"
+homepage="https://github.com/trapexit/mergerfs"
+distfiles="${homepage}/archive/${version}/${pkgname}-${version}.tar.gz"
+checksum=f38c3909c7145d291fa4cb85241f488efc01000ec9657a3cf72ee6ab4400c733
+
+case "$XBPS_TARGET_MACHINE" in
+	*-musl)	# Does not have pandoc
+		;;
+	*)	hostmakedepends+=" pandoc"
+		;;
+esac
+
+pre_build() {
+	sed -i 's|^CFLAGS[[:blank:]]*=|override CFLAGS +=|g' Makefile
+	sed -i 's|^LDFLAGS[[:blank:]]*=|override LDFLAGS +=|g' Makefile
+}
+
+post_install() {
+	vlicense LICENSE
+}

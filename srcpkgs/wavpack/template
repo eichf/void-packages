@@ -1,6 +1,6 @@
 # Template file for 'wavpack'
 pkgname=wavpack
-version=4.80.0
+version=5.1.0
 revision=1
 build_style=gnu-configure
 short_desc="An audio codec (lossy and lossless)"
@@ -8,13 +8,13 @@ homepage="http://www.wavpack.com/"
 license="3-clause-BSD"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 distfiles="http://www.wavpack.com/${pkgname}-${version}.tar.bz2"
-checksum=79182ea75f7bd1ca931ed230062b435fde4a4c2e0dbcad048007bd1ef1e66be9
+checksum=1939627d5358d1da62bc6158d63f7ed12905552f3a799c799ee90296a7612944
 
 pre_configure() {
 	case "$XBPS_TARGET_MACHINE" in
 		i686|*x86_64*) configure_args+=" --enable-mmx";;
+		armv5*) configure_args+=" --disable-asm";;
 	esac
-	sed -i 's/^prefix=.*/&\nexec_&/' wavpack.pc.in
 }
 post_install() {
 	vlicense COPYING LICENSE

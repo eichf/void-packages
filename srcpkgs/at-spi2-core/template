@@ -1,17 +1,17 @@
 # Template file for 'at-spi2-core'
 pkgname=at-spi2-core
-version=2.20.1
+version=2.26.2
 revision=1
 build_style=gnu-configure
 configure_args="$(vopt_enable gir introspection)"
 hostmakedepends="pkg-config intltool dbus glib-devel $(vopt_if gir gobject-introspection)"
 makedepends="libglib-devel libXext-devel libSM-devel libXtst-devel libXevie-devel dbus-devel"
 short_desc="Assistive Technology Service Provider Interface"
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
+maintainer="Enno Boland <gottox@voidlinux.eu>"
 homepage="http://www.gnome.org"
 license="GPL-2"
 distfiles="${GNOME_SITE}/${pkgname}/${version%.*}/${pkgname}-${version}.tar.xz"
-checksum=6ed858e781f5aa9a9662b3beb5ef82f733dac040afc8255d85dffd2097f16900
+checksum=c80e0cdf5e3d713400315b63c7deffa561032a6c37289211d8afcfaa267c2615
 
 # Package build options
 build_options="gir"

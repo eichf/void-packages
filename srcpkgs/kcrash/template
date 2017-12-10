@@ -1,0 +1,29 @@
+# Template file for 'kcrash'
+pkgname=kcrash
+version=5.40.0
+revision=1
+build_style=cmake
+configure_args="-DBUILD_TESTING=OFF"
+hostmakedepends="extra-cmake-modules"
+makedepends="kcoreaddons-devel kwindowsystem-devel"
+short_desc="KDE Graceful handling of application crashes"
+maintainer="Denis Revin <denis.revin@gmail.com>"
+license="LGPL-2"
+homepage="https://projects.kde.org/projects/frameworks/kcrash"
+distfiles="http://download.kde.org/stable/frameworks/${version%.*}/${pkgname}-${version}.tar.xz"
+checksum=96d2b2d16317519f95fa9277beca9d4a10f65dac608bfa0783a5823efe0f0406
+
+if [ -n "$CROSS_BUILD" ]; then
+	hostmakedepends+=" qt5-host-tools kwindowsystem-devel"
+fi
+
+kcrash-devel_package() {
+	short_desc+=" - development"
+	depends="${makedepends} ${sourcepkg}>=${version}_${revision}"
+	pkg_install() {
+		vmove usr/include
+		vmove usr/lib/qt5/mkspecs
+		vmove usr/lib/cmake
+		vmove usr/lib/*.so
+	}
+}

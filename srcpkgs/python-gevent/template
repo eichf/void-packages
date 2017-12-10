@@ -1,38 +1,42 @@
 # Template file for 'python-gevent'
 pkgname=python-gevent
-version=1.1.1
-revision=1
+version=1.2.2
+revision=2
 wrksrc="gevent-${version}"
 build_style=python-module
-python_versions="2.7 3.4"
-hostmakedepends="python-setuptools python3.4-setuptools"
-makedepends="python-devel python3.4-devel libev-devel c-ares-devel"
+hostmakedepends="python-setuptools python3-setuptools python-Cython python3-Cython"
+makedepends="python-devel python3-devel libev-devel c-ares-devel"
 depends="python-greenlet"
 pycompile_module="gevent"
 short_desc="Coroutine-based Python2 networking library"
 maintainer="Alessio Sergi <al3hex@gmail.com>"
 homepage="http://www.gevent.org/"
 license="MIT"
-distfiles="${PYPI_SITE}/g/gevent/gevent-${version}.tar.gz"
-checksum=6ee5b9851b2acde08df7ab9b9a2903f58b4b0e555405c444f4b1dd16f71caeea
+distfiles="https://github.com/gevent/gevent/archive/${version}.tar.gz"
+checksum=c59072a2bac1829c6e0f19814b4b9fe726f9162a1762831a0c316ae27fa69eb2
 
 export LIBEV_EMBED=0
 export CARES_EMBED=0
 
 post_install() {
 	# remove python2/3 compat stuff
-	rm -f ${DESTDIR}/usr/lib/python2*/site-packages/gevent/_*3.py
-	rm -f ${DESTDIR}/usr/lib/python3*/site-packages/gevent/_*2.py
+	rm -f ${DESTDIR}/${py2_sitelib}/gevent/_*3.py
+	rm -f ${DESTDIR}/${py3_sitelib}/gevent/_*2.py
 	vlicense LICENSE
 }
 
-python3.4-gevent_package() {
-	pycompile_version="3.4"
+python3-gevent_package() {
+	replaces="python3.4-gevent>=0"
 	pycompile_module="gevent"
-	depends="python3.4-greenlet"
-	short_desc="${short_desc/Python2/Python3.4}"
+	depends="python3-greenlet"
+	short_desc="${short_desc/Python2/Python3}"
 	pkg_install() {
-		vmove usr/lib/python3.4
+		vmove usr/lib/python3*
 		vlicense LICENSE
 	}
+}
+python3.4-gevent_package() {
+	build_style=meta
+	short_desc="${short_desc/Python2/Python3.4} (transitional dummy package)"
+	depends="python3-gevent>=${version}_${revision}"
 }

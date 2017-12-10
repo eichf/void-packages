@@ -1,8 +1,8 @@
 # Template build file for "cgit".
-_git_version=2.7.0
+_git_version=2.10.2
 
 pkgname=cgit
-version=0.12
+version=1.1
 revision=2
 hostmakedepends="asciidoc"
 makedepends="libressl-devel zlib-devel"
@@ -12,12 +12,16 @@ homepage="http://git.zx2c4.com/cgit/"
 license="GPL-2"
 distfiles="http://git.zx2c4.com/cgit/snapshot/cgit-${version}.tar.xz
  https://www.kernel.org/pub/software/scm/git/git-${_git_version}.tar.xz"
-checksum="2ee233849335a64529a01cf2b6165ed492e20268e6e2526d7a7529ef1e24a5b7
- fa9fb34efce9c80527152a40fbae138e83bd04a15ef9111726252259345a7b0d"
+checksum="0889af29be15fc981481caa09579f982b9740fe9fd2860ab87dff286f4635890
+ 94802903dd707d85ca3b9a2be35e936a54ce86375f52c6a789efe7ce7e238671"
 
 post_extract() {
 	rm -r git
 	mv ../git-$_git_version git
+
+	case "$XBPS_TARGET_MACHINE" in
+		*-musl) sed -i 's/NO_CURL=1/NO_CURL=1 NO_REGEX=NeedsStartEnd/' Makefile ;;
+	esac
 }
 
 pre_build() {
@@ -27,10 +31,10 @@ pre_build() {
 }
 
 do_build() {
-	make CC=$CC CFLAGS="$CFLAGS" prefix=/usr ${makejobs} all doc-man
+	make CC=$CC CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS" prefix=/usr ${makejobs} all doc-man
 }
 
 do_install() {
-	make CC=$CC CFLAGS="$CFLAGS" prefix=/usr DESTDIR=${DESTDIR} \
+	make CC=$CC CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS" prefix=/usr DESTDIR=${DESTDIR} \
 		CGIT_SCRIPT_PATH=/usr/share/webapps/cgit install install-man
 }

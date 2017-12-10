@@ -1,23 +1,19 @@
 # Template build file for 'libxslt'.
 pkgname=libxslt
-version=1.1.28
-revision=5
+version=1.1.32
+revision=1
 build_style=gnu-configure
 configure_args="--disable-static"
-makedepends="python-devel libxml2-devel libgcrypt-devel"
+makedepends="python-devel libxml2-devel libxml2-python libgcrypt-devel"
 short_desc="XSLT parser library from the GNOME project"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://xmlsoft.org/XSLT/"
 license="MIT"
 distfiles="ftp://xmlsoft.org/${pkgname}/${pkgname}-${version}.tar.gz"
-checksum=5fc7151a57b89c03d7b825df5a0fae0a8d5f05674c0e7cf2937ecec4d54a028c
+checksum=526ecd0abaf4a7789041622c3950c0e7f2c4c8835471515fd77eec684a355460
 
 if [ "$CROSS_BUILD" ]; then
 	hostmakedepends="libtool automake gettext-devel ${makedepends}"
-	pre_configure() {
-		sed -e "s|AM_CONFIG_HEADER|AC_CONFIG_HEADERS|g" -i configure.in
-		autoreconf -fi
-	}
 	pre_build() {
 		sed -e "s|/usr/\(include/python2.7\)|$XBPS_CROSS_BASE/\1|g" \
 			-e "s|/usr/\(lib/python2.7/site-packages\)|$XBPS_CROSS_BASE/\1|g" \
@@ -26,7 +22,9 @@ if [ "$CROSS_BUILD" ]; then
 fi
 
 post_install() {
-	vinstall COPYING 644 usr/share/licenses/${pkgname}
+	# Remove references to the install(1) wrapper.
+	sed -e "s,${XBPS_WRAPPERDIR},/usr/bin,g" -i ${DESTDIR}/usr/bin/xslt-config
+	vlicense COPYING
 }
 
 libxslt-devel_package() {

@@ -1,19 +1,22 @@
 # Template file for 'x265'
 pkgname=x265
-version=1.9
-revision=1
+version=2.4
+revision=2
 build_style=cmake
 build_wrksrc="source"
-wrksrc="multicoreware-x265-1d3b6e448e01"
-hostmakedepends="yasm cmake"
-short_desc="Open Source H265/HEVC video encoder"
+wrksrc="x265_${version}"
+configure_args="-DENABLE_PIC=1"
+hostmakedepends="yasm"
+short_desc="Open Source H.265/HEVC video encoder"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
-homepage="https://bitbucket.org/multicoreware/x265"
+homepage="http://x265.org/"
 license="GPL-2"
-distfiles="https://bitbucket.org/multicoreware/x265/get/${version}.tar.bz2"
-checksum=e1e4de6ead44e21c15378675e09c39ef192f2b7c844dd369d2ba1e979aca1ebb
-nocross=yes
-only_for_archs="i686 i686-musl x86_64 x86_64-musl"  # CMakeList is utterly broken.
+distfiles="https://bitbucket.org/multicoreware/x265/downloads/x265_${version}.tar.gz"
+checksum=9c2aa718d78f6fecdd783f08ab83b98d3169e5f670404da4c16439306907d729
+
+if [ -n "$CROSS_BUILD" ]; then
+	configure_args+=" -DCMAKE_SYSTEM_PROCESSOR=${CROSS_BUILD%-musl}"
+fi
 
 x265-devel_package() {
 	depends="${sourcepkg}>=${version}_${revision}"

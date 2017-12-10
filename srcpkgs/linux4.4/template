@@ -1,14 +1,14 @@
 # Template file for 'linux4.4'
 pkgname=linux4.4
-version=4.4.9
+version=4.4.103
 revision=1
 wrksrc="linux-${version}"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
-homepage="http://www.kernel.org"
+homepage="https://www.kernel.org"
 license="GPL-2"
 short_desc="The Linux kernel and modules (${version%.*} series)"
 distfiles="${KERNEL_SITE}/kernel/v4.x/linux-${version}.tar.xz"
-checksum=7605ca7685209bb64c0047e630ba714ca457fe7d84f1c890264bd2d70265f3b9
+checksum=1d01d0785fdf52b3f3b9f7ad05b6cff6be034869935962478e19f265b022f904
 
 nocross=yes
 nodebug=yes
@@ -16,6 +16,8 @@ nostrip=yes
 noverifyrdeps=yes
 noshlibprovides=yes
 preserve=yes
+
+export CCACHE_DISABLE=1
 
 only_for_archs="i686 i686-musl x86_64 x86_64-musl armv7l armv7l-musl aarch64 aarch64-musl"
 hostmakedepends="bc perl kmod uboot-mkimage libressl-devel"
@@ -44,9 +46,14 @@ do_configure() {
 		i686*) arch=i386;;
 		x86_64*) arch=x86_64;;
 		armv7*) arch=arm
-			$XBPS_FETCH_CMD http://rcn-ee.com/deb/sid-armhf/v${version}-armv7-x2/patch-${version}-armv7-x2.diff.gz
-			gunzip patch-${version}-armv7-x2.diff.gz
-			patch -Np1 -i patch-${version}-armv7-x2.diff
+			# This file does not exist!?
+			# $XBPS_FETCH_CMD http://rcn-ee.com/deb/sid-armhf/v${version}-armv7-x2/patch-${version}-armv7-x2.diff.gz
+			# gunzip patch-${version}-armv7-x2.diff.gz
+			# patch -Np1 -i patch-${version}-armv7-x2.diff
+			# Found the latest here:
+			$XBPS_FETCH_CMD http://rcn-ee.com/deb/zesty-armhf/v${version}-armv7-x15/patch-${version}-armv7-x15.diff.xz
+			unxz patch-${version}-armv7-x15.diff.xz
+			patch -Np1 -i patch-${version}-armv7-x15.diff
 			;;
 		aarch64*) arch=arm64;;
 	esac

@@ -1,0 +1,31 @@
+# Template file for 'libdill'
+pkgname=libdill
+version=1.6
+revision=1
+build_style=gnu-configure
+hostmakedepends="automake libtool"
+short_desc="Structured concurrency library for C"
+maintainer="Tai Chi Minh Ralph Eastwood <tcmreastwood@gmail.com>"
+license="MIT"
+homepage="http://libdill.org/"
+distfiles="https://github.com/sustrik/libdill/archive/${version}.tar.gz"
+checksum=2539d3440971c876b117bc87295b0caabc8c8ec5f544856ca9e74ed12705ea51
+
+pre_configure() {
+	export CFLAGS="${CFLAGS/-D_FORTIFY_SOURCE=?/}"
+	autoreconf -fi
+}
+post_install() {
+	vlicense COPYING
+}
+
+libdill-devel_package() {
+	depends="${sourcepkg}>=${version}_${revision}"
+	short_desc+=" - development files"
+	pkg_install() {
+		vmove usr/include
+		vmove usr/lib/pkgconfig
+		vmove usr/lib/*.a
+		vmove usr/lib/*.so
+	}
+}

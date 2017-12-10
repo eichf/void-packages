@@ -1,0 +1,46 @@
+# Template file for 'twaindsm'
+pkgname=twaindsm
+version=2.3.1
+revision=1
+wrksrc="${pkgname}-${version}.orig"
+build_wrksrc="TWAIN_DSM/src"
+build_style=cmake
+hostmakedepends="doxygen unzip"
+short_desc="TWAIN data source manager"
+maintainer="Jürgen Buchmüller <pullmoll@t-online.de>"
+license="LGPL-2.1"
+homepage="http://www.twain.org"
+distfiles="$SOURCEFORGE_SITE/twain-dsm/TWAIN%20DSM%20${version%.*.*}%20Source/${pkgname}-${version}.source.zip"
+checksum=892f6c9645c37a09127513654e1af1be41d742969f6bdfb99ff273429c5b65ac
+
+pre_configure() {
+	sed -i CMakeLists.txt -e's; -Werror;;'
+}
+
+post_build() {
+	cd ${wrksrc}/TWAIN_DSM
+	# Fix backslash in pathname
+	sed -i Doxyfile -e's;.\\src;./src;g'
+	# Update Doxyfile
+	doxygen -u
+	# Generate documentation and redirect warnings to /dev/null
+	doxygen 2> /dev/null
+}
+
+twaindsm-devel_package() {
+	short_desc+=" - development files"
+	depends="${sourcepkg}>=${version}_${revision}"
+	pkg_install() {
+		vmove usr/lib/*.so
+		vmove usr/include
+	}
+}
+
+twaindsm-doc_package() {
+	short_desc+=" - documentation"
+	noarch=yes
+	pkg_install() {
+		vmkdir usr/share/doc/${pkgname}
+		mv ${wrksrc}/TWAIN_DSM/doc/html ${PKGDESTDIR}/usr/share/doc/${pkgname}
+	}
+}

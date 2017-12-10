@@ -1,14 +1,14 @@
 # Template file for 'pidgin-sipe'
 pkgname=pidgin-sipe
-version=1.21.0
+version=1.23.0
 revision=1
 build_style=gnu-configure
 hostmakedepends="pkg-config intltool"
-makedepends="pidgin-devel libressl-devel libxml2-devel"
+makedepends="pidgin-devel libressl-devel libxml2-devel dbus-glib-devel"
 depends="pidgin"
 short_desc="SIP/SIMPLE plugin for Pidgin IM"
 maintainer="Renato Aguiar <contact@renatoaguiar.org>"
 license="GPL-2"
 homepage="http://sipe.sourceforge.net/"
 distfiles="${SOURCEFORGE_SITE}/sipe/sipe/$pkgname-$version.tar.xz"
-checksum=9efbd7c48be180f287e39b8a3ccb29ca343753876f6d7c243b7145021d114cba
+checksum=8be1b90dac1ebd5d55b4e547251539f728ceeb5c6299f5efc08598293bba7691

@@ -1,21 +1,19 @@
 # Template file for 'notmuch'
 pkgname=notmuch
-version=0.22
+version=0.25.3
 revision=1
-hostmakedepends="pkg-config perl python-Sphinx"
+hostmakedepends="python-devel python-setuptools pkg-config perl python-Sphinx"
 makedepends="xapian-core-devel gmime-devel talloc-devel bash-completion"
-short_desc="The mail indexer"
+short_desc="Thread-based email index, search, and tagging"
 maintainer="Jan S. <jan.schreib@gmail.com>"
 license="GPL-3"
 homepage="http://notmuchmail.org"
 distfiles="http://http.debian.net/debian/pool/main/n/notmuch/notmuch_${version}.orig.tar.gz"
-checksum=d64118ef926ba06fba814a89a75d20b0c8c8ec07dd65e41bb9f1e9db0dcfb99a
+checksum=4bd58e035c34a36ba3c7027e19f763905b99812eeabab283146ef12b3310ddbb
 
-nocross="http://build.voidlinux.eu/builders/armv7l-musl_builder/builds/6341/steps/shell_3/logs/stdio"
-
-subpackages="libnotmuch libnotmuch-devel notmuch-mutt"
+subpackages="libnotmuch libnotmuch-devel notmuch-mutt notmuch-python"
 case "$XBPS_TARGET_MACHINE" in
-	i686|x86_64)
+	i686*|x86_64*)
 		makedepends+=" emacs"
 		subpackages+=" notmuch-emacs"
 		_args="--emacslispdir=/usr/share/emacs/site-lisp/notmuch
@@ -34,9 +32,15 @@ do_configure() {
 do_build() {
 	make ${makejobs} V=1
 	make -C contrib/notmuch-mutt
+	make -C bindings
+	cd bindings/python
+	python setup.py build --build-base=build-2
 }
 do_install() {
 	make DESTDIR=${DESTDIR} install
+	cd bindings/python
+	python2 setup.py build --build-base=build-2 \
+		install --prefix=/usr --root=${DESTDIR}
 }
 
 libnotmuch_package() {
@@ -69,5 +73,13 @@ notmuch-mutt_package() {
 	pkg_install() {
 		vbin contrib/notmuch-mutt/notmuch-mutt
 		vman contrib/notmuch-mutt/notmuch-mutt.1
+	}
+}
+notmuch-python_package() {
+	depends="libnotmuch-devel>=${version}_${revision}"
+	short_desc+=" - Python2 bindings"
+	pycompile_module="notmuch"
+	pkg_install() {
+		vmove ${py2_sitelib}
 	}
 }

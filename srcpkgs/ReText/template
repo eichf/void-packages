@@ -1,21 +1,19 @@
 # Template file for 'ReText'
 pkgname=ReText
-version=5.3.1
-revision=1
+version=7.0.1
+revision=2
 noarch=yes
-build_style="python-module"
-python_versions="3.4"
-pycompile_version="3.4"
+build_style=python3-module
 pycompile_module="ReText"
-makedepends="python3.4 qt5-tools ImageMagick"
-depends="python3.4-PyQt5-webkit python3.4-Markups python3.4-Markdown
+makedepends="python3 qt5-tools ImageMagick"
+depends="python3-PyQt5-webkit python3-Markups python3-Markdown
  desktop-file-utils shared-mime-info"
 short_desc="Simple editor for Markdown and reStructuredText"
 maintainer="Enno Boland <gottox@voidlinux.eu>"
 license="GPL-3"
-homepage="http://retext.sourceforge.net"
-distfiles="${SOURCEFORGE_SITE}/retext/ReText-${version%.*}/ReText-${version}.tar.gz"
-checksum=515b1aaa57615453f8933f997753072a5c4691793da2280e70d1b333b53904c6
+homepage="https://github.com/retext-project/retext"
+distfiles="https://github.com/retext-project/retext/archive/${version}.tar.gz"
+checksum=c32ccdbcf31094258c792bc0589ff3ff212dea85466d776b7f60fa7b39da4b6c
 
 post_install() {
 	lrelease locale/*.ts

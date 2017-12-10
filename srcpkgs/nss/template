@@ -1,16 +1,19 @@
 # Template file for 'nss'
+
+_nsprver=4.17
+
 pkgname=nss
-version=3.23
+version=3.34
 revision=1
 hostmakedepends="perl"
 makedepends="zlib-devel nspr-devel sqlite-devel"
-depends="nspr>=4.12"
+depends="nspr>=${_nsprver}"
 short_desc="Mozilla Network Security Services"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://www.mozilla.org/projects/security/pki/nss/"
-license="MPL-2.0, GPL-2, LGPL-2.1"
+license="MPL-2.0"
 distfiles="${MOZILLA_SITE}/security/nss/releases/NSS_${version//\./_}_RTM/src/nss-${version}.tar.gz"
-checksum=94b383e31c9671e9dfcca81084a8a813817e8f05a57f54533509b318d26e11cf
+checksum=0d45954181373023c7cfc33e77c8c636d394ec7e55b93e059149ed7888652af5
 
 do_build() {
 	# Respect LDFLAGS
@@ -19,7 +22,9 @@ do_build() {
 	export LIBRUNPATH=
 	export BUILD_OPT=1
 	export NSS_USE_SYSTEM_SQLITE=1
+	export NSS_ENABLE_WERROR=0
 	export NSS_ENABLE_ECC=1
+	export FREEBL_NO_DEPEND=1
 
 	case "$XBPS_MACHINE" in
 		aarch64*|x86_64*) _use64="USE_64=1";;
@@ -27,10 +32,12 @@ do_build() {
 
 	cd nss
 	# Build nsinstall for host.
-	make ${_use64} -C coreconf
+	make CC=$BUILD_CC LD=$BUILD_LD CFLAGS=$BUILD_CFLAGS LDFLAGS=$BUILD_LDFLAGS \
+		${_use64} -C coreconf
 
 	if [ "$CROSS_BUILD" ]; then
 		case "$XBPS_TARGET_MACHINE" in
+			aarch64*) _ARCH="aarch64"; CFLAGS+=" -DNS_PTR_GT_32";;
 			arm*) _ARCH="arm";;
 			mips*) _ARCH="mips";;
 			*) msg_error "$pkgver: unknown target machine\n";;
@@ -72,7 +79,7 @@ do_install() {
 		-e "s,%prefix%,/usr,g" \
 		-e "s,%exec_prefix%,/usr/bin,g" \
 		-e "s,%includedir%,/usr/include/nss,g" \
-		-e "s,%NSPR_VERSION%,${version},g" \
+		-e "s,%NSPR_VERSION%,${_nsprver},g" \
 		-e "s,%NSS_VERSION%,${version},g" > \
 		${DESTDIR}/usr/lib/pkgconfig/nss.pc
 
@@ -106,12 +113,12 @@ do_install() {
 }
 
 nss-devel_package() {
-	depends="nspr-devel>=4.10 nss>=${version}_${revision}"
+	depends="nspr-devel>=${_nsprver} nss>=${version}_${revision}"
 	short_desc+=" - development files"
 	pkg_install() {
 		vmove usr/bin/nss-config
 		vmove usr/lib/pkgconfig
 		vmove usr/include
-		vmove "usr/lib/*.a"
+		vmove usr/lib/*.a
 	}
 }

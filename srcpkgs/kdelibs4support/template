@@ -1,0 +1,33 @@
+# Template file for 'kdelibs4support'
+pkgname=kdelibs4support
+version=5.40.0
+revision=1
+build_style=cmake
+configure_args="-DBUILD_TESTING=OFF"
+hostmakedepends="extra-cmake-modules perl-URI pkg-config"
+makedepends="kded-devel kemoticons-devel kitemmodels-devel kparts-devel
+ kunitconversion-devel kdesignerplugin-devel networkmanager-qt5-devel
+ kdoctools-devel libSM-devel"
+depends="kded"
+short_desc="KDE Legacy support for kdelibs 4 compatibility"
+maintainer="Denis Revin <denis.revin@gmail.com>"
+license="LGPL-2"
+homepage="https://projects.kde.org/projects/frameworks/kdelibs4support"
+distfiles="http://download.kde.org/stable/frameworks/${version%.*}/portingAids/${pkgname}-${version}.tar.xz"
+checksum=f9d7508aa6a72a186ba7d922e82ca49a5ac5d76e1fa02af995d17208128995df
+
+if [ -n "$CROSS_BUILD" ]; then
+	makedepends+=" qt5-tools-devel"
+	hostmakedepends+=" qt5-host-tools qt5-qmake"
+	broken="https://github.com/voidlinux/void-packages/issues/6658"
+fi
+
+kdelibs4support-devel_package() {
+	short_desc+=" - development"
+	depends="${makedepends} ${sourcepkg}>=${version}_${revision}"
+	pkg_install() {
+		vmove usr/include
+		vmove usr/lib/cmake
+		vmove usr/lib/*.so
+	}
+}

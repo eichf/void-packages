@@ -1,16 +1,17 @@
 # Template file for 'libwps'
 pkgname=libwps
-version=0.4.3
+version=0.4.8
 revision=1
 build_style=gnu-configure
+configure_args="--disable-werror"
 short_desc="Library for importing Microsoft Works documents"
 maintainer="Enno Boland <gottox@voidlinux.eu>"
-license="MPL/LGPL"
+license="MPL/LGPL-2.1"
 makedepends="boost-devel librevenge-devel"
 hostmakedepends="pkg-config"
 homepage="http://libwps.sourceforge.net/"
 distfiles="${SOURCEFORGE_SITE}/libwps/libwps-${version}.tar.xz"
-checksum=617d448a6c9bf935fc77a766e0b45d26f0886663d90b9bb00cfed9c28fbf13da
+checksum=e478e825ef33f6a434a19ff902c5469c9da7acc866ea0d8ab610a8b2aa94177e
 
 libwps-devel_package() {
 	depends="libwps>=${version}_${revision} $makedepends"

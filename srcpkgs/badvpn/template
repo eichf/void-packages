@@ -1,9 +1,9 @@
 # Template file for 'badvpn'
 pkgname=badvpn
 version=1.999.130
-revision=5
+revision=7
 build_style=cmake
-hostmakedepends="cmake pkg-config"
+hostmakedepends="pkg-config"
 makedepends="libressl-devel nspr-devel nss-devel"
 short_desc="Peer-to-peer VPN system"
 maintainer="Enno Boland <gottox@voidlinux.eu>"

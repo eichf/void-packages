@@ -1,28 +1,35 @@
 # Template file for 'tbb'
 pkgname=tbb
-version=4.4.20160413
+version=2018.2
 revision=1
-_lv="${version%.*}"
-_lv="${_lv//.}"
-_rv="${version##*.}"
-wrksrc="$pkgname${_lv}_${_rv}oss"
+# version rewrite: 2017_U7 (upstream) => 2017.7 (xbps)
+_ver=${version/./_U}
+wrksrc="${pkgname}-${_ver}"
 build_style=gnu-makefile
 short_desc="Intel Threading Building Blocks"
-maintainer="Andrea Brancaleoni <miwaxe@gmail.com>"
-license="GPL-2"
+maintainer="Andrea Brancaleoni <abc@pompel.me>"
+license="Apache-2.0"
 homepage="http://www.threadingbuildingblocks.org"
-distfiles="https://www.threadingbuildingblocks.org/sites/default/files/software_releases/source/tbb${_lv}_${_rv}oss_src.tgz"
-checksum=3fecffef5e42f9f22e51a81a1bfa89ea40cefb439d168c285c9d5f0128353644
+distfiles="https://github.com/01org/tbb/archive/${_ver}.tar.gz"
+checksum=78bb9bae474736d213342f01fe1a6d00c6939d5c75b367e2e43e7bf29a6d8eca
 
 only_for_archs="i686-musl x86_64-musl armv7l-musl aarch64-musl i686 x86_64 armv7l aarch64"
+
+case "$XBPS_TARGET_MACHINE" in
+	armv7l*)
+		make_build_args="arch=armv7"
+		;;
+	aarch64*)
+		make_build_args="arch=arm64"
+		;;
+esac
 
 post_extract() {
 	sed -i 's|CPLUS = g..|CPLUS = $(CXX)|g' build/linux.gcc.inc
 	sed -i 's|CONLY = gcc|CONLY = $(CC)|g' build/linux.gcc.inc
-	if [ "$CROSS_BUILD" ]; then
-		sed -i '/-m64/d' build/linux.gcc.inc
-		sed -i '/-mrtm/d' build/linux.gcc.inc
-	fi
+
+	# alternative might be:
+	# https://git.alpinelinux.org/cgit/aports/tree/testing/libtbb/glibc-struct-mallinfo.patch
 	case "$XBPS_TARGET_MACHINE" in
 		*-musl)
 			sed -e "s@#define MALLOC_UNIXLIKE_OVERLOAD_ENABLED __linux__@@" \

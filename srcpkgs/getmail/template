@@ -1,16 +1,15 @@
 # Template file for 'getmail'
 pkgname=getmail
-version=4.49.0
+version=5.4
 revision=1
 noarch=yes
-build_style=python-module
+build_style=python2-module
 hostmakedepends="python-devel"
-makedepends="${hostmakedepends}"
 depends="python"
 pycompile_module="getmailcore"
-short_desc="A POP3/IMAP mail retriever with reliable Maildir and command delivery"
+short_desc="POP3/IMAP mail retriever with reliable Maildir and command delivery"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="GPL-2"
 homepage="http://pyropus.ca/software/getmail"
 distfiles="http://pyropus.ca/software/getmail/old-versions/$pkgname-$version.tar.gz"
-checksum=1c6c4a3ebd17c1b15dc940a5888b0ceca4d135c1c20629ebe274ba025aff1ed4
+checksum=ba896f7b3fbae4e9e79f7135e6c2b10b281170d2877b91fb2b265c927ed29ac7

@@ -1,53 +1,49 @@
 # Template file for 'qtcreator'
 pkgname=qtcreator
-version=3.6.1
-revision=2
+version=4.5.0
+revision=1
 wrksrc=qt-creator-opensource-src-${version}
 build_style=qmake
 make_install_args="INSTALL_ROOT=\${DESTDIR}/usr"
 hostmakedepends="perl python pkg-config"
 makedepends="qt5-declarative-devel qt5-script-devel qt5-tools-devel"
 depends="qt5-declarative-devel qt5-quickcontrols qt5-plugin-sqlite"
-nocross=yes
+nocross="Requires system botan-devel for the target architecture"
 short_desc="A cross-platform IDE for Qt developers"
 maintainer="Jürgen Buchmüller <pullmoll@t-online.de>"
 license="LGPL-2.1"
 homepage="http://wiki.qt.io/Category:Tools::QtCreator"
 distfiles="http://download.qt.io/official_releases/qtcreator/${version%.*}/${version}/${wrksrc}.tar.gz"
-checksum=e53611f80332cd1d171a9b91f8467b6182186cbec6b4a9301f32367368f15de2
+checksum=1292e91a18cd1f06e29f698d50a732a37e8f6f74b1bbe2199c94f7446c37fd48
 
 do_build() {
 	# Note: A simple "make ${makejobs}" fails after libs because
 	# of files being removed and symlinked asynchronously.
 	# Fix this parallel build issue by first sequentially making subdirs
 	cd src
-	make ${makejobs} libs
-	make ${makejobs} app
-	make ${makejobs} plugins
-	make ${makejobs} tools
+	for _target in libs app plugins tools; do
+		make ${makejobs} ${make_build_args} ${_target}
+	done
 	cd ..
-	# ... and eventually the main Makefile
-	make ${makejobs}
+	# ... and eventually make using the main Makefile
+	make ${makejobs} ${make_build_args}
 }
+
 post_install() {
 	# Install the desktop file
 	vinstall ${FILESDIR}/qtcreator.desktop \
 		644 usr/share/applications
-	# Install shared-mime-info files for qmake and cmake projects
-	vinstall ${wrksrc}/src/plugins/qmakeprojectmanager/QmakeProjectManager.mimetypes.xml \
-		644 usr/share/mime/packages
-	vinstall ${wrksrc}/src/plugins/cmakeprojectmanager/CMakeProjectManager.mimetypes.xml \
-		644 usr/share/mime/packages
 }
 
 qtcreator-full_package() {
-	depends="${sourcepkg}>=${version}_${revision}"
-	short_desc+=" - full dependencies"
-	depends+=" qt5-connectivity-devel qt5-declarative-devel qt5-enginio-devel qt5-graphicaleffects
- qt5-location-devel qt5-multimedia-devel qt5-script-devel qt5-sensors-devel
- qt5-serialport-devel qt5-svg-devel qt5-tools-devel qt5-wayland-devel qt5-webchannel-devel
- qt5-webengine-devel qt5-webkit-devel qt5-websockets-devel qt5-x11extras-devel qt5-xmlpatterns-devel
- qt5-declarative-devel qt5-script-devel qt5-tools-devel qt5-doc qt5-plugin-gtk
+	short_desc+=" - full Qt5 dependencies"
+	depends="${sourcepkg}>=${version}_${revision}
+ qt5-3d-devel qt5-canvas3d qt5-connectivity-devel qt5-charts-devel qt5-declarative-devel
+ qt5-datavis3d-devel qt5-gamepad-devel qt5-graphicaleffects qt5-location-devel qt5-quickcontrols2-devel
+ qt5-multimedia-devel qt5-script-devel qt5-scxml-devel qt5-sensors-devel qt5-serialbus-devel
+ qt5-serialport-devel qt5-svg-devel qt5-tools-devel qt5-virtualkeyboard-devel qt5-wayland-devel
+ qt5-webchannel-devel qt5-webengine-devel qt5-webkit-devel qt5-websockets-devel
+ qt5-x11extras-devel qt5-xmlpatterns-devel qt5-tools-devel qt5-doc qt5-examples
  qt5-plugin-mysql qt5-plugin-odbc qt5-plugin-pgsql qt5-plugin-sqlite qt5-plugin-tds"
 	build_style=meta
 	pkg_install() {

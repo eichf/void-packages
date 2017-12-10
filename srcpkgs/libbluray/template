@@ -1,24 +1,30 @@
 # Template file for 'libbluray'
 pkgname=libbluray
-version=0.9.2
+version=1.0.2
 revision=1
 build_style=gnu-configure
-configure_args="--disable-static --disable-bdjava"
+configure_args="--disable-static --disable-optimizations --disable-bdjava-jar"
 hostmakedepends="pkg-config"
 makedepends="libxml2-devel fontconfig-devel"
 short_desc="Library to access Blu-Ray disks for video playback"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
-homepage="http://www.videolan.org/developers/libbluray.html"
+homepage="https://www.videolan.org/developers/libbluray.html"
 license="LGPL-2.1"
-distfiles="ftp://ftp.videolan.org/pub/videolan/$pkgname/$version/$pkgname-$version.tar.bz2"
-checksum=efc994f42d2bce6af2ce69d05ba89dbbd88bcec7aca065de094fb3a7880ce7ea
+distfiles="https://download.videolan.org/pub/videolan/libbluray/${version}/libbluray-${version}.tar.bz2"
+checksum=6d9e7c4e416f664c330d9fa5a05ad79a3fb39b95adfc3fd6910cbed503b7aeff
 
 libbluray-devel_package() {
-	depends="${sourcepkg}>=${version}_${revision}"
+	depends="${makedepends} ${sourcepkg}>=${version}_${revision}"
 	short_desc+=" - development files"
 	pkg_install() {
 		vmove usr/include
 		vmove usr/lib/pkgconfig
 		vmove "usr/lib/*.so"
+	}
+}
+libbluray-tools_package() {
+	short_desc+=" - tools"
+	pkg_install() {
+		vmove usr/bin
 	}
 }

@@ -1,31 +1,39 @@
 # Template build file for 'libGL'.
 pkgname=libGL
-version=11.2.1
+version=17.3.0
 revision=1
 wrksrc="mesa-${version}"
 build_style=gnu-configure
 configure_args="--enable-shared-glapi --enable-gbm
  --enable-gles1 --enable-gles2 --enable-egl --enable-vdpau
  --enable-xvmc --enable-osmesa --enable-texture-float
- --with-egl-platforms=x11,drm,wayland"
+ --with-platforms=x11,drm,$(vopt_if wayland wayland)"
 short_desc="Graphics library similar to SGI's OpenGL"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://www.mesa3d.org/"
 license="MIT, LGPL-2.1"
-distfiles="ftp://ftp.freedesktop.org/pub/mesa/${version}/mesa-${version}.tar.xz"
-checksum=a65207e9ae5c5f1c29f863c6a2cc98a7ab99762a24b82a248337f0ea9cfce01b
+distfiles="https://mesa.freedesktop.org/archive/mesa-${version}.tar.xz"
+checksum=29a0a3a6c39990d491a1a58ed5c692e596b3bfc6c01d0b45e0b787116c50c6d9
 
 hostmakedepends="
- automake libtool flex pkg-config llvm python-Mako libxml2-python wayland-devel"
+ automake libtool flex pkg-config llvm python-Mako libxml2-python
+ $(vopt_if wayland 'wayland-protocols wayland-devel')"
 makedepends="
- glproto dri2proto dri3proto presentproto libXext-devel libXxf86vm-devel
+ glproto dri2proto dri3proto presentproto libatomic-devel libXext-devel libXxf86vm-devel
  eudev-libudev-devel libdrm-devel expat-devel talloc-devel libvdpau-devel libva-devel
- libXdamage-devel libXvMC-devel libxshmfence-devel wayland-devel
- elfutils-devel ncurses-devel zlib-devel libffi-devel libressl-devel"
+ libXdamage-devel libXvMC-devel libxshmfence-devel
+ $(vopt_if wayland 'wayland-protocols wayland-devel')
+ elfutils-devel ncurses-devel zlib-devel libffi-devel"
 conf_files="/etc/drirc"
 
+# Package build options
+build_options="wayland"
+
+# Enable all options by default.
+build_options_default="wayland"
+
 # Set subpackages manually to set proper rdeps in 32bit pkgs.
-subpackages="libglapi libgbm libEGL libGLES libOSMesa libwayland-egl"
+subpackages="libglapi libgbm libEGL libGLES libOSMesa $(vopt_if wayland libwayland-egl)"
 
 case "$XBPS_TARGET_MACHINE" in
 i686*|x86_64*)
@@ -33,12 +41,13 @@ i686*|x86_64*)
 	configure_args+=" --with-gallium-drivers=r300,r600,radeonsi,svga,swrast,nouveau,virgl"
 	configure_args+=" --with-dri-drivers=i915,i965,r200,radeon,nouveau,swrast"
 	configure_args+=" --enable-xa --enable-dri3 --enable-nine"
-	configure_args+=" --enable-opencl --enable-opencl-icd --enable-r600-llvm-compiler"
+	configure_args+=" --with-vulkan-drivers=intel,radeon"
+	configure_args+=" --enable-opencl --enable-opencl-icd"
 	hostmakedepends+=" clang libclc-git"
 	subpackages+=" libxatracker mesa-ati-dri mesa-intel-dri mesa-nouveau-dri"
 	subpackages+=" mesa-vmwgfx-dri mesa-opencl"
 	;;
-armv[67]l*)
+armv7l*)
 	# Enable Videocore IV and swrast for RaspberryPi
 	configure_args+=" --with-gallium-drivers=swrast,vc4"
 	configure_args+=" --with-dri-drivers=swrast"
@@ -52,12 +61,21 @@ armv[67]l*)
 	configure_args+=" --disable-xa"
 	;;
 esac
+if [ "$XBPS_GCC_VERSION_MAJOR" -ge 7 ]; then
+	case "$XBPS_TARGET_MACHINE" in
+	armv[5-6]*)
+		# Enable MISSING_64BIT_ATOMICS for armv6*
+		CFLAGS+=" -DMISSING_64BIT_ATOMICS=1"
+		CXXFLAGS+=" -DMISSING_64BIT_ATOMICS=1"
+		;;
+	esac
+fi
 
 # -devel must be the last one for proper order.
 subpackages+=" MesaLib-devel"
 
 case "$XBPS_TARGET_MACHINE" in
-	i686*) configure_args+=" --with-dri-driverdir=/usr/lib32/xorg/modules/drivers";;
+	i686) configure_args+=" --with-dri-driverdir=/usr/lib32/xorg/modules/drivers";;
 	*) configure_args+=" --with-dri-driverdir=/usr/lib/xorg/modules/drivers";;
 esac
 case "$XBPS_TARGET_MACHINE" in
@@ -67,25 +85,23 @@ case "$XBPS_TARGET_MACHINE" in
 	*) configure_args+=" --enable-glx-tls";;
 esac
 
-
 pre_configure() {
 	libtoolize -f
 	NOCONFIGURE=1 ./autogen.sh
+	case "$XBPS_TARGET_MACHINE" in
+		armv6*) sed -i src/gallium/drivers/vc4/Makefile.am \
+			-e 's;\(libvc4_neon_la_SOURCES =\) vc4_tiling_lt.c;\1;' \
+			-e 's;\(libvc4_neon_la_CFLAGS = $(AM_CFLAGS)\) -DVC4_BUILD_NEON;\1;'
+			;;
+	esac
 }
-
 post_install() {
 	vmkdir usr/lib/xorg/modules/extensions
 	ln -s libglx-xorg.so ${DESTDIR}/usr/lib/xorg/modules/extensions/libglx.so
-	case "$XBPS_TARGET_MACHINE" in
-	i686*|x86_64*)
-		for f in r200 r300 r600 radeonsi svga nouveau; do
-			ln -s gallium_drv_video.so ${DESTDIR}/usr/lib/dri/${f}_drv_video.so
-		done
-		;;
-	armv[67]l*)
-		ln -s gallium_drv_video.so ${DESTDIR}/usr/lib/dri/vc4_drv_video.so
-		;;
-	esac
+	if [ -d "$DESTDIR/usr/lib32" ]; then
+		mv "$DESTDIR/usr/lib32/d3d" "$DESTDIR/usr/lib"
+		mv "$DESTDIR/usr/lib32/pkgconfig"/* "$DESTDIR/usr/lib/pkgconfig"
+	fi
 }
 
 libglapi_package() {
@@ -133,7 +149,7 @@ MesaLib-devel_package() {
 		libGL>=${version}_${revision}
 		libGLES>=${version}_${revision} libEGL>=${version}_${revision}
 		libOSMesa>=${version}_${revision} libgbm>=${version}_${revision}
-		libwayland-egl>=${version}_${revision}"
+		$(vopt_if wayland "libwayland-egl>=${version}_${revision}")"
 	case "$XBPS_TARGET_MACHINE" in
 		i686*|x86_64*)  depends+=" libxatracker>=${version}_${revision}";;
 	esac
@@ -160,12 +176,16 @@ mesa-ati-dri_package() {
 		vmove "usr/lib/gallium-pipe/pipe_r[36]00.so"
 		vmove usr/lib/gallium-pipe/pipe_radeonsi.so
 		vmove usr/lib/dri/r*
+		vmove "usr/share/vulkan/icd.d/radeon_icd*.json"
+		vmove "usr/lib/libvulkan_radeon.so"
 	}
 }
 mesa-intel-dri_package() {
 	short_desc="Mesa DRI drivers for Intel GPUs"
 	pkg_install() {
 		vmove "usr/lib/xorg/modules/drivers/i9[16]5_dri.*"
+		vmove "usr/share/vulkan/icd.d/intel_icd*.json"
+		vmove "usr/lib/libvulkan_intel.so"
 	}
 }
 mesa-nouveau-dri_package() {
@@ -183,7 +203,6 @@ mesa-vmwgfx-dri_package() {
 	pkg_install() {
 		vmove "usr/lib/xorg/modules/drivers/vmwgfx*"
 		vmove usr/lib/gallium-pipe/pipe_vmwgfx.so
-		vmove usr/lib/dri/svga*
 	}
 }
 mesa-vc4-dri_package() {

@@ -14,6 +14,12 @@
 do_configure() {
 	local perlmkf
 
+	local perlprefix=${XBPS_STATEDIR}/perlprefix-${XBPS_TARGET_MACHINE}
+	mkdir -p $perlprefix
+	cp "$XBPS_CROSS_BASE/usr/lib/perl5/core_perl/Config"*.p? $perlprefix
+	cp "$XBPS_CROSS_BASE/usr/lib/perl5/core_perl/Errno.pm" $perlprefix
+	export PERL5LIB=$perlprefix
+
 	if [ -f ${wrksrc}/Makefile.PL ]; then
 		sed -i "s,/usr/include,${XBPS_CROSS_BASE}/usr/include,g" ${wrksrc}/Makefile.PL
 	fi
@@ -57,6 +63,13 @@ do_build() {
 		LDFLAGS="$LDFLAGS -L${XBPS_CROSS_BASE}/usr/lib -lperl" \
 		LDDLFLAGS="-shared $CFLAGS -L${XBPS_CROSS_BASE}/usr/lib -lperl" \
 		${makejobs} ${make_build_args} ${make_build_target}
+}
+
+do_check() {
+	: ${make_cmd:=make}
+	: ${make_check_target:=test}
+
+	${make_cmd} ${make_check_args} ${make_check_target}
 }
 
 do_install() {

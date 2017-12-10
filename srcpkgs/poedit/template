@@ -1,7 +1,7 @@
 # Template file for 'poedit'
 pkgname=poedit
-version=1.8.7.1
-revision=2
+version=2.0.5
+revision=1
 build_style=gnu-configure
 configure_args="--with-wx-config=wx-config-3.0"
 hostmakedepends="pkg-config"
@@ -12,7 +12,9 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="MIT"
 homepage="http://www.poedit.net/"
 distfiles="https://github.com/vslavik/poedit/releases/download/v${version}-oss/poedit-${version}.tar.gz"
-checksum=358305d053aee825d6275fdbd9d69e86117f88cc441a5524365fe180a6770902
+checksum=c755959555b26e584d953a97ee39ed7d060323d003740ed9309eee7a2e205faa
+
+CPPFLAGS="-DUCHAR_TYPE=uint16_t"
 
 post_install() {
 	vlicense COPYING

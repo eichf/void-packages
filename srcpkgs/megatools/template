@@ -1,0 +1,13 @@
+# Template file for 'megatools'
+pkgname=megatools
+version=1.9.98
+revision=2
+build_style=gnu-configure
+hostmakedepends="pkg-config asciidoc"
+makedepends="glib-networking gobject-introspection libressl-devel libcurl-devel fuse-devel libsodium-devel glib-devel"
+short_desc="Command line client for Mega.nz file sharing service"
+maintainer="RunningDroid <runningdroid@zoho.com>"
+license="GPL-2"
+homepage="https://megatools.megous.com/"
+distfiles="${homepage}/builds/megatools-${version}.tar.gz"
+checksum=9b0521a4d27dbc417fc8e12610ac1e1da729bf6d6eb5bef927ef3670b372a16f

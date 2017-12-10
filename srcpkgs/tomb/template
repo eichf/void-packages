@@ -1,8 +1,9 @@
 # Template file for 'tomb'
 pkgname=tomb
-version=2.2
+version=2.4
 revision=1
 wrksrc=Tomb-${version}
+build_style=gnu-makefile
 hostmakedepends="pkg-config"
 makedepends="libnotify-devel gtk+-devel"
 depends="sudo gnupg cryptsetup pinentry"
@@ -11,8 +12,12 @@ maintainer="Diogo Leal <diogo@diogoleal.com>"
 license="GPL-3"
 homepage="https://www.dyne.org/software/tomb/"
 distfiles="https://github.com/dyne/Tomb/archive/v${version}.tar.gz"
-checksum=06d586879b6384237eb9ef573d4af0f98bd800dc2afb97dbb5a4fd5c5e5523f3
+checksum=aba329dceb9ffc62d65b3aa18583b68162f769167161067142c70a76141882f0
 
+pre_build() {
+	sed -i extras/gtk-tray/Makefile \
+		-e's;$(CC) ;$(CC) $(CFLAGS) $(LDFLAGS) ;'
+}
 do_install() {
 	vbin tomb
 	vman doc/tomb.1

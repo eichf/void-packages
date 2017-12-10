@@ -1,27 +1,5 @@
-Patch from Firefox ESR 38 Void packaging.
---- mozilla/tools/profiler/local_debug_info_symbolizer.cc
-+++ mozilla/tools/profiler/local_debug_info_symbolizer.cc
-@@ -3,6 +3,7 @@
-  * License, v. 2.0. If a copy of the MPL was not distributed with this
-  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
- 
-+#include <sys/types.h>
- #include "PlatformMacros.h"
- #include "nsAutoPtr.h"
- 
---- mozilla/tools/profiler/platform-linux.cc
-+++ mozilla/tools/profiler/platform-linux.cc
-@@ -84,7 +84,7 @@
- 
- #define SIGNAL_SAVE_PROFILE SIGUSR2
- 
--#if defined(__GLIBC__)
-+#if 1
- // glibc doesn't implement gettid(2).
- #include <sys/syscall.h>
- pid_t gettid()
---- mozilla/tools/profiler/platform.h
-+++ mozilla/tools/profiler/platform.h
+--- mozilla/tools/profiler/core/platform.h
++++ mozilla/tools/profiler/core/platform.h
 @@ -29,6 +29,8 @@
  #ifndef TOOLS_PLATFORM_H_
  #define TOOLS_PLATFORM_H_
@@ -31,8 +9,8 @@ Patch from Firefox ESR 38 Void packaging.
  #ifdef ANDROID
  #include <android/log.h>
  #else
---- mozilla/tools/profiler/LulElf.cpp
-+++ mozilla/tools/profiler/LulElf.cpp
+--- mozilla/tools/profiler/lul/LulElf.cpp
++++ mozilla/tools/profiler/lul/LulElf.cpp
 @@ -579,10 +579,10 @@
  // Return the non-directory portion of FILENAME: the portion after the
  // last slash, or the whole filename if there are no slashes.
@@ -48,8 +26,8 @@ Patch from Firefox ESR 38 Void packaging.
    return base;
  }
  
---- mozilla/tools/profiler/platform-linux.cc.orig	2015-06-11 18:39:35.689739054 +0200
-+++ mozilla/tools/profiler/platform-linux.cc	2015-06-11 18:40:04.479706749 +0200
+--- mozilla/tools/profiler/core/platform-linux.cc.orig	2015-06-11 18:39:35.689739054 +0200
++++ mozilla/tools/profiler/core/platform-linux.cc	2015-06-11 18:40:04.479706749 +0200
 @@ -651,11 +651,13 @@ void OS::Startup() {
  void TickSample::PopulateContext(void* aContext)
  {

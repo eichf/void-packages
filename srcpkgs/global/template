@@ -1,9 +1,10 @@
 # Template file for 'global'
 pkgname=global
-version=6.5.4
+version=6.5.7
 revision=1
 build_style=gnu-configure
-configure_args="--disable-static --with-exuberant-ctags=/usr/bin/ctags"
+configure_args="--disable-static --with-exuberant-ctags=/usr/bin/ctags
+ ac_cv_posix1_2008_realpath=yes"
 depends="ctags"
 makedepends="ncurses-devel"
 short_desc="Source code tagging system that works across diverse environments"
@@ -11,4 +12,4 @@ maintainer="Renato Aguiar <contact@renatoaguiar.org>"
 license="GPL-3"
 homepage="http://www.gnu.org/software/global/"
 distfiles="${GNU_SITE}/${pkgname}/${pkgname}-${version}.tar.gz"
-checksum=af16e0a686a46f759156cb685e25f345680703f43f93af1ce8d834caaf541da6
+checksum=d9c08fa524f9499b54241cb2d72f8a7df01453b6d5e012a63784ded08e3acd32

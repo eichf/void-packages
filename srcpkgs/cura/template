@@ -1,0 +1,16 @@
+# Template file for 'cura'
+pkgname=cura
+version=3.0.3
+revision=1
+python_version=3
+build_style=cmake
+wrksrc="Cura-${version}"
+configure_args="-DCURA_VERSION:STRING=${version}"
+makedepends="libArcus-devel libArcus-python3 python3 Uranium"
+depends="Uranium python3-pyserial cura-engine cura-fdm-materials python3-zeroconf"
+short_desc="3D printer / slicing GUI"
+maintainer="Karl Nilsson <karl.robert.nilsson@gmail.com>"
+license="LGPL-3"
+homepage="https://github.com/Ultimaker/Cura"
+distfiles="https://github.com/Ultimaker/Cura/archive/${version}.tar.gz"
+checksum=d10e86682201c8dd450174bcfbeac7e91c27d729577eddd3c0215c2c645d8716

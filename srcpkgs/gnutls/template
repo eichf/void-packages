@@ -1,19 +1,20 @@
 # Template file for 'gnutls'
 pkgname=gnutls
-version=3.3.22
+version=3.5.16
 revision=1
 build_style=gnu-configure
 configure_args="--with-zlib --disable-guile --disable-static
  --disable-valgrind-tests --disable-rpath"
 hostmakedepends="automake gettext-devel pkg-config libtool"
 makedepends="zlib-devel lzo-devel readline-devel libgpg-error-devel
- libtasn1-devel libgcrypt-devel p11-kit-devel nettle-devel libidn-devel"
+ libtasn1-devel libgcrypt-devel p11-kit-devel nettle-devel libidn-devel
+ libunistring-devel"
 short_desc="GNU Transport Layer Security library"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
-homepage="http://www.gnu.org/software/gnutls/"
+homepage="https://gnutls.org"
 license="GPL-3, LGPL-2.1"
 distfiles="ftp://ftp.gnutls.org/gcrypt/gnutls/v${version%.*}/gnutls-${version}.tar.xz"
-checksum=0ffa233e022e851f3f5f7811ac9223081a0870d5a05a7cf35a9f22e173c7b009
+checksum=0924dec90c37c05f49fec966eba3672dab4d336d879e5c06e06e13325cbfec25
 
 pre_configure() {
 	autoreconf -fi

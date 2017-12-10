@@ -1,9 +1,8 @@
 # Template file for 'sshguard'
 pkgname=sshguard
-version=1.6.4
+version=2.1.0
 revision=1
 build_style=gnu-configure
-configure_args="--with-firewall=iptables"
 make_dirs="/var/db/sshguard 0755 root root"
 depends="iptables"
 short_desc="Protects networked hosts from brute force attacks"
@@ -11,9 +10,13 @@ maintainer="Lodvær <lodvaer@gmail.com>"
 license="3-clause-BSD"
 homepage="http://www.sshguard.net/"
 distfiles="${SOURCEFORGE_SITE}/sshguard/$pkgname-$version.tar.gz"
-checksum=654d5412ed010e500e2715ddeebfda57ab23c47a2bd30dfdc1e68c4f04c912a9
+checksum=21252a4834ad8408df384ee4ddf468624aa9de9cead5afde1c77380a48cf028a
+
+conf_files="/etc/sshguard.conf"
 
 post_install() {
 	vsv sshguard-socklog
+	vconf examples/sshguard.conf.sample sshguard.conf
+	sed -i 's@/usr/local/@/usr/@g' ${DESTDIR}/etc/sshguard.conf
 	vlicense COPYING
 }

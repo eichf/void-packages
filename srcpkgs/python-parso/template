@@ -1,0 +1,31 @@
+# Template file for 'python-parso'
+pkgname=python-parso
+version=0.1.1
+revision=1
+noarch=yes
+wrksrc="parso-${version}"
+build_style=python-module
+pycompile_module="parso"
+hostmakedepends="python-setuptools python3-setuptools"
+depends="python"
+short_desc="A Python parser (Python2)"
+maintainer="Alessio Sergi <al3hex@gmail.com>"
+homepage="https://github.com/davidhalter/parso"
+license="MIT"
+distfiles="${PYPI_SITE}/p/parso/parso-${version}.tar.gz"
+checksum=5815f3fe254e5665f3c5d6f54f086c2502035cb631a91341591b5a564203cffb
+
+post_install() {
+	vlicense LICENSE.txt LICENSE
+}
+
+python3-parso_package() {
+	noarch=yes
+	depends="python3"
+	pycompile_module="parso"
+	short_desc="${short_desc/Python2/Python3}"
+	pkg_install() {
+		vmove usr/lib/python3*
+		vlicense LICENSE.txt LICENSE
+	}
+}

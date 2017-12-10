@@ -1,30 +1,42 @@
 # Template file for 'libtorrent-rasterbar'
 pkgname=libtorrent-rasterbar
-version=1.0.9
+version=1.1.5
 revision=1
 build_style=gnu-configure
-configure_args="--enable-python-binding --with-libgeoip"
-hostmakedepends="pkg-config intltool python-devel"
-makedepends="libressl-devel boost-devel boost-python python-devel geoip-devel"
+configure_args="--enable-python-binding --with-boost=${XBPS_CROSS_BASE}/usr"
+hostmakedepends="automake pkg-config intltool libtool python-devel"
+makedepends="libressl-devel boost-devel boost-python geoip-devel python-devel"
 short_desc="C++ bittorrent library by Rasterbar Software"
 maintainer="Eivind Uggedal <eivind@uggedal.com>"
 homepage="http://www.rasterbar.com/products/libtorrent/"
-license="BSD"
+license="3-clause-BSD"
 distfiles="https://github.com/arvidn/libtorrent/releases/download/libtorrent-${version//./_}/libtorrent-rasterbar-${version}.tar.gz"
-checksum=11a93125ed49f796fca83da925ab7dc29e91d88b915f078caaddaaf559d63db6
-nocross="http://build.voidlinux.eu/builders/armv6l_builder/builds/16858/steps/shell_3/logs/stdio"
+checksum=103134068389155a0f2bccaca72a57765460eb8188495089dcad280dcf426930
 
+pre_configure() {
+	export PYTHON_CPPFLAGS="-I${XBPS_CROSS_BASE}/usr/include/python2.7"
+	export PYTHON_CXXFLAGS="-I${XBPS_CROSS_BASE}/usr/include/python2.7"
+	export PYTHON_LDFLAGS="-L${XBPS_CROSS_BASE}/usr/lib -lpython2.7"
+	autoreconf -fi
+}
 post_install() {
 	vlicense LICENSE
 }
 
+libtorrent-rasterbar-python_package() {
+	replaces="${sourcepkg}<1.0.9_2"
+	short_desc+=" - Python bindings"
+	pkg_install() {
+		vmove usr/lib/python*
+	}
+}
 libtorrent-rasterbar-devel_package() {
-	depends="${sourcepkg}>=${version}_${revision} libressl-devel>=2.1.4 boost-devel geoip-devel"
+	depends="${sourcepkg}>=${version}_${revision} libressl-devel boost-devel geoip-devel"
 	short_desc+=" - development files"
 	pkg_install() {
 		vmove usr/include
 		vmove usr/lib/pkgconfig
-		vmove "usr/lib/*.so"
-		vmove "usr/lib/*.a"
+		vmove usr/lib/*.so
+		vmove usr/lib/*.a
 	}
 }

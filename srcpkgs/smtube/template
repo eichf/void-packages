@@ -1,13 +1,27 @@
 # Template file for 'smtube'
 pkgname=smtube
-version=16.3.0
-revision=1
-build_style=gnu-makefile
+version=17.5.0
+revision=2
+build_style=qmake
+make_build_args="
+ DATA_PATH=\\\"/usr/share/smtube\\\"
+ TRANSLATION_PATH=\\\"/usr/share/smtube/translations\\\"
+ DOC_PATH=\\\"/usr/share/doc/smtube\\\""
+build_wrksrc=src
+hostmakedepends="qt5-host-tools qt5-script-devel qt5-tools-devel qt5-webkit-devel"
 makedepends="zlib-devel qt5-script-devel qt5-tools-devel qt5-webkit-devel"
 depends="hicolor-icon-theme desktop-file-utils"
 short_desc="A small youtube browser"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="GPL-2"
-homepage="http://smtube.sourceforge.net/"
+homepage="http://www.smtube.org/"
 distfiles="${SOURCEFORGE_SITE}/$pkgname/$pkgname-$version.tar.bz2"
-checksum=6ac038645eb03f7d8069713312c99f5ff7d8d0d6b4550b206b87ac6e1a941570
+checksum=8dca5245e2d2be4cb472b7a6e9e7ccafa52f25b0ef2c924944aa058b02a5a08e
+
+post_build() {
+	lrelease smtube.pro
+}
+do_install() {
+	cd "${wrksrc}"
+	make install PREFIX=/usr DESTDIR=${DESTDIR}
+}

@@ -1,23 +1,24 @@
 # Template file for 'libvirt'
 pkgname=libvirt
-version=1.3.3
-revision=3
+version=3.10.0
+revision=1
 build_style=gnu-configure
+patch_args="-Np1"
 configure_args="--without-hal --with-storage-lvm --with-qemu-user=libvirt
  --with-qemu-group=libvirt --without-netcf --with-interface --disable-static"
 short_desc="The virtualization API for controlling virtualization engines"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
-homepage="http://libvirt.org"
+homepage="https://libvirt.org"
 license="LGPL-2.1"
-distfiles="http://libvirt.org/sources/$pkgname-$version.tar.gz"
-checksum=99603b8dba574bc592673fdf5c77e96cf5221e21104ab0477efeb8aba133858f
+distfiles="https://libvirt.org/sources/${pkgname}-${version}.tar.xz"
+checksum=dff109cae2cc915b3ed5ba7e460502b85eb9a5058cda4f356d7bb7b1e3196b0e
 
 # FIX https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=701649
 system_accounts="libvirt"
 libvirt_groups="disk,kvm"
 
 hostmakedepends="automake libtool perl pkg-config lvm2 parted gettext-devel
- iptables libxslt docbook-xsl dnsmasq"
+ iptables libxslt docbook-xsl dnsmasq python"
 makedepends="readline-devel libcap-ng-devel libnl3-devel attr-devel
  gnutls-devel libsasl-devel libcurl-devel libpcap-devel libxml2-devel
  libparted-devel device-mapper-devel dbus-devel eudev-libudev-devel libblkid-devel
@@ -27,8 +28,7 @@ depends="ebtables dnsmasq"
 
 case "$XBPS_TARGET_MACHINE" in
 	i686*) configure_args+=" --without-xen"; makedepends+=" libnuma-devel";;
-	x86_64) configure_args+=" --with-xen"; makedepends+=" libnuma-devel xen-devel";;
-	x86_64-musl) configure_args+=" --without-xen"; makedepends+=" libnuma-devel";;
+	x86_64*) configure_args+=" --with-xen"; makedepends+=" libnuma-devel xen-devel";;
 	*) configure_args+=" --without-xen";;
 esac
 case "$XBPS_TARGET_MACHINE" in

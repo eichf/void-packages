@@ -1,33 +1,36 @@
 # Template file for 'python-tornado'
 pkgname=python-tornado
-reverts=4.3_1
-version=4.2.1
-revision=2
+version=4.5.2
+revision=1
 wrksrc="tornado-${version}"
 build_style=python-module
-python_versions="2.7 3.4"
-hostmakedepends="python-setuptools python3.4-setuptools"
-makedepends="python-devel python3.4-devel"
-depends="ca-certificates"
 pycompile_module="tornado"
+hostmakedepends="python-setuptools python3-setuptools"
+makedepends="python-devel python3-devel"
+depends="ca-certificates python-singledispatch python-backports_abc"
 short_desc="Python2 web framework and asynchronous networking library"
 maintainer="Alessio Sergi <al3hex@gmail.com>"
 homepage="http://www.tornadoweb.org/"
 license="Apache-2.0"
 distfiles="${PYPI_SITE}/t/tornado/tornado-${version}.tar.gz"
-checksum=a16fcdc4f76b184cb82f4f9eaeeacef6113b524b26a2cb331222e4a7fa6f2969
+checksum=1fb8e494cd46c674d86fac5885a3ff87b0e283937a47d74eb3c02a48c9e89ad0
 
 pre_build() {
-	# remove shebang
-	sed -i '/^#!\//,1d' tornado/*.py tornado/*/*.py
+	# use system ca-certificates
+	sed -i "/install_requires.append('certifi')/d" setup.py
 }
 
-python3.4-tornado_package() {
-	depends="ca-certificates"
-	pycompile_version="3.4"
+python3-tornado_package() {
 	pycompile_module="tornado"
-	short_desc="${short_desc/Python2/Python3.4}"
+	replaces="python3.4-tornado>=0"
+	depends="ca-certificates"
+	short_desc="${short_desc/Python2/Python3}"
 	pkg_install() {
-		vmove usr/lib/python3.4
+		vmove usr/lib/python3*
 	}
+}
+python3.4-tornado_package() {
+	build_style=meta
+	short_desc="${short_desc/Python2/Python3.4} (transitional dummy package)"
+	depends="python3-tornado>=${version}_${revision}"
 }

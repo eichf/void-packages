@@ -1,0 +1,23 @@
+# Template file for 'ripe-atlas-tools'
+pkgname=ripe-atlas-tools
+version=2.1
+revision=2
+noarch=yes
+build_style=python3-module
+pycompile_module="ripe/atlas/tools"
+hostmakedepends="python3-setuptools"
+depends="
+ python3-tzlocal python3-yaml python3-six python3-dateutil
+ python3-ripe-atlas-sagan python3-ripe-atlas-cousteau python3-IPy"
+short_desc="The official command-line client for RIPE Atlas"
+maintainer="johannes <johannes.brechtmann@gmail.com>"
+license="GPL-3"
+homepage="https://github.com/ripe-ncc/ripe-atlas-tools"
+distfiles="https://github.com/ripe-ncc/${pkgname}/archive/v${version}.tar.gz"
+checksum=32e22ea7c7e3e826a3b8d7a8d31f26e40a1abd95b152bb33a0809aeac8e545cb
+
+post_install() {
+	vinstall ripe-atlas-bash-completion.sh 644 \
+		usr/share/bash-completion/completions ripe-atlas-tools
+}
+

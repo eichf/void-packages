@@ -1,13 +1,15 @@
 # Template file for 'lxqt-notificationd'
 pkgname=lxqt-notificationd
-version=0.10.0
+version=0.12.0
 revision=1
 build_style=cmake
-hostmakedepends="cmake pkg-config"
+configure_args="-DPULL_TRANSLATIONS=0"
+hostmakedepends="pkg-config qt5-host-tools qt5-devel qt5-tools-devel"
 makedepends="liblxqt-devel"
 short_desc="LXQt notification daemon"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="LGPL-2.1"
 homepage="http://lxqt.org/"
-distfiles="http://downloads.lxqt.org/lxqt/${version}/${pkgname}-${version}.tar.xz"
-checksum=5c0859157ff6a20d613ea4aca24e786faf79ab6d69afec1e0b3671e3bbda53d5
+distfiles="https://github.com/lxde/lxqt-notificationd/releases/download/${version}/lxqt-notificationd-${version}.tar.xz"
+checksum=f9e2e05152af7ccbb0c8779a24cf992617d27a9148b2403c2dc4c1cbc2615afb
+replaces="lxqt-common>=0"

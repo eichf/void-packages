@@ -1,19 +1,21 @@
 # Template file for 'fuse-sshfs'
 pkgname=fuse-sshfs
-version=2.7
+version=3.3.1
 revision=1
 wrksrc="sshfs-${version}"
-build_style=gnu-configure
-hostmakedepends="automake pkg-config"
-makedepends="libglib-devel fuse-devel"
+build_style=meson
+configure_args="--sbindir=bin"
+hostmakedepends="pkg-config"
+makedepends="libglib-devel fuse3-devel python-docutils"
 depends="openssh"
 short_desc="FUSE client based on the SSH File Transfer Protocol"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="GPL-2"
 homepage="https://github.com/libfuse/sshfs"
-distfiles="https://github.com/libfuse/sshfs/releases/download/sshfs-${version}/sshfs-${version}.tar.gz"
-checksum=ce5f9d390934fc88c287dd937a39d15c2b40cbea6967ba24ad93ed90e0027128
+distfiles="https://github.com/libfuse/sshfs/releases/download/sshfs-${version}/sshfs-${version}.tar.xz"
+checksum=de13bfe0eb5821a7d878f8dea3dc815edaee734418e0950c2732399acd4fb443
 
-pre_configure() {
-	autoreconf -fi
-}
+case "${XBPS_TARGET_MACHINE}" in
+	i686|armv6l|armv7l)
+		CFLAGS+=" -D_FILE_OFFSET_BITS=64"
+esac

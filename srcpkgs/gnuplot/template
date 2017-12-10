@@ -1,17 +1,17 @@
 # Template file for 'gnuplot'
 pkgname=gnuplot
-version=5.0.3
+version=5.2.2
 revision=1
 configure_args="--with-readline=builtin"
 hostmakedepends="pkg-config lua52"
 makedepends="zlib-devel libX11-devel gd-devel lua52-devel"
 depends="gnuplot-common>=${version}_${revision}"
 short_desc="Command-line driven graphing utility"
-maintainer="Eivind Uggedal <eivind@uggedal.com>"
+maintainer="Leah Neukirchen <leah@vuxu.org>"
 homepage="http://www.gnuplot.info/"
 license="gnuplot"
 distfiles="${SOURCEFORGE_SITE}/gnuplot/gnuplot/${version}/gnuplot-${version}.tar.gz"
-checksum=5f6ee35f3f22014058e999911934bfa9db28e02a2722a7001c192cd182b8c715
+checksum=a416d22f02bdf3873ef82c5eb7f8e94146795811ef808e12b035ada88ef7b1a1
 
 subpackages="gnuplot-common"
 if [ -z "$CROSS_BUILD" ]; then

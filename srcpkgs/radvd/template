@@ -1,17 +1,17 @@
 # Template file for 'radvd'
 pkgname=radvd
-version=2.13
+version=2.17
 revision=1
 build_style=gnu-configure
 hostmakedepends="pkg-config flex"
 makedepends="check-devel libdaemon-devel"
 conf_files="/etc/radvd.conf"
 short_desc="IPv6 Router Advertisement Daemon"
-maintainer="Christian Neukirchen <chneukirchen@gmail.com>"
+maintainer="Leah Neukirchen <leah@vuxu.org>"
 license="custom"
 homepage="http://www.litech.org/radvd/"
 distfiles="http://www.litech.org/radvd/dist/${pkgname}-${version}.tar.xz"
-checksum=6a9269635e908117495dc9f79049c5fae46be5f4f3158bce6a94fd78bf79efd3
+checksum=5b09d65af024d8ad716cead681836c2aaade43e5ee5cb03deac986a787b1a6d5
 
 post_install() {
 	vsv radvd

@@ -1,7 +1,7 @@
 # Template file for 'fcron'
 pkgname=fcron
-version=3.2.0
-revision=7
+version=3.3.0
+revision=3
 build_style=gnu-configure
 configure_args="
 	--sysconfdir=/etc/fcron
@@ -13,8 +13,8 @@ configure_args="
 	--localstatedir=/var
 	--with-piddir=/run
 	--with-pam=yes
-	--with-sendmail=sendmail
-	--with-editor=vi
+	--with-sendmail=/usr/bin/sendmail
+	--with-editor=/usr/bin/vi
 	--with-shell=/bin/sh
 	--disable-checks"
 make_dirs="
@@ -26,11 +26,11 @@ hostmakedepends="autoconf perl"
 makedepends="pam-devel readline-devel"
 depends="run-parts"
 short_desc="Feature-rich cron implementation"
-maintainer="Andrea Brancaleoni <miwaxe@gmail.com>"
+maintainer="Andrea Brancaleoni <abc@pompel.me>"
 license="GPL-2"
 homepage="http://fcron.free.fr"
 distfiles="$homepage/archives/$pkgname-$version.src.tar.gz"
-checksum=eb13b86ed96805d117e19847f1da30b834f1990f7ef4c38f5007234d44679564
+checksum=9aead33a0926e2eec123698c502114c6d67b483fe1ec232969fae6809b0bab60
 
 alternatives="
  crond:crond:/etc/sv/fcron

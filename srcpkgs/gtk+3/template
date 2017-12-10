@@ -1,19 +1,19 @@
 # Template build file for 'gtk+3'.
 pkgname=gtk+3
-version=3.20.3
-revision=2
+version=3.22.26
+revision=1
 wrksrc="gtk+-${version}"
 build_style=gnu-configure
-configure_args="--disable-schemas-compile --enable-gtk2-dependency
+configure_args="--disable-schemas-compile
  $(vopt_enable broadway broadway-backend) $(vopt_enable colord)
  $(vopt_enable cups) $(vopt_enable gir introspection)
  $(vopt_enable wayland wayland-backend) $(vopt_enable x11 x11-backend)"
 short_desc="The GTK+ toolkit (v3)"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
-homepage="http://www.gtk.org/"
+homepage="https://www.gtk.org/"
 license="LGPL-2.1"
 distfiles="${GNOME_SITE}/gtk+/${version%.*}/gtk+-${version}.tar.xz"
-checksum=3834f3bf23b260b3e5ebfea41102e2026a8af29e36c3620edf4a5cf05e82f694
+checksum=61eef0d320e541976e2dfe445729f12b5ade53050ee9de6184235cb60cd4b967
 
 hostmakedepends="automake gettext-devel libtool pkg-config
  glib-devel gtk-doc gobject-introspection gtk-update-icon-cache
@@ -21,7 +21,7 @@ hostmakedepends="automake gettext-devel libtool pkg-config
 makedepends="libglib-devel atk-devel at-spi2-atk-devel libepoxy-devel
  libpng-devel fontconfig-devel cairo-devel pango-devel gdk-pixbuf-devel
  $(vopt_if colord colord-devel) $(vopt_if cups cups-devel)
- $(vopt_if wayland 'libxkbcommon-devel wayland-devel wayland-protocols MesaLib-devel')
+ $(vopt_if wayland 'libxkbcommon-devel wayland-devel wayland-protocols libwayland-egl MesaLib-devel')
  $(vopt_if x11 'libXcursor-devel libXdamage-devel libXext-devel libXinerama-devel libXi-devel libXrandr-devel libXcomposite-devel')"
 depends="gtk-update-icon-cache shared-mime-info $(vopt_if x11 dbus-x11)"
 triggers="gtk3-immodules"
@@ -49,7 +49,7 @@ post_install() {
 }
 
 gtk+3-devel_package() {
-	depends="${makedepends} gtk+3>=${version}_${revision}"
+	depends="${makedepends} ${sourcepkg}>=${version}_${revision}"
 	short_desc+=" - development files"
 	pkg_install() {
 		vmove usr/include

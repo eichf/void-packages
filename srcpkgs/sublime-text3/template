@@ -1,16 +1,16 @@
 # Template file for 'sublime-text3'
 pkgname=sublime-text3
-version=3083
+version=3143
 revision=1
 if [ "$XBPS_TARGET_MACHINE" = "x86_64" ]; then
-	distfiles="http://c758482.r82.cf2.rackcdn.com/sublime_text_3_build_${version}_x64.tar.bz2"
-	checksum="4565c7f607b69ca6efa1751c739a11d42aeaf66d15987fbb9595e97e3ece14ee"
+	distfiles="https://download.sublimetext.com/sublime_text_3_build_${version}_x64.tar.bz2"
+	checksum=9ce120c4f28b239d3b3860ee672d9d87e1397a4c08ee6c4e62fd6e261a296519
 else
-	distfiles="http://c758482.r82.cf2.rackcdn.com/sublime_text_3_build_${version}_x32.tar.bz2"
-	checksum="89e8e2bafa041c263d2c5ffd1b8ea3c36d9727c95a3f7a6603bdf1f6c4cc3165"
+	distfiles="https://download.sublimetext.com/sublime_text_3_build_${version}_x32.tar.bz2"
+	checksum=b1ecc4b70d66b9236b876f1913c4094b6dd51436e45c74883ba70a1939e9f735
 fi
 depends="libpng gtk+ hicolor-icon-theme desktop-file-utils"
-maintainer="Steven R <dev@styez.com>"
+maintainer="Andrea Brancaleoni <miwaxe@pompel.me>"
 homepage="http://www.sublimetext.com/3dev"
 license="Propietary"
 short_desc="Sophisticated text editor for code, markup and prose"
@@ -18,6 +18,7 @@ short_desc="Sophisticated text editor for code, markup and prose"
 repository="nonfree"
 only_for_archs="i686 x86_64"
 wrksrc="sublime_text_3"
+nopie=yes
 
 do_install() {
 	vmkdir "usr/bin"

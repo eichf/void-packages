@@ -1,20 +1,23 @@
 # Template build file for 'sqlite'.
 pkgname=sqlite
-version=3.12.2
+version=3.21.0
 revision=1
 _amalgamationver=$(printf "%d%02d%02d00\n" ${version//./ })
 wrksrc="sqlite-autoconf-${_amalgamationver}"
 build_style=gnu-configure
-configure_args="--enable-threadsafe --enable-readline --enable-dynamic-extensions"
+configure_args="--enable-threadsafe --enable-readline --enable-dynamic-extensions --enable-fts5"
 makedepends="libedit-devel"
 short_desc="SQL Database Engine in a C Library"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
-homepage="http://www.sqlite.org"
+homepage="https://sqlite.org/"
 license="Public Domain"
-distfiles="http://sqlite.org/2016/sqlite-autoconf-${_amalgamationver}.tar.gz"
-checksum=fd00770c9afd39db555c78400e52f55e8bd6568c78be23561abb472a22d09abb
+distfiles="${homepage}/2017/sqlite-autoconf-${_amalgamationver}.tar.gz"
+checksum=d7dd516775005ad87a57f428b6f86afd206cb341722927f104d3f0cf65fbbbe3
 
-CFLAGS="-DSQLITE_ENABLE_DBSTAT_VTAB -DSQLITE_ENABLE_COLUMN_METADATA -DSQLITE_ENABLE_UNLOCK_NOTIFY -DSQLITE_SECURE_DELETE -DSQLITE_ENABLE_JSON1"
+CFLAGS="-DSQLITE_ENABLE_DBSTAT_VTAB -DSQLITE_ENABLE_COLUMN_METADATA \
+ -DSQLITE_ENABLE_UNLOCK_NOTIFY -DSQLITE_SECURE_DELETE -DSQLITE_ENABLE_JSON1 \
+ -DSQLITE_ENABLE_FTS3 -DSQLITE_ENABLE_FTS3_PARENTHESIS -DSQLITE_ENABLE_FTS4 \
+ -DSQLITE_ENABLE_FTS3_TOKENIZER=1 -DSQLITE_ENABLE_BATCH_ATOMIC_WRITE=1"
 # explicitly enable fdatasync
 CFLAGS+=" -DHAVE_FDATASYNC"
 disable_parallel_build=yes

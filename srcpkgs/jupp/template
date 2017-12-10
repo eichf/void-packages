@@ -1,30 +1,23 @@
 # Template file for 'jupp'
 pkgname=jupp
-version=3.1jupp28
-revision=2
+version=3.1jupp31
+revision=1
 build_style=gnu-configure
 configure_args="--disable-dependency-tracking --disable-termidx"
 makedepends="ncurses-devel"
 conflicts="joe>=0"
 wrksrc="jupp"
-conf_files="
-	/etc/joe/joerc
-	/etc/joe/rjoerc
-	/etc/joe/jpicorc
-	/etc/joe/jmacsrc
-	/etc/joe/jstarrc
-	/etc/joe/jupprc"
+conf_files="/etc/joe/*rc"
 short_desc="Portable version of JOE’s Own Editor"
 maintainer='Juan RP <xtraeme@voidlinux.eu>'
 license="GPL-1"
 homepage="https://www.mirbsd.org/jupp.htm"
 distfiles="https://www.mirbsd.org/MirOS/dist/${pkgname}/joe-${version}.tgz"
-checksum=be4d16cb44f002a3f6f5069471096c53d9c184b7366ef1a055422d2f0006851f
+checksum=1a50607b0417cf230f7b3609c091e71e8d8e91185a4a3897f7925cd3b44cceba
 
 pre_configure() {
 	chmod +x configure
 }
-
 post_install() {
 	vlicense COPYING LICENSE
 	vdoc INFO

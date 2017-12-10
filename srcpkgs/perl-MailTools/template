@@ -1,6 +1,6 @@
 # Template file for 'perl-MailTools'
 pkgname=perl-MailTools
-version=2.16
+version=2.19
 revision=1
 wrksrc="${pkgname/perl-/}-${version}"
 build_style=perl-module
@@ -13,4 +13,4 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://search.cpan.org/dist/MailTools/"
 license="Artistic, GPL-1"
 distfiles="${CPAN_SITE}/Mail/${pkgname/perl-/}-$version.tar.gz"
-checksum=56a56ed11e9dc44995dd70159c3a67fdaf1c78488cfb1a7045d32e81b8b23814
+checksum=c17ed702efea8eab56fe92961c07cd4980cee26ca6f13aff2688dc8af69c5e1a

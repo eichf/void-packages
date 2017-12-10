@@ -1,25 +1,26 @@
 # Template file for 'collectd'
 pkgname=collectd
-version=5.5.1
-revision=2
+version=5.6.2
+revision=3
 build_style=gnu-configure
 configure_args="$(vopt_enable rrdtool rrdtool) $(vopt_enable perl perl)
- --with-libiptc --enable-virt --sysconfdir=/etc --disable-static --with-fp-layout=nothing"
-hostmakedepends="autoconf automake pkg-config libtool libltdl-devel glib-devel"
+ $(vopt_enable notify notify_desktop) --with-libiptc --enable-virt
+ --sysconfdir=/etc --disable-static --with-fp-layout=nothing --disable-werror"
+hostmakedepends="automake pkg-config libtool libltdl-devel glib-devel"
 makedepends="libcurl-devel iptables-devel libressl-devel libsensors-devel
  libesmtp-devel zlib-devel yajl-devel python-devel libxml2-devel net-snmp-devel
- libgcrypt-devel libmysqlclient-devel libvirt-devel libnotify-devel
- $(vopt_if rrdtool rrdtool-devel)"
+ libgcrypt-devel libmysqlclient-devel libvirt-devel
+ $(vopt_if notify libnotify-devel) $(vopt_if rrdtool rrdtool-devel)"
 conf_files="/etc/collectd.conf"
 short_desc="Daemon which collects system performance statistics periodically"
 maintainer="Steve Prybylski <sa.prybylx@gmail.com>"
 license="GPL-2, MIT"
 homepage="http://collectd.org"
-distfiles="http://collectd.org/files/${pkgname}-${version}.tar.gz"
-checksum=4dba51d6243ff77858fff1ffbefe6f6528681ff219051f122aa2727e26271079
+distfiles="http://collectd.org/files/${pkgname}-${version}.tar.bz2"
+checksum=cc0b4118a91e5369409ced22d1d8a85c1a400098419414160c1839268ecad0c6
 LDFLAGS="-lgcrypt"
 
-build_options="rrdtool perl"
+build_options="rrdtool perl notify"
 desc_option_rrdtool="Enable support for RRDTool"
 
 if [ -z "$CROSS_BUILD" ]; then
@@ -31,7 +32,6 @@ pre_configure() {
 }
 
 post_install() {
-	vinstall ${FILESDIR}/collectd.conf 640 etc/
 	vsv collectd
 	vlicense COPYING
 }
@@ -62,5 +62,3 @@ libcollectdclient-devel_package() {
 		vmove usr/lib/*.so
 	}
 }
-
-

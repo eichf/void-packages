@@ -1,14 +1,15 @@
 # Template file for 'xarchiver'
 pkgname=xarchiver
-version=0.5.4
-revision=2
+version=0.5.4.12
+revision=1
 build_style=gnu-configure
+configure_args="--disable-doc"
 hostmakedepends="pkg-config intltool"
 makedepends="gtk+-devel"
 depends="xdg-utils desktop-file-utils hicolor-icon-theme"
 short_desc="GTK+2 lightweight desktop independent archive manager"
-homepage="http://xarchiver.sourceforge.net/"
+homepage="https://github.com/ib/xarchiver"
 license="GPL-2"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
-distfiles="${SOURCEFORGE_SITE}/$pkgname/$pkgname-$version.tar.bz2"
-checksum=e63fa73979fcc56efe8cca9095fd915d31a1714ce9676246b8626f164e452ef4
+distfiles="${homepage}/archive/${version}.tar.gz"
+checksum=62885813edce274055e8fccd3f360b61a74a3b0e4854080201638fd1f3306370

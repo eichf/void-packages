@@ -1,9 +1,9 @@
 # Template file for 'otter-browser'
 pkgname=otter-browser
-version=0.9.10
+version=0.9.93
 revision=1
 build_style=cmake
-makedepends="qt5-multimedia-devel qt5-declarative-devel qt5-xmlpatterns-devel
+makedepends="qt5-multimedia-devel qt5-declarative-devel qt5-svg-devel qt5-xmlpatterns-devel
  qt5-webkit-devel libgcrypt-devel hunspell-devel"
 depends="qt5-plugin-sqlite"
 short_desc="Project aiming to recreate the best aspects of the classic Opera UI"
@@ -11,4 +11,12 @@ maintainer="GangstaCat <grumpy@keemail.me>"
 license="GPL-3"
 homepage="http://otter-browser.org"
 distfiles="https://github.com/OtterBrowser/${pkgname}/archive/v${version}.tar.gz"
-checksum=276c35a31991d4cb274fcf3630b985ddb5876773400ef39893469c2f1c0e35e2
+checksum=b0f14132fce8265b74ff14ce19ed9f4848e5c5a4bd3f28ca1db2264591777a7d
+
+if [ -n "$CROSS_BUILD" ]; then
+	hostmakedepends+=" qt5-host-tools"
+	hostmakedepends+=" qt5-declarative-devel"
+	hostmakedepends+=" qt5-multimedia-devel"
+	hostmakedepends+=" qt5-webkit-devel"
+	hostmakedepends+=" qt5-xmlpatterns-devel"
+fi

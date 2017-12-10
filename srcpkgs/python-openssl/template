@@ -1,28 +1,33 @@
 # Template file for 'python-openssl'
 pkgname=python-openssl
-version=16.0.0
+version=17.5.0
 revision=1
 noarch=yes
 wrksrc="pyOpenSSL-${version}"
 build_style=python-module
-python_versions="2.7 3.4"
-hostmakedepends="python-setuptools python3.4-setuptools"
-depends="python-cryptography>=1.3 python-six"
+hostmakedepends="python-setuptools python3-setuptools"
+depends="python-cryptography python-six"
 pycompile_module="OpenSSL"
 short_desc="Python2 interface to the OpenSSL library"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="https://github.com/pyca/pyopenssl"
 license="Apache-2.0"
 distfiles="${PYPI_SITE}/p/pyOpenSSL/pyOpenSSL-${version}.tar.gz"
-checksum=363d10ee43d062285facf4e465f4f5163f9f702f9134f0a5896f134cbb92d17d
+checksum=2c10cfba46a52c0b0950118981d61e72c1e5b1aac451ca1bc77de1a679456773
 
+python3-openssl_package() {
+	noarch=yes
+	depends="python3-cryptography python3-six"
+	pycompile_module="OpenSSL"
+	replaces="python3.4-openssl>=0"
+	short_desc="${short_desc/Python2/Python3}"
+	pkg_install() {
+		vmove usr/lib/python3*
+	}
+}
 python3.4-openssl_package() {
 	noarch=yes
-	depends="python3.4-cryptography>=1.3 python3.4-six"
-	pycompile_version="3.4"
-	pycompile_module="OpenSSL"
-	short_desc="${short_desc/Python2/Python3.4}"
-	pkg_install() {
-		vmove usr/lib/python3.4
-	}
+	build_style=meta
+	short_desc="${short_desc/Python2/Python3.4} (transitional dummy package)"
+	depends="python3-openssl>=${version}_${revision}"
 }

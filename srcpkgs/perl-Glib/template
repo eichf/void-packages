@@ -1,6 +1,6 @@
 # Template file for 'perl-Glib'
 pkgname=perl-Glib
-version=1.321
+version=1.326
 revision=1
 wrksrc="Glib-$version"
 build_style=perl-module
@@ -13,4 +13,4 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://gtk2-perl.sourceforge.net/"
 license="LGPL-2.1"
 distfiles="${SOURCEFORGE_SITE}/gtk2-perl/Glib-$version.tar.gz"
-checksum=b975ebe2da241fc4bb9981b36a5d661b455d3598b3d8b254cb3538d673778c40
+checksum=020d0308220cb6e03a086bd45d33dd8fe03b265c502bfc2b4e58f2dbe64c365f

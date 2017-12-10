@@ -1,7 +1,7 @@
 # Template file for 'perl-Params-Validate'
 pkgname=perl-Params-Validate
-version=1.23
-revision=1
+version=1.29
+revision=2
 wrksrc="${pkgname/perl-/}-${version}"
 build_style=perl-ModuleBuild
 hostmakedepends="perl perl-Module-Build"
@@ -12,4 +12,4 @@ maintainer="John Regan <john@jrjrtech.com>"
 homepage="http://search.cpan.org/dist/Params-Validate/"
 license="Artistic"
 distfiles="${CPAN_SITE}/Params/${pkgname/perl-/}-${version}.tar.gz"
-checksum=dd5a4def2991e9fe26ec2f12410a40eefb7e036733cf78deb540eb8e4dd09d79
+checksum=49a68dfb430bea028042479111d19068e08095e5a467e320b7ab7bde3d729733

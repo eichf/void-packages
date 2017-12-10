@@ -1,15 +1,14 @@
 # Template file for 'autokey'
 pkgname=autokey
 version=0.90.4
-revision=1
+revision=4
 noarch=yes
-build_style="python-module"
-python_versions="2.7"
-pycompile_version="2.7"
+build_style=python2-module
 pycompile_module="autokey"
+hostmakedepends="python"
 makedepends="python"
 depends="python python-xlib python-inotify python-simplejson wmctrl"
-short_desc="Simple editor for Markdown and reStructuredText"
+short_desc="desktop automation utility for Linux and X11"
 maintainer="Enno Boland <gottox@voidlinux.eu>"
 license="GPL-3"
 homepage="https://code.google.com/archive/p/autokey/downloads"

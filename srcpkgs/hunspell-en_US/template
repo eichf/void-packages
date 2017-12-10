@@ -1,18 +1,18 @@
 # Template file for 'hunspell-en_US'
 pkgname=hunspell-en_US
-version=2016.01.19
+version=2017.08.24
 revision=1
-maintainer="Christian Neukirchen <chneukirchen@gmail.com>"
+maintainer="Leah Neukirchen <leah@vuxu.org>"
 homepage="http://wordlist.aspell.net/dicts"
 license="SCOWL"
 noarch=yes
 hostmakedepends="unzip"
 short_desc="American English en_US dictionary for hunspell"
 distfiles="${SOURCEFORGE_SITE}/wordlist/speller/${version}/${pkgname}-${version}.zip"
-checksum=fe0c48084bfd534f244ecd12836ae5e0b27fc10dab28879fdafece892267a674
+checksum=c59ae3f0a597358f7c613ada2875a8d8313a5a80496077ab7ed6a030bf1702b1
 create_wrksrc=yes
 
-do_install(){
+do_install() {
 	sed -i 's/SET UTF8/SET UTF-8/g' en_US.aff
 	vinstall en_US.aff 644 /usr/share/hunspell
 	vinstall en_US.dic 644 /usr/share/hunspell

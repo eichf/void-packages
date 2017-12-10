@@ -1,9 +1,8 @@
 # Template file for 'taskd'
 pkgname=taskd
 version=1.1.0
-revision=1
+revision=2
 build_style=cmake
-hostmakedepends="cmake"
 makedepends="libuuid-devel gnutls-devel"
 depends="gnutls-tools"
 short_desc="Server for sharing tasks among different clients, primarily Taskwarrior"
@@ -17,9 +16,8 @@ system_accounts="taskd"
 taskd_homedir="/var/lib/taskd"
 make_dirs="/var/lib/taskd 0750 taskd taskd"
 
-post_install () {
+post_install() {
 	vcopy pki usr/share/taskd/
 	vlicense LICENSE
 	vsv taskd
 }
-

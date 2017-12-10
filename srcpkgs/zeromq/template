@@ -1,16 +1,17 @@
 # Template file for 'zeromq'
 pkgname=zeromq
-version=4.1.4
-revision=1
+version=4.2.2
+revision=2
 build_style=gnu-configure
-hostmakedepends="pkg-config"
+configure_args="--with-libsodium"
+hostmakedepends="pkg-config asciidoc xmlto"
 makedepends="libsodium-devel"
 short_desc="The Intelligent Transport Layer"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="LGPL-3"
 homepage="http://www.zeromq.org"
-distfiles="http://download.zeromq.org/zeromq-${version}.tar.gz"
-checksum=e99f44fde25c2e4cb84ce440f87ca7d3fe3271c2b8cfbc67d55e4de25e6fe378
+distfiles="https://github.com/zeromq/libzmq/releases/download/v${version}/zeromq-${version}.tar.gz"
+checksum=5b23f4ca9ef545d5bd3af55d305765e3ee06b986263b31967435d285a3e6df6b
 
 zeromq-devel_package() {
 	depends="${sourcepkg}-${version}_${revision}"

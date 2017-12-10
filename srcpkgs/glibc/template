@@ -1,14 +1,15 @@
 # Template file for 'glibc'
 pkgname=glibc
-version=2.23
-revision=1
+version=2.26
+revision=3
 bootstrap=yes
 short_desc="The GNU C library"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://www.gnu.org/software/libc"
 license="GPL-2, LGPL-2.1, BSD"
 distfiles="${GNU_SITE}/glibc/glibc-${version}.tar.xz"
-checksum=94efeb00e4603c8546209cefb3e1a50a5315c86fa9b078b6fad758e187ce13e9
+checksum=e54e0a934cd2bc94429be79da5e9385898d2306b9eaf3c92d5a77af96190f6bd
+patch_args="-Np1"
 # Do not strip these files, objcopy errors out.
 nostrip_files="
 	XBS5_ILP32_OFFBIG
@@ -91,7 +92,7 @@ do_configure() {
 		configure_args+=" --with-headers=${XBPS_MASTERDIR}/usr/include"
 	fi
 
-	# Disable SSP
+	# Disable SSP from CFLAGS (enabled below)
 	export CFLAGS="${CFLAGS/-fstack-protector-strong/}"
 	# Disable FORTIFY_SOURCE
 	export CFLAGS="${CFLAGS/-D_FORTIFY_SOURCE=?/}"
@@ -104,7 +105,8 @@ do_configure() {
 		--disable-profile --enable-kernel=2.6.32 \
 		--enable-stack-guard-randomization \
 		--without-selinux --without-cvs --without-gd \
-		--disable-lock-elision \
+		--disable-lock-elision --enable-obsolete-nsl \
+		--enable-stack-protector=strong \
 		libc_cv_rootsbindir=/usr/bin \
 		libc_cv_rtlddir=${_libdir} libc_cv_slibdir=${_libdir}
 }

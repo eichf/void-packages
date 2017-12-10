@@ -1,36 +1,41 @@
 # Template file for 'python-pexpect'
 pkgname=python-pexpect
-version=4.0.1
+version=4.3.0
 revision=1
 noarch=yes
 wrksrc="${pkgname/python-}-${version}"
 build_style=python-module
-python_versions="2.7 3.4"
-hostmakedepends="python-setuptools python3.4-setuptools"
+hostmakedepends="python-setuptools python3-setuptools"
 depends="python-ptyprocess"
 pycompile_module="pexpect"
 short_desc="Python2 module for spawning child applications and controlling them"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
-homepage="http://pexpect.readthedocs.org/"
+homepage="https://pexpect.readthedocs.io/"
 license="ISC"
 distfiles="${PYPI_SITE}/p/pexpect/pexpect-${version}.tar.gz"
-checksum=232795ebcaaf2e120396dbbaa3a129eda51757eeaae1911558f4ef8ee414fc6c
+checksum=00ab0872f80f5db740499e7a1283a7c3b97bea542d72df84d83dea17d0afd2d9
 
-pre_build() {
-	sed -i '/^#!/d' pexpect/FSM.py
-}
 post_install() {
+	# drop asyncio stuff from python2
+	# https://github.com/pexpect/pexpect/issues/290
+	rm -f ${DESTDIR}/usr/lib/python2*/site-packages/pexpect/_async.py
 	vlicense LICENSE
 }
 
-python3.4-pexpect_package() {
+python3-pexpect_package() {
 	noarch=yes
-	depends="python3.4-ptyprocess"
-	pycompile_version="3.4"
+	depends="python3-ptyprocess"
 	pycompile_module="pexpect"
-	short_desc="${short_desc/Python2/Python3.4}"
+	replaces="python3.4-pexpect>=0"
+	short_desc="${short_desc/Python2/Python3}"
 	pkg_install() {
-		vmove usr/lib/python3.4
+		vmove usr/lib/python3*
 		vlicense LICENSE
 	}
+}
+python3.4-pexpect_package() {
+	noarch=yes
+	build_style=meta
+	short_desc="${short_desc/Python2/Python3.4} (transitional dummy package)"
+	depends="python3-pexpect>=${version}_${revision}"
 }

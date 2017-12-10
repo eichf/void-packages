@@ -1,21 +1,21 @@
 # Template file for 'libvpx'
 pkgname=libvpx
-version=1.5.0
-revision=1
+version=1.6.1
+revision=3
 hostmakedepends="perl yasm"
 short_desc="The VP8/VP9 Codecs"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://www.webmproject.org"
 license="BSD"
 distfiles="http://downloads.webmproject.org/releases/webm/libvpx-${version}.tar.bz2"
-checksum=306d67908625675f8e188d37a81fbfafdf5068b09d9aa52702b6fbe601c76797
+checksum=1c2c0c2a97fba9474943be34ee39337dee756780fc12870ba1dc68372586a819
 
 do_configure() {
 	export LD="$CC"
 
 	if [ "$CROSS_BUILD" ]; then
 		case "$XBPS_TARGET_MACHINE" in
-			armv6*) _cross="--target=armv6-linux-gcc";;
+			aarch64*) _cross="--target=arm64-linux-gcc";;
 			armv7*) _cross="--target=armv7-linux-gcc";;
 			*) _cross="--target=generic-gnu";;
 		esac
@@ -23,6 +23,7 @@ do_configure() {
 	CFLAGS+=" -fPIC"
 
 	./configure --enable-vp8 --enable-vp9 \
+		--enable-experimental --enable-spatial-svc \
 		--enable-runtime-cpu-detect --enable-shared \
 		--enable-postproc --enable-pic --disable-install-docs \
 		--disable-install-srcs --as=yasm ${_cross}

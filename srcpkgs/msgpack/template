@@ -1,17 +1,16 @@
 # Template file for 'msgpack'
 pkgname=msgpack
-version=1.4.1
+version=2.1.5
 revision=1
 wrksrc="msgpack-${version}"
-build_style=gnu-configure
-hostmakedepends="cmake"
+build_style=cmake
 makedepends="zlib-devel"
-short_desc="An efficient binary serialization format"
+short_desc="Binary-based efficient object serialization library"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="Apache-2.0"
 homepage="http://msgpack.org/"
 distfiles="https://github.com/$pkgname/$pkgname-c/releases/download/cpp-$version/$pkgname-$version.tar.gz"
-checksum=8ac512f52b30572f0244d6f521847ef3c54a59097dc05b479ac282bf1374f22e
+checksum=6126375af9b204611b9d9f154929f4f747e4599e6ae8443b337915dcf2899d2b
 
 msgpack-devel_package() {
 	short_desc+=" - development files"
@@ -20,6 +19,7 @@ msgpack-devel_package() {
 		vmove usr/include
 		vmove usr/lib/*.a
 		vmove usr/lib/*.so
+		vmove usr/lib/cmake
 		vmove usr/lib/pkgconfig
 	}
 }

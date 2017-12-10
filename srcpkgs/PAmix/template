@@ -1,0 +1,30 @@
+# Template file for 'PAmix'
+pkgname=PAmix
+version=1.5
+revision=1
+build_style=gnu-configure
+hostmakedepends="pkg-config automake autoconf-archive"
+makedepends="pulseaudio-devel ncurses-devel"
+conf_files="/etc/pamix.conf"
+short_desc="Ncurses/Curses Pulseaudio mixer in C++ similar to Pavucontrol"
+maintainer="Toyam Cox <Vaelatern@gmail.com>"
+license="MIT"
+homepage="https://github.com/patroclos/PAmix"
+distfiles="${homepage}/archive/${version}.tar.gz"
+checksum=f0085f00a9b0285465ad89c14d2aaa14090c1658ec4c34c49a2a42f5abb50fc3
+
+case "${XBPS_TARGET_MACHINE}" in
+	*-musl) broken="Parts of ncurses, not available on musl";;
+esac
+
+pre_configure() {
+	autoreconf -fi
+}
+
+post_install() {
+	vlicense LICENSE
+}
+
+# REMARKS:
+# Named PAmix instead of pamix to match upstream and prevent misassociation
+# with Pluggable Authentication Modules

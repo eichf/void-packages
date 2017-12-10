@@ -1,11 +1,10 @@
 # Template file for 'mutagen'
 pkgname=mutagen
-version=1.32
-revision=1
+version=1.39
+revision=2
 noarch=yes
 build_style=python-module
-python_versions="2.7 3.4"
-hostmakedepends="python-devel python3.4-devel"
+hostmakedepends="python-devel python3-devel"
 makedepends="${hostmakedepends}"
 depends="python"
 pycompile_module="mutagen"
@@ -13,17 +12,45 @@ short_desc="Python2 multimedia tagging library"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="https://github.com/quodlibet/mutagen"
 license="GPL-2"
-distfiles="${PYPI_SITE}/m/mutagen/mutagen-${version}.tar.gz"
-checksum=7721ded04caf36fc30661165ae311fed342f7503b048e9db3d52764108ed3ab5
+distfiles="${PYPI_SITE}/m/${pkgname}/${pkgname}-${version}.tar.gz"
+checksum=9da92566458ffe5618ffd26167abaa8fd81f02a7397b8734ec14dfe14e8a19e4
 
+alternatives="
+ mutagen:mid3cp:/usr/bin/mid3cp2
+ mutagen:mid3iconv:/usr/bin/mid3iconv2
+ mutagen:mid3v2:/usr/bin/python2-mid3v2
+ mutagen:moggsplit:/usr/bin/moggsplit2
+ mutagen:mutagen-inspect:/usr/bin/mutagen-inspect2
+ mutagen:mutagen-pony:/usr/bin/mutagen-pony2"
+
+post_install() {
+	# XXX: override the default naming scheme for mid3v2
+	cp -a ${DESTDIR}/usr/bin/{,python3-}mid3v2
+	mv ${DESTDIR}/usr/bin/{,python2-}mid3v2
+}
+
+python3-mutagen_package() {
+	alternatives="
+	 mutagen:mid3cp:/usr/bin/mid3cp3
+	 mutagen:mid3iconv:/usr/bin/mid3iconv3
+	 mutagen:mid3v2:/usr/bin/python3-mid3v2
+	 mutagen:moggsplit:/usr/bin/moggsplit3
+	 mutagen:mutagen-inspect:/usr/bin/mutagen-inspect3
+	 mutagen:mutagen-pony:/usr/bin/mutagen-pony3"
+	noarch=yes
+	depends="python3"
+	pycompile_module="mutagen"
+	replaces="python3.4-mutagen>=0"
+	short_desc="${short_desc/Python2/Python3}"
+	pkg_install() {
+		vmove usr/bin/*3
+		vmove usr/bin/python3-*
+		vmove usr/lib/python3*
+	}
+}
 python3.4-mutagen_package() {
 	noarch=yes
-	wrksrc=${pkgname#*-}-${version}
-	depends="python3.4"
-	pycompile_version="3.4"
-	pycompile_module="mutagen"
-	short_desc="${short_desc/Python2/Python3.4}"
-	pkg_install() {
-		vmove usr/lib/python3.4
-	}
+	build_style=meta
+	short_desc="${short_desc/Python2/Python3.4} (transitional dummy package)"
+	depends="python3-mutagen>=${version}_${revision}"
 }

@@ -1,27 +1,23 @@
 # Template file for 'pluma'
 pkgname=pluma
-version=1.14.0
+version=1.18.3
 revision=1
 build_style=gnu-configure
-configure_args="--with-gtk=3.0 $(vopt_enable python)"
-hostmakedepends="pkg-config intltool itstool glib-devel"
-makedepends="gtk+3-devel enchant-devel libSM-devel mate-desktop-devel
- gtksourceview-devel libsoup-devel iso-codes
- $(vopt_if python 'pygtk-devel pygtksourceview')"
-depends="$(vopt_if python pygtksourceview) desktop-file-utils iso-codes zenity"
 pycompile_dirs="usr/lib/pluma/plugins"
-short_desc="A powerful text editor for MATE"
+hostmakedepends="automake libtool pkg-config intltool itstool glib-devel
+ gobject-introspection mate-common"
+makedepends="gtk+3-devel enchant-devel libSM-devel mate-desktop-devel
+ gtksourceview-devel libsoup-devel libpeas-devel iso-codes"
+depends="desktop-file-utils iso-codes zenity"
+short_desc="Powerful text editor for MATE"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
-license="LGPL-2"
-homepage="http://mate-desktop.org"
-distfiles="http://pub.mate-desktop.org/releases/${version%.*}/${pkgname}-${version}.tar.xz"
-checksum=9e6f33bb335439f6684ea71e52fb5da3991431c6f6a2081d90049fd541d9f662
-
-build_options="python"
+license="GPL-2"
+homepage="https://mate-desktop.org"
+distfiles="https://pub.mate-desktop.org/releases/${version%.*}/${pkgname}-${version}.tar.xz"
+checksum=20f60758e37ce264fa3a13f0027bf411b84e98467f2e063783c19cefe496e2af
 
 pre_configure() {
-	# ACCESSPERMS is glibc specific... unportable.
-	sed -i 's,ACCESSPERMS,(S_IRWXU|S_IRWXG|S_IRWXO),g' tests/document-saver.c
+	NOCONFIGURE=1 ./autogen.sh
 }
 
 pluma-devel_package() {

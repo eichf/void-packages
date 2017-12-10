@@ -1,21 +1,26 @@
 # Template file for 'bcc'
 pkgname=bcc
-version=0.1.8
+version=0.4.0
 revision=1
 build_style=cmake
 configure_args="-DREVISION=${version}"
 hostmakedepends="flex"
-makedepends="clang lld-devel llvm ncurses-devel python-devel zlib-devel"
+makedepends="clang elfutils-devel lld-devel llvm ncurses-devel
+ python-devel zlib-devel"
 short_desc="BPF-based Linux IO analysis, networking, monitoring, and more"
-maintainer="Christian Neukirchen <chneukirchen@gmail.com>"
+maintainer="Leah Neukirchen <leah@vuxu.org>"
 license="Apache-2.0"
 homepage="https://github.com/iovisor/bcc"
 distfiles="https://github.com/iovisor/${pkgname}/archive/v${version}.tar.gz"
-checksum=7535d0dec063454a858337dd07211ad2a207f8fa5665a3fad166f38415e50d70
+checksum=f77dd07262e8365e48589bf0475e3248e4e77deae0f90e4fb77af26255bce87d
+nocross=yes # https://github.com/voidlinux/void-packages/issues/4738
 
+post_extract() {
+	sed -i '/tests/d' CMakeLists.txt  # break on musl
+}
 bcc-tools_package() {
 	short_desc+=" - tools"
-	depends="python-bcc>=${version}_${revision}"
+	depends="python-bcc>=${version}_${revision} linux-headers"
 	pkg_install() {
 		vmove usr/share/bcc/man/man8
 		mv ${PKGDESTDIR}/usr/share/bcc/man ${PKGDESTDIR}/usr/share/man
@@ -23,7 +28,9 @@ bcc-tools_package() {
 		vmove usr/share/bcc/tools
 		mv ${PKGDESTDIR}/usr/share/bcc/tools/doc ${PKGDESTDIR}/usr/share/doc/bcc-tools
 		mv ${PKGDESTDIR}/usr/share/bcc/tools ${PKGDESTDIR}/usr/bin
+		rm -rf ${PKGDESTDIR}/usr/bin/old
 		mv ${PKGDESTDIR}/usr/bin/trace ${PKGDESTDIR}/usr/bin/trace-bcc
+		mv ${PKGDESTDIR}/usr/share/man/man8/trace.8 ${PKGDESTDIR}/usr/share/man/man8/trace-bcc.8
 	}
 }
 bcc-devel_package() {

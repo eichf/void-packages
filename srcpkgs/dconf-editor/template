@@ -1,13 +1,13 @@
 # Template file for 'dconf-editor'
 pkgname=dconf-editor
-version=3.20.1
+version=3.26.2
 revision=1
 build_style=gnu-configure
 hostmakedepends="pkg-config intltool libxslt docbook-xsl glib-devel"
 makedepends="dconf-devel gtk+3-devel libxml2-devel"
 short_desc="A low-level configuration system - GTK+ editor"
 maintainer="Enno Boland <gottox@voidlinux.eu>"
-license="LGPL-2.1"
+license="GPL-3"
 homepage="http://live.gnome.org/dconf"
 distfiles="${GNOME_SITE}/$pkgname/${version%.*}/$pkgname-$version.tar.xz"
-checksum=7794f40b33dc376096896e10164b8571ab31ae1d50b9d0b40d409db2efaed75d
+checksum=28b453fe49c49d7dfaf07c85c01d7495913f93ab64a0b223c117eb17d1cb8ad1

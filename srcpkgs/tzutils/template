@@ -1,14 +1,14 @@
 # Template file for 'tzutils'
 pkgname=tzutils
-version=2016d
+version=2017c
 revision=1
 wrksrc="tz-${version}"
 homepage="http://www.iana.org/time-zones"
 short_desc="Time zone and daylight-saving time utilities"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
-license="GPL-2"
+license="Public Domain"
 distfiles="https://github.com/eggert/tz/archive/${version}.tar.gz"
-checksum=ea6b5ad6cc6763da7d79fa8038437a60f3728111f13571e9323b9a49ec382808
+checksum=83d1c6a5910e827db88528a1a1f6f7b4ad9fe98b6076895749bf49660b02cc68
 
 do_build() {
 	make TZDIR=/usr/share/zoneinfo CC=$CC CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS"

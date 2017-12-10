@@ -1,49 +1,54 @@
 # Template file for 'python-Pyro4'
 pkgname=python-Pyro4
-version=4.43
-revision=2
+version=4.63
+revision=1
 wrksrc="${pkgname#*-}-${version}"
 noarch=yes
 build_style=python-module
-python_versions="2.7 3.4"
 pycompile_module="Pyro4"
-hostmakedepends="python-setuptools python3.4-setuptools"
-depends="python-setuptools python-serpent"
+hostmakedepends="python-setuptools python3-setuptools"
+depends="python-setuptools python-serpent>=1.23 python-selectors2"
 short_desc="Distributed Object Middleware (IPC/RPC) for Python2"
 maintainer="pulux <pulux@pf4sh.de>"
 license="MIT"
-homepage="http://pythonhosted.org/Pyro4/"
+homepage="https://pythonhosted.org/Pyro4/"
 distfiles="${PYPI_SITE}/P/Pyro4/Pyro4-${version}.tar.gz"
-checksum=b6f924fa74f21d14c851450e157711914a402bfc2f3a880c1b2c275fd4cda6d6
+checksum=67d2b34156619ba37e92100af95aade8129dd2b7327eb05821d43887451f7d7b
 
 alternatives="
- pyro4:pyro4-check-config:/usr/bin/pyro4-check-config2.7
- pyro4:pyro4-flameserver:/usr/bin/pyro4-flameserver2.7
- pyro4:pyro4-httpgateway:/usr/bin/pyro4-httpgateway2.7
- pyro4:pyro4-ns:/usr/bin/pyro4-ns2.7
- pyro4:pyro4-nsc:/usr/bin/pyro4-nsc2.7
- pyro4:pyro4-test-echoserver:/usr/bin/pyro4-test-echoserver2.7"
+ pyro4:pyro4-check-config:/usr/bin/pyro4-check-config2
+ pyro4:pyro4-flameserver:/usr/bin/pyro4-flameserver2
+ pyro4:pyro4-httpgateway:/usr/bin/pyro4-httpgateway2
+ pyro4:pyro4-ns:/usr/bin/pyro4-ns2
+ pyro4:pyro4-nsc:/usr/bin/pyro4-nsc2
+ pyro4:pyro4-test-echoserver:/usr/bin/pyro4-test-echoserver2"
 
 post_install() {
 	vlicense LICENSE
 }
 
-python3.4-Pyro4_package() {
+python3-Pyro4_package() {
 	alternatives="
-	 pyro4:pyro4-check-config:/usr/bin/pyro4-check-config3.4
-	 pyro4:pyro4-flameserver:/usr/bin/pyro4-flameserver3.4
-	 pyro4:pyro4-httpgateway:/usr/bin/pyro4-httpgateway3.4
-	 pyro4:pyro4-ns:/usr/bin/pyro4-ns3.4
-	 pyro4:pyro4-nsc:/usr/bin/pyro4-nsc3.4
-	 pyro4:pyro4-test-echoserver:/usr/bin/pyro4-test-echoserver3.4"
+	 pyro4:pyro4-check-config:/usr/bin/pyro4-check-config3
+	 pyro4:pyro4-flameserver:/usr/bin/pyro4-flameserver3
+	 pyro4:pyro4-httpgateway:/usr/bin/pyro4-httpgateway3
+	 pyro4:pyro4-ns:/usr/bin/pyro4-ns3
+	 pyro4:pyro4-nsc:/usr/bin/pyro4-nsc3
+	 pyro4:pyro4-test-echoserver:/usr/bin/pyro4-test-echoserver3"
 	noarch=yes
-	depends="python-setuptools python3.4-serpent"
-	pycompile_version="3.4"
+	depends="python3-setuptools python3-serpent"
+	replaces="python3.4-Pyro4>=0"
 	pycompile_module="Pyro4"
-	short_desc="${short_desc/Python2/Python3.4}"
+	short_desc="${short_desc/Python2/Python3}"
 	pkg_install() {
-		vmove usr/bin/*3.4
-		vmove usr/lib/python3.4
+		vmove usr/bin/*3
+		vmove usr/lib/python3*
 		vlicense LICENSE
 	}
+}
+python3.4-Pyro4_package() {
+	noarch=yes
+	build_style=meta
+	short_desc="${short_desc/Python2/Python3.4} (transitional dummy package)"
+	depends="python3-Pyro4>=${version}_${revision}"
 }

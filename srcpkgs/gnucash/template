@@ -1,16 +1,18 @@
 # Template file for 'gnucash'
 pkgname=gnucash
-version=2.6.12
-revision=2
+version=2.6.17
+revision=1
 conf_files="
-	/etc/gnucash/config
-	/etc/gnucash/environment"
+ /etc/gnucash/config
+ /etc/gnucash/environment"
+pycompile_module="gnucash"
+pycompile_dirs="usr/share/gnucash/python"
 hostmakedepends="pkg-config intltool guile"
-makedepends="
- gmp-devel gtk+-devel libxml2-devel libxslt-devel libgnomecanvas-devel libltdl-devel
- goffice0.8-devel libgsf-devel GConf-devel webkitgtk2-devel gc-devel guile-devel
- aqbanking-devel aqbanking libofx-devel gwenhywfar-devel gwenhywfar-gtk python-devel"
-depends="guile dconf"
+makedepends="GConf-devel aqbanking aqbanking-devel gc-devel gmp-devel
+ goffice0.8-devel gtk+-devel guile-devel gwenhywfar-devel gwenhywfar-gtk
+ libgnomecanvas-devel libgsf-devel libltdl-devel libofx-devel libxml2-devel
+ libxslt-devel python-devel webkitgtk2-devel"
+depends="dconf guile pygtk"
 build_style="gnu-configure"
 configure_args="--disable-dbi --enable-aqbanking --enable-python"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
@@ -18,7 +20,7 @@ license="GPL-3"
 homepage="http://www.gnucash.org/"
 short_desc="Financial-accounting software"
 distfiles="${SOURCEFORGE_SITE}/${pkgname}/${pkgname}-${version}.tar.bz2"
-checksum=371fe9af3ec4b5d6839722b07c9064a51cfe247511edaa6286fc82710f700475
+checksum=db965f39b6c5181810a064a1d1f5bb719722ac3b54dfce0cecf43ee7b38e593c
 
 nocross=yes
 

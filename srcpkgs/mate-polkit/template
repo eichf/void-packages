@@ -1,9 +1,9 @@
 # Template file for 'mate-polkit'
 pkgname=mate-polkit
-version=1.14.0
+version=1.18.2
 revision=1
 build_style=gnu-configure
-configure_args="--with-gtk=3.0 --disable-static $(vopt_enable gir introspection)"
+configure_args="--disable-static $(vopt_enable gir introspection)"
 hostmakedepends="pkg-config intltool $(vopt_if gir gobject-introspection)"
 makedepends="gtk+3-devel polkit-devel"
 short_desc="PolicyKit integration for the MATE desktop"
@@ -11,7 +11,7 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="LGPL-3"
 homepage="http://mate-desktop.org"
 distfiles="http://pub.mate-desktop.org/releases/${version%.*}/${pkgname}-${version}.tar.xz"
-checksum=929d5710d6284f924dc65824b75e9da23b5809c50033da18b6b4b79e0f599ddd
+checksum=6dc987edfa6239ded5edc8a472a19a77839348519cf24cd968019420f9a1bd06
 
 build_options="gir"
 if [ -z "$CROSS_BUILD" ]; then

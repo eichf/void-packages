@@ -1,19 +1,32 @@
 # Template build file for 'gperftools'
 pkgname=gperftools
-version=2.4
-revision=2
+version=2.6.2
+revision=1
 build_style=gnu-configure
+checkdepends="perl"
 short_desc="Multi-threaded malloc() and performance analysis tools"
 maintainer="Enno Boland <gottox@voidlinux.eu>"
-license="BSD-3-Clause"
-homepage="http://gperftools.googlecode.com"
-distfiles="https://googledrive.com/host/0B6NtGsLhIcf7MWxMMF9JdTN3UVk/gperftools-$version.zip"
-checksum=2d80f7b0126d73f5cda70f36d2a4ba88da93b1775e9fd2acf773bb2854e97a38
-hostmakedepends="unzip"
+license="3-clause-BSD"
+homepage="https://github.com/gperftools/gperftools"
+distfiles="https://github.com/${pkgname}/${pkgname}/releases/download/${pkgname}-${version}/${pkgname}-${version}.tar.gz"
+checksum=4a28ff87bb8457f62fcf05487d78ccc3be4e4760dc89d4def5a5f26240407f23
 makedepends="libunwind-devel"
 
-pre_configure() {
-	sed -i -e "s/^UNWIND_LIBS = .*/UNWIND_LIBS = -lunwind/" Makefile.in
+case "$XBPS_TARGET_MACHINE" in
+arm*-musl|aarch64-musl)
+	makedepends=
+	configure_args="--disable-libunwind"
+	# benchmark/getcontext_light.cc:57: undefined reference to 'getcontext'
+	broken=https://build.voidlinux.eu/builders/armv6l-musl_builder/builds/3743/steps/shell_3/logs/stdio
+esac
+
+post_extract() {
+	sed -i -e 's/__off64_t/off64_t/' \
+		src/base/linux_syscall_support.h src/malloc_hook_mmap_linux.h
+}
+
+post_install() {
+	vlicense COPYING
 }
 
 gperftools-devel_package() {

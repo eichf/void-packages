@@ -1,9 +1,9 @@
 # Template build file for 'cross-arm-linux-gnueabi'
 #
-_binutils_version=2.25.1
-_gcc_version=4.9.3
-_glibc_version=2.22
-_linux_version=3.18.25
+_binutils_version=2.29
+_gcc_version=7.2.0
+_glibc_version=2.26
+_linux_version=4.9.8
 
 _triplet=arm-linux-gnueabi
 _fpuflags="--with-arch=armv5te --without-fp --with-float=soft"
@@ -11,31 +11,33 @@ _archflags="-march=armv5te -msoft-float -mfloat-abi=soft"
 _sysroot="/usr/${_triplet}"
 
 pkgname=cross-${_triplet}
-version=0.21
-revision=3
+version=0.24
+revision=2
 short_desc="GNU Cross toolchain for the ${_triplet} LE target (binutils/gcc/glibc)"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://www.voidlinux.eu"
 license="GPL-3, GPL-2, LGPL-2.1"
 distfiles="
  ${GNU_SITE}/binutils/binutils-${_binutils_version}.tar.bz2
- ${GNU_SITE}/gcc/gcc-${_gcc_version}/gcc-${_gcc_version}.tar.bz2
+ ${GNU_SITE}/gcc/gcc-${_gcc_version}/gcc-${_gcc_version}.tar.xz
  ${GNU_SITE}/glibc/glibc-${_glibc_version}.tar.xz
- ${KERNEL_SITE}/kernel/v3.x/linux-${_linux_version}.tar.xz"
-checksum="b5b14added7d78a8d1ca70b5cb75fef57ce2197264f4f5835326b0df22ac9f22
- 2332b2a5a321b57508b9031354a8503af6fdfb868b8c1748d33028d100a8b67e
- eb731406903befef1d8f878a46be75ef862b9056ab0cde1626d08a7a05328948
- c649874e2856101df7cefe5fdad313ebb2282a939fc1e95cf02222327745ff92"
+ ${KERNEL_SITE}/kernel/v4.x/linux-${_linux_version}.tar.xz"
+checksum="
+ 29a29549869039aad75fdf507ac30366da5ad0b974fbff4a8e7148dbf4f40ebf
+ 1cf7adf8ff4b5aa49041c8734bbcf1ad18cc4c94d0029aae0f4e48841088479a
+ e54e0a934cd2bc94429be79da5e9385898d2306b9eaf3c92d5a77af96190f6bd
+ 150bb7f2dd4849b5d21b8ccd8d05294a48229e1fcb93a22e7b806a79ec0b0e45"
 
 lib32disabled=yes
 nocross=yes
+nopie=yes
 nodebug=yes
 create_wrksrc=yes
 
 hostmakedepends="perl flex"
-makedepends="zlib-devel gmp-devel mpfr-devel libmpc-devel"
+makedepends="zlib-devel gmp-devel mpfr-devel libmpc-devel isl15-devel"
 depends="${pkgname}-libc-${version}_${revision}"
-nostrip_files="libgcc.a libgcov.a libgcc_eh.a"
+nostrip_files="libcaf_single.a libgcc.a libgcov.a libgcc_eh.a"
 only_for_archs="i686 x86_64"
 
 _apply_patch() {
@@ -62,17 +64,24 @@ _linux_headers() {
 }
 
 _binutils_build() {
+	local _args
+
 	[ -f ${wrksrc}/.binutils_build_done ] && return 0
 
 	cd ${wrksrc}
 	msg_normal "Building cross binutils\n"
 	[ ! -d binutils-build ] && mkdir binutils-build
 	cd binutils-build
+	_args="--prefix=/usr"
+	_args+=" --target=${_triplet}"
+	_args+=" --with-sysroot=${_sysroot}"
+	_args+=" --disable-nls"
+	_args+=" --disable-shared"
+	_args+=" --disable-multilib"
+	_args+=" --disable-werror"
+	_args+=" --with-system-zlib"
 
-	../binutils-${_binutils_version}/configure \
-		--prefix=/usr --target=${_triplet} \
-		--with-sysroot=${_sysroot} --disable-nls --disable-shared \
-		--disable-multilib --disable-werror
+	../binutils-${_binutils_version}/configure ${_args}
 
 	make configure-host
 	make ${makejobs}
@@ -82,26 +91,41 @@ _binutils_build() {
 }
 
 _gcc_bootstrap() {
+	local _args
+
 	[ -f ${wrksrc}/.gcc_bootstrap_done ] && return 0
 
 	cd ${wrksrc}/gcc-${_gcc_version}
-	_apply_patch -p0 ${FILESDIR}/libcpp-source_date_epoch.patch
-	_apply_patch -p0 ${FILESDIR}/gcc-spec-env-r1.patch
+	_apply_patch -p0 ${FILESDIR}/fix-cxxflags-passing.patch
 
 	msg_normal "Building cross gcc bootstrap\n"
 
 	[ ! -d ../gcc-bootstrap ] && mkdir ../gcc-bootstrap
 	cd ../gcc-bootstrap
 
+	_args="--prefix=/usr"
+	_args+=" --target=${_triplet}"
+	_args+=" --without-headers"
+	_args+=" --disable-nls"
+	_args+=" --disable-shared"
+	_args+=" --disable-libquadmath"
+	_args+=" --disable-decimal-float"
+	_args+=" --disable-libgomp"
+	_args+=" --disable-libmpx"
+	_args+=" --disable-libmudflap"
+	_args+=" --disable-libssp"
+	_args+=" --disable-libitm"
+	_args+=" --disable-libatomic"
+	_args+=" --disable-threads"
+	_args+=" --enable-languages=c"
+	_args+=" --disable-sjlj-exceptions"
+	_args+=" --disable-multilib"
+	_args+=" --with-gnu-ld"
+	_args+=" --with-gnu-as"
+	_args+=" ${_fpuflags}"
+
 	CFLAGS="-O0 -g0" CXXFLAGS="-O0 -g0" \
-		../gcc-${_gcc_version}/configure --prefix=/usr \
-		--target=${_triplet} --without-headers \
-		--disable-nls --disable-shared --disable-libquadmath \
-		--disable-decimal-float --disable-libgomp --disable-libmudflap \
-		--disable-libssp --disable-libitm --disable-libatomic \
-		--disable-threads --enable-languages=c \
-		--disable-sjlj-exceptions --disable-multilib \
-		--with-gnu-ld --with-gnu-as ${_fpuflags}
+		../gcc-${_gcc_version}/configure ${_args}
 
 	make ${makejobs}
 	make install
@@ -110,7 +134,14 @@ _gcc_bootstrap() {
 }
 
 _glibc_headers() {
+	local _args f
+
 	[ -f ${wrksrc}/.glibc_headers_done ] && return 0
+
+	cd ${wrksrc}/glibc-${_glibc_version}
+	for f in ${XBPS_SRCPKGDIR}/glibc/patches/*.patch; do
+		_apply_patch -p1 "$f"
+	done
 
 	cd ${wrksrc}
 	msg_normal "Building cross glibc headers\n"
@@ -124,11 +155,16 @@ _glibc_headers() {
 	export CC="${_triplet}-gcc" LD="${_triplet}-ld" \
 		AS="${_triplet}-as" CPP="${_triplet}-cpp"
 
-	../glibc-${_glibc_version}/configure \
-		--host=${_triplet} --prefix=/usr \
-		--with-headers=${_sysroot}/usr/include \
-		--config-cache --enable-obsolete-rpc \
-		--enable-kernel=2.6.27 ${_fpuflags}
+	_args="--prefix=/usr"
+	_args+=" --host=${_triplet}"
+	_args+=" --with-headers=${_sysroot}/usr/include"
+	_args+=" --config-cache"
+	_args+=" --enable-obsolete-rpc"
+	_args+=" --enable-obsolete-nsl"
+	_args+=" --enable-kernel=2.6.27"
+	_args+=" ${_fpuflags}"
+
+	../glibc-${_glibc_version}/configure ${_args}
 
 	make -k install-headers cross_compiling=yes \
 		install_root=${_sysroot}
@@ -137,6 +173,8 @@ _glibc_headers() {
 }
 
 _glibc_build() {
+	local _args
+
 	[ -f ${wrksrc}/.glibc_build_done ] && return 0
 
 	cd ${wrksrc}
@@ -152,11 +190,18 @@ _glibc_build() {
 		AS="${_triplet}-as" CPP="${_triplet}-cpp"
 	export CFLAGS="-Os -pipe ${_archflags}"
 
-	../glibc-${_glibc_version}/configure \
-		--host=${_triplet} --prefix=/usr \
-		--with-headers=${_sysroot}/usr/include \
-		--config-cache --disable-profile --enable-obsolete-rpc \
-		--disable-werror --enable-kernel=2.6.27 ${_fpuflags}
+	_args="--prefix=/usr"
+	_args+=" --host=${_triplet}"
+	_args+=" --with-headers=${_sysroot}/usr/include"
+	_args+=" --config-cache"
+	_args+=" --disable-profile"
+	_args+=" --enable-obsolete-rpc"
+	_args+=" --enable-obsolete-nsl"
+	_args+=" --disable-werror"
+	_args+=" --enable-kernel=2.6.27"
+	_args+=" ${_fpuflags}"
+
+	../glibc-${_glibc_version}/configure ${_args}
 
 	make ${makejobs}
 	make install_root=${_sysroot} install
@@ -165,6 +210,8 @@ _glibc_build() {
 }
 
 _gcc_build() {
+	local _args
+
 	[ -f ${wrksrc}/.gcc_build_done ] && return 0
 
 	cd ${wrksrc}
@@ -183,20 +230,41 @@ _gcc_build() {
 		touch .sed_subst_done
 	fi
 
-	../gcc-${_gcc_version}/configure \
-		--target=${_triplet} --prefix=/usr --libdir=/usr/lib \
-		--libexecdir=/usr/lib --with-sysroot=${_sysroot} \
-		--enable-languages=c,c++,lto \
-		--with-gnu-as --with-gnu-ld --disable-multilib \
-		--disable-werror --disable-nls --disable-sjlj-exceptions \
-		--enable-threads=posix --enable-long-longx \
-		--enable-shared --enable-linker-build-id \
-		--enable-gnu-unique-object --enable-lto \
-		--disable-libquadmath --disable-libatomic \
-		--disable-libssp --disable-libmudflap \
-		--disable-libsanitizer --disable-libcilkrts \
-		--disable-libitm --disable-libvtv --disable-libstdcxx-pch \
-		--enable-libstdcxx-time --with-linker-hash-style=gnu ${_fpuflags}
+	_args="--prefix=/usr"
+	_args+=" --libdir=/usr/lib"
+	_args+=" --libexecdir=/usr/lib"
+	_args+=" --target=${_triplet}"
+	_args+=" --with-sysroot=${_sysroot}"
+	_args+=" --enable-languages=c,c++,fortran,lto"
+	_args+=" --with-gnu-as"
+	_args+=" --with-gnu-ld"
+	_args+=" --disable-multilib"
+	_args+=" --disable-werror"
+	_args+=" --disable-nls"
+	_args+=" --disable-sjlj-exceptions"
+	_args+=" --enable-threads=posix"
+	_args+=" --enable-long-longx"
+	_args+=" --enable-shared"
+	_args+=" --enable-linker-build-id"
+	_args+=" --enable-gnu-unique-object"
+	_args+=" --enable-lto"
+	_args+=" --enable-default-pie"
+	_args+=" --enable-default-ssp"
+	_args+=" --disable-libquadmath"
+	_args+=" --disable-libatomic"
+	_args+=" --disable-libssp"
+	_args+=" --disable-libmpx"
+	_args+=" --disable-libmudflap"
+	_args+=" --disable-libsanitizer"
+	_args+=" --disable-libcilkrts"
+	_args+=" --disable-libitm"
+	_args+=" --disable-libvtv"
+	_args+=" --disable-libstdcxx-pch"
+	_args+=" --enable-libstdcxx-time"
+	_args+=" --with-linker-hash-style=gnu"
+	_args+=" ${_fpuflags}"
+
+	../gcc-${_gcc_version}/configure ${_args}
 
 	make ${makejobs}
 
@@ -242,6 +310,9 @@ do_install() {
 	# install cross gcc
 	cd ${wrksrc}/gcc-build
 	make DESTDIR=${DESTDIR} install
+
+	# move libcc1.so* to the sysroot
+	mv ${DESTDIR}/usr/lib/libcc1.so* ${DESTDIR}/${_sysroot}/usr/lib
 
 	# install linux API headers for MIPS
 	cd ${wrksrc}/linux-${_linux_version}

@@ -1,33 +1,38 @@
 # Template file for 'python-Flask-Login'
 pkgname=python-Flask-Login
-version=0.3.2
+version=0.4.1
 revision=1
 noarch=yes
 wrksrc="${pkgname#*-}-${version}"
 build_style=python-module
-python_versions="2.7 3.4"
 pycompile_module="flask_login.py"
-hostmakedepends="python-setuptools python3.4-setuptools"
+hostmakedepends="python-setuptools python3-setuptools"
 depends="python-Flask"
 short_desc="User session management for Flask (Python2)"
 maintainer="pulux <pulux@pf4sh.de>"
 license="MIT"
 homepage="https://github.com/maxcountryman/flask-login"
 distfiles="${PYPI_SITE}/F/Flask-Login/Flask-Login-${version}.tar.gz"
-checksum=e72eff5c35e5a31db1aeca1db5d2501be702674ea88e8f223b5d2b11644beee6
+checksum=c815c1ac7b3e35e2081685e389a665f2c74d7e077cb93cecabaea352da4752ec
 
 post_install() {
 	vlicense LICENSE
 }
 
-python3.4-Flask-Login_package() {
+python3-Flask-Login_package() {
 	noarch=yes
-	depends="python3.4-Flask"
-	pycompile_version="3.4"
+	depends="python3-Flask"
 	pycompile_module="flask_login.py"
-	short_desc="${short_desc/Python2/Python3.4}"
+	replaces="python3.4-Flask-Login>=0"
+	short_desc="${short_desc/Python2/Python3}"
 	pkg_install() {
-		vmove usr/lib/python3.4
+		vmove usr/lib/python3*
 		vlicense LICENSE
 	}
+}
+python3.4-Flask-Login_package() {
+	noarch=yes
+	build_style=meta
+	short_desc="${short_desc/Python2/Python3.4} (transitional dummy package)"
+	depends="python3-Flask-Login>=${version}_${revision}"
 }

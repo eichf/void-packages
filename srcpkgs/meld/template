@@ -1,18 +1,18 @@
 # Template file for 'meld'
 pkgname=meld
-version=3.16.0
-revision=1
+version=3.18.0
+revision=2
 noarch=yes
-build_style=python-module
-hostmakedepends="pkg-config intltool gnome-doc-utils python itstool gtk-update-icon-cache"
-depends="python-gobject gsettings-desktop-schemas gtksourceview desktop-file-utils hicolor-icon-theme"
+build_style=python3-module
+hostmakedepends="pkg-config intltool gnome-doc-utils python3 itstool gtk-update-icon-cache"
+depends="python3-gobject gsettings-desktop-schemas gtksourceview desktop-file-utils hicolor-icon-theme"
 pycompile_module="meld"
 short_desc="Visual diff and merge tool"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://meldmerge.org/"
 license="GPL-2"
 distfiles="${GNOME_SITE}/meld/${version%.*}/meld-${version}.tar.xz"
-checksum=341bfd53ac7c0167d6d43694c0e7dbedf76463bdf79b425c439376ba15b56c0a
+checksum=848158b1e5c7473b9da3ddc16e057aad8951ec82979beb5914b8b4acdf97223e
 configure_args="--disable-schemas-compile"
 
 post_install() {

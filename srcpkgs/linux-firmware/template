@@ -1,22 +1,18 @@
 # Template file for 'linux-firmware'
 pkgname=linux-firmware
-version=20160402
+version=20171204
 revision=1
+_githash=30946b9b1787f086e8a1a3cb60658447212979c9
 noarch=yes
 short_desc="Binary firmware blobs for the Linux kernel"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
-homepage="http://www.kernel.org/"
+homepage="https://www.kernel.org/"
 license="See /usr/share/licenses/${pkgname}"
-hostmakedepends="git"
 depends="${pkgname}-amd-${version}_${revision} ${pkgname}-network-${version}_${revision}"
+distfiles="https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/snapshot/${pkgname}-${_githash}.tar.gz"
+checksum=b1ea12259ca91b1a397783989b3378242d1bb4c33b36edfdfda2739f957a7c85
+wrksrc="${pkgname}-${_githash}"
 
-do_fetch() {
-	local _githash=4a82017de7bee576cf5c29d0f339d67c720c2983
-	local _url="git://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git"
-	git clone ${_url} ${wrksrc}
-	cd ${wrksrc}
-	git checkout ${_githash}
-}
 do_install() {
 	vmkdir usr/lib/firmware
 	vmkdir usr/share/licenses/${pkgname}
@@ -35,10 +31,9 @@ linux-firmware-amd_package() {
 		vmove usr/share/licenses/linux-firmware/LICENSE.amdgpu
 		vmove usr/share/licenses/linux-firmware/LICENSE.amd-ucode
 		vmove usr/share/licenses/linux-firmware/LICENSE.radeon
-		# https://github.com/voidlinux/void-packages/issues/3505
-		ln -s bonaire_mc.bin ${PKGDESTDIR}/usr/lib/firmware/radeon/boniare_mc.bin
 	}
 }
+
 linux-firmware-intel_package() {
 	short_desc+=" - Intel CPU/GPU microcode"
 	noarch=yes
@@ -47,6 +42,7 @@ linux-firmware-intel_package() {
 		vmove usr/share/licenses/linux-firmware/LICENSE.i915
 	}
 }
+
 linux-firmware-nvidia_package() {
 	short_desc+=" NVIDIA GPU microcode"
 	noarch=yes
@@ -55,6 +51,7 @@ linux-firmware-nvidia_package() {
 		vmove usr/share/licenses/linux-firmware/LICENCE.nvidia*
 	}
 }
+
 linux-firmware-network_package() {
 	short_desc+=" - network"
 	noarch=yes

@@ -1,24 +1,20 @@
 # Template file for 'watchman'
 pkgname=watchman
-version=4.5.0
-revision=2
+version=4.9.0
+revision=1
 build_style=gnu-configure
-configure_args="--disable-statedir"
-hostmakedepends="automake libtool"
-makedepends="pcre-devel"
+configure_args="--disable-statedir --disable-lenient"
+hostmakedepends="pkg-config automake libtool"
+makedepends="pcre-devel libressl-devel"
 short_desc="Watches files and records, or triggers actions, when they change"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="Apache-2.0"
 homepage="https://facebook.github.io/watchman/"
 distfiles="https://github.com/facebook/watchman/archive/v${version}.tar.gz"
-checksum=ef11ad11f3b79a09232a27d993331cc8b686fe06a8f0e7c777cb50cc198020f6
+checksum=1f6402dc70b1d056fffc3748f2fdcecff730d8843bb6936de395b3443ce05322
 
-# The next person to bump these packages should consider the effects of the 
-# following PRs on watchman:
-# https://github.com/facebook/watchman/pull/243
-# https://github.com/facebook/watchman/pull/242
+CFLAGS="-Wno-error"
 
 pre_configure() {
-	sed -i 's,sys/poll.h,poll.h,g' *.[ch]
 	NOCONFIGURE=1 ./autogen.sh
 }

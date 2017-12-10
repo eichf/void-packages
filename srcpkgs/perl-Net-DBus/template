@@ -1,11 +1,12 @@
 # Template build file for 'perl-Net-DBus'.
 pkgname=perl-Net-DBus
 version=1.1.0
-revision=1
+revision=3
 wrksrc="${pkgname/perl-/}-${version}"
 build_style=perl-module
 hostmakedepends="perl pkg-config"
 makedepends="${hostmakedepends} dbus-devel"
+checkdepends="perl-XML-Twig"
 depends="perl perl-XML-Twig"
 short_desc="Extension for the DBus bindings"
 maintainer="John Regan <john@jrjrtech.com>"

@@ -1,16 +1,14 @@
 # Template file for 'mate-session-manager'
 pkgname=mate-session-manager
-version=1.14.0
+version=1.18.2
 revision=1
 build_style=gnu-configure
-configure_args="--with-gtk=3.0 --disable-static --disable-systemd --enable-upower"
-hostmakedepends="pkg-config intltool itstool glib-devel dbus-glib-devel"
-makedepends="gtk+3-devel dbus-glib-devel libSM-devel libXtst-devel mate-desktop-devel
- mate-settings-daemon-devel mate-polkit-devel pangox-compat-devel upower0-devel"
-depends="upower0"
+configure_args="--disable-static"
+hostmakedepends="pkg-config intltool glib-devel dbus-glib-devel"
+makedepends="gtk+3-devel dbus-glib-devel libSM-devel libXtst-devel"
 short_desc="The MATE Session Manager"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="LGPL-2"
-homepage="http://mate-desktop.org"
-distfiles="http://pub.mate-desktop.org/releases/${version%.*}/${pkgname}-${version}.tar.xz"
-checksum=190b9d9d2d9e76b8aa8ef84f351aab07fbea7e0772cecc11dae8c441c67b8dde
+homepage="https://mate-desktop.org"
+distfiles="https://pub.mate-desktop.org/releases/${version%.*}/${pkgname}-${version}.tar.xz"
+checksum=40f6bfdfc8945732bda183224d6ecf5b84e6b5bf8b5556bdabc96644bf3a3186

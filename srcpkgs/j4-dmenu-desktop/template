@@ -1,13 +1,13 @@
 # Template file for 'j4-dmenu-desktop'
 pkgname=j4-dmenu-desktop
-version=r2.13
-revision=2
+version=r2.15
+revision=1
 build_style=cmake
-hostmakedepends="cmake git"
+configure_args="-DNO_TESTS=1"
 depends="dmenu"
-short_desc=" A fast desktop menu"
+short_desc="A fast desktop menu"
 maintainer="Diogo Leal <diogo@diogoleal.com>"
 license="GPL-3"
 homepage="https://github.com/enkore/j4-dmenu-desktop"
 distfiles="https://github.com/enkore/j4-dmenu-desktop/archive/${version}.tar.gz"
-checksum=b0c7bc64e01c4271b3fabd0d3435976a6ab73dab210dd852e0224bf68089ff81
+checksum=236d5a18e993cef07959cd8a69b48df0285ea127e988f5f75c3f8bc70cdfd711

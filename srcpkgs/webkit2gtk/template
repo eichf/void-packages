@@ -1,28 +1,41 @@
 # Template file for 'webkit2gtk'
 pkgname=webkit2gtk
-version=2.12.2
-revision=2
+version=2.18.3
+revision=1
 wrksrc="webkitgtk-$version"
 build_style=cmake
-configure_args="-DPORT=GTK -DENABLE_GTKDOC=OFF -DCMAKE_LINKER=${XBPS_CROSS_TRIPLET}-gcc"
+configure_args="-DPORT=GTK -DENABLE_GTKDOC=OFF -DCMAKE_LINKER=${XBPS_CROSS_TRIPLET}-gcc
+ -DUSE_GSTREAMER_GL=OFF"
 short_desc="GTK+3 port of the WebKit2 browser engine"
 maintainer="Enno Boland <gottox@voidlinux.eu>"
-homepage="http://webkitgtk.org/"
+homepage="https://webkitgtk.org/"
 license="LGPL-2.1, 2-clause-BSD"
 distfiles="${homepage}/releases/webkitgtk-${version}.tar.xz"
-checksum=9dc49b908b1c37da739703e1402a7f07c4ea9093b8ecfb34f20e8f74e328f124
+checksum=e15420e1616a6f70f321541d467af5ca285bff66b1e0fa68a01df3ccf1b18f9e
 
 # ETOOHUGE
 nodebug=1
 
-hostmakedepends="perl python pkg-config intltool gperf flex
- ruby glib-devel geoclue2 cmake"
+CXXFLAGS="-Wno-expansion-to-defined"
+
+hostmakedepends="perl python pkg-config intltool gperf flex ruby glib-devel geoclue2"
 makedepends="
  at-spi2-core-devel libjpeg-turbo-devel libpng-devel sqlite-devel
  harfbuzz-devel gst-plugins-base1-devel libsoup-devel libxslt-devel
- icu-devel enchant-devel dbus-glib-devel libwebp-devel
- gtk+-devel gtk+3-devel libgudev-devel libsecret-devel ruby-devel geoclue2
- libnotify-devel hyphen-devel"
+ gnutls-devel icu-devel enchant-devel dbus-glib-devel libwebp-devel
+ gtk+-devel gtk+3-devel libgudev-devel libsecret-devel ruby-devel
+ geoclue2-devel libnotify-devel hyphen-devel"
+
+case "$XBPS_TARGET_MACHINE" in
+armv[56]*) configure_args+=" -DENABLE_JIT=0"
+	makedepends+=" libatomic-devel"
+	;;
+aarch64*) configure_args+=" -DUSE_LD_GOLD=0";;
+esac
+
+case "$XBPS_TARGET_MACHINE" in
+*-musl) configure_args+=" -DENABLE_SAMPLING_PROFILER=OFF";;
+esac
 
 # Package build options
 build_options="gir wayland x11"
@@ -32,7 +45,7 @@ if [ -z "$CROSS_BUILD" ]; then
 	build_options_default+=" gir"
 else
 	# Make cmake detect Ruby headers in cross base
-	configure_args+=" -DRUBY_CONFIG_INCLUDE_DIR=${XBPS_CROSS_BASE}/usr/include/ruby-2.2.0"
+	configure_args+=" -DRUBY_VERSION=2.4 -DRUBY_CONFIG_INCLUDE_DIR=${XBPS_CROSS_BASE}/usr/include/ruby-2.4.0"
 	# Fix non-working target CPU detection
 	configure_args+=" -DCMAKE_SYSTEM_PROCESSOR=${XBPS_TARGET_MACHINE%-musl}"
 fi
@@ -61,7 +74,9 @@ else
 fi
 
 post_install() {
-	vlicense Source/WebKit/LICENSE
+	vlicense Source/WebCore/LICENSE-APPLE
+	vlicense Source/WebCore/LICENSE-LGPL-2.1
+	vlicense Source/WebCore/LICENSE-LGPL-2
 }
 
 webkit2gtk-devel_package() {

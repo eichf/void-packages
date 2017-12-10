@@ -1,7 +1,7 @@
 # Template file for 'gawk'
 pkgname=gawk
-version=4.1.3
-revision=6
+version=4.2.0
+revision=1
 lib32disabled=yes
 build_style=gnu-configure
 configure_args="--with-readline"
@@ -11,7 +11,7 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="GPL-3"
 homepage="http://www.gnu.org/directory/GNU/gawk.html"
 distfiles="${GNU_SITE}/$pkgname/$pkgname-$version.tar.xz"
-checksum=e3cf55e91e31ea2845f8338bedd91e40671fc30e4d82ea147d220e687abda625
+checksum=d4f3cd31c001fd0ed52832d4fbfbdfeaa38ad541c182f80ff8fdf87324a6a9f2
 
 provides="awk-0_1"
 alternatives="
@@ -21,6 +21,15 @@ alternatives="
 pre_configure() {
 	# Create symlinks for bins and manpages.
 	sed -i -e "s|\$(LN)|\$(LN_S)|g" Makefile.in doc/Makefile.in
+}
+pre_check() {
+	sed -i 's/done | more/done/g' test/Makefile
+
+	case "$XBPS_TARGET_MACHINE" in
+		*-musl)
+			sed -i '/testext/d' test/Makefile
+			sed -i '/clos1way6/d' test/Makefile ;;
+	esac
 }
 post_install() {
 	rm ${DESTDIR}/usr/bin/awk

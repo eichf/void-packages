@@ -1,15 +1,16 @@
 # Template file for 'python-M2Crypto'
 pkgname=python-M2Crypto
-version=0.24.0
+version=0.27.0
 revision=2
 wrksrc="M2Crypto-${version}"
-build_style=python-module
+build_style=python2-module
 pycompile_module="M2Crypto"
 hostmakedepends="python-setuptools swig libressl-devel"
 makedepends="libressl-devel python-devel"
+depends="python-typing"
 short_desc="Python crypto and SSL toolkit"
-maintainer="Andrea Brancaleoni <miwaxe@gmail.com>"
-license="BSD"
-homepage="https://github.com/martinpaljak/M2Crypto"
+maintainer="Andrea Brancaleoni <abc@pompel.me>"
+license="MIT"
+homepage="https://gitlab.com/m2crypto/m2crypto/"
 distfiles="${PYPI_SITE}/M/M2Crypto/M2Crypto-${version}.tar.gz"
-checksum=80a56441a1d2c0cf27e725be7554c92598b938fc8767ee2c71fdbc2fdc055ee8
+checksum=82317459d653322d6b37f122ce916dc91ddcd9d1b814847497ac796c4549dd68

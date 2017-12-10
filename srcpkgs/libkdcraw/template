@@ -1,9 +1,9 @@
 # Template file for 'libkdcraw'
 pkgname=libkdcraw
 version=4.14.3
-revision=2
+revision=3
 build_style=cmake
-hostmakedepends="cmake automoc4 pkg-config"
+hostmakedepends="automoc4 pkg-config"
 makedepends="libressl-devel boost-devel qt-devel phonon-devel kdelibs-devel libraw-devel"
 depends="hicolor-icon-theme"
 short_desc="A C++ interface used to decode RAW picture"

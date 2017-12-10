@@ -1,19 +1,19 @@
 # Template file for 'strace'
 pkgname=strace
-version=4.11
+version=4.20
 revision=1
 build_style=gnu-configure
-configure_args="--enable-libunwind"
+configure_args="--with-libunwind"
 makedepends="libunwind-devel"
 short_desc="A System Call Tracer"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://sourceforge.net/projects/strace"
 license="BSD"
 distfiles="${SOURCEFORGE_SITE}/$pkgname/$pkgname-$version.tar.xz"
-checksum=e86a5f6cd8f941f67f3e4b28f4e60f3d9185c951cf266404533210a2e5cd8152
+checksum=5bf3148dd17306a42566f7da17368fdd781afa147db05ea63a4ca2b50f58c523
 
 case "$XBPS_TARGET_MACHINE" in
-	aarch64*) configure_args=; makedepends= ;;
+	aarch64-musl) configure_args=; makedepends= ;;
 esac
 
 pre_configure() {
@@ -23,7 +23,6 @@ pre_configure() {
 		*-musl) export CFLAGS+=" -Dsigcontext_struct=sigcontext";;
 	esac
 }
-
 post_install() {
 	vlicense COPYING
 }

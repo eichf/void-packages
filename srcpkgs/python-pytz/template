@@ -1,39 +1,43 @@
 # Template file for 'python-pytz'
 pkgname=python-pytz
-version=2016.4
+version=2017.3
 revision=1
 noarch=yes
 wrksrc="pytz-${version}"
 build_style=python-module
-python_versions="2.7 3.4"
-hostmakedepends="python-setuptools python3.4-setuptools"
+hostmakedepends="unzip python-setuptools python3-setuptools"
 depends="python tzdata"
 pycompile_module="pytz"
 short_desc="Python2 timezone library"
 maintainer="Alessio Sergi <al3hex@gmail.com>"
-homepage="http://pythonhosted.org/pytz/"
+homepage="https://pythonhosted.org/pytz/"
 license="MIT"
-distfiles="${PYPI_SITE}/p/pytz/pytz-${version}.tar.bz2"
-checksum=ee7c751544e35a7b7fb5e3fb25a49dade37d51e70a93e5107f10575d7102c311
+distfiles="${PYPI_SITE}/p/pytz/pytz-${version}.zip"
+checksum=fae4cffc040921b8a2d60c6cf0b5d662c1190fe54d718271db4eb17d44a185b7
 
 post_install() {
 	# use system tz database
-	rm -rf ${DESTDIR}/usr/lib/python*/site-packages/pytz/zoneinfo
-	for pyver in $python_versions; do
-		ln -sf /usr/share/zoneinfo \
-			${DESTDIR}/usr/lib/python${pyver}/site-packages/pytz/zoneinfo
+	for py_sitelib in $py2_sitelib $py3_sitelib; do
+		rm -rf ${DESTDIR}/${py_sitelib}/pytz/zoneinfo
+		ln -sf /usr/share/zoneinfo ${DESTDIR}/${py_sitelib}/pytz/zoneinfo
 	done
 	vlicense LICENSE.txt LICENSE
 }
 
-python3.4-pytz_package() {
+python3-pytz_package() {
 	noarch=yes
-	depends="python3.4 tzdata"
-	pycompile_version="3.4"
+	depends="python3 tzdata"
 	pycompile_module="pytz"
-	short_desc="${short_desc/Python2/Python3.4}"
+	replaces="python3.4-pytz>=0"
+	short_desc="${short_desc/Python2/Python3}"
 	pkg_install() {
-		vmove usr/lib/python3.4
+		vmove usr/lib/python3*
 		vlicense LICENSE.txt LICENSE
 	}
+}
+python3.4-pytz_package() {
+	noarch=yes
+	build_style=meta
+	short_desc="${short_desc/Python2/Python3.4} (transitional dummy package)"
+	depends="python3-pytz>=${version}_${revision}"
 }

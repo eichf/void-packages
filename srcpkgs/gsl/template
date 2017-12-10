@@ -1,6 +1,6 @@
 # Template file for 'gsl'
 pkgname=gsl
-version=2.1
+version=2.4
 revision=1
 build_style=gnu-configure
 short_desc="A numerical library for C and C++ programmers"
@@ -8,7 +8,7 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://www.gnu.org/software/gsl/gsl.html"
 license="GPL-3"
 distfiles="$GNU_SITE/gsl/$pkgname-$version.tar.gz"
-checksum=59ad06837397617f698975c494fe7b2b698739a59e2fcf830b776428938a0c66
+checksum=4d46d07b946e7b31c19bbf33dda6204d7bedc2f5462a1bae1d4013426cd1ce9b
 
 gsl-devel_package() {
 	depends="gsl>=${version}_${revision}"

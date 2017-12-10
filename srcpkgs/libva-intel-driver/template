@@ -1,16 +1,17 @@
 # Template file for 'libva-intel-driver'
 pkgname=libva-intel-driver
-version=1.7.0
+version=1.8.3
 revision=1
+wrksrc="intel-vaapi-driver-${version}"
 build_style=gnu-configure
 hostmakedepends="pkg-config"
 makedepends="libX11-devel libva-glx-devel libdrm-devel wayland-devel MesaLib-devel"
 short_desc="Video Acceleration (VA) API - Intel Graphics backend"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
-homepage="http://freedesktop.org/wiki/Software/vaapi"
+homepage="https://01.org/linuxmedia"
 license="MIT"
-distfiles="${FREEDESKTOP_SITE}/vaapi/releases/${pkgname}/${pkgname}-${version}.tar.bz2"
-checksum=9d19d6c789a9a4fbce23c4f0eaf993ba776b512bec4c87982ab17ac841435c0c
+distfiles="https://github.com/01org/intel-vaapi-driver/releases/download/${version}/intel-vaapi-driver-${version}.tar.bz2"
+checksum=54411d9e579300ed63f8b9b06152a1a9ec95b7699507d7ffa014cd7b2aeaff6f
 only_for_archs="i686 i686-musl x86_64 x86_64-musl"
 
 post_install() {

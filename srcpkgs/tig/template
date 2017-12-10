@@ -1,7 +1,7 @@
 # Template file for 'tig'
 pkgname=tig
-version=2.1.1
-revision=2
+version=2.3.0
+revision=1
 build_style=gnu-configure
 make_install_args="install-doc-man"
 hostmakedepends="xmlto asciidoc"
@@ -11,9 +11,9 @@ conf_files="/etc/tigrc"
 short_desc="Text-mode interface for Git"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="GPL-2"
-homepage="http://jonas.nitro.dk/tig/"
-distfiles="http://jonas.nitro.dk/tig/releases/tig-${version}.tar.gz"
-checksum=50c5179fd564b829b6b2cec087e66f10cf8799601de19350df0772ae77e4852f
+homepage="https://jonas.github.io/tig/"
+distfiles="https://github.com/jonas/tig/releases/download/${pkgname}-${version}/${pkgname}-${version}.tar.gz"
+checksum=686f0386927904dc6410f0b1a712cb8bd7fff3303f688d7dc43162f4ad16c0ed
 
 post_install() {
 	vinstall contrib/tig-completion.bash 644 usr/share/bash-completion/completions tig

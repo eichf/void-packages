@@ -1,16 +1,19 @@
 # Template file for 'zeal'
 pkgname=zeal
 reverts="20141123_1 20141123_2"
-version=0.2.1
-revision=2
-build_style=qmake
-hostmakedepends="pkg-config qt5-qmake"
-makedepends="qt5-devel qt5-webkit-devel xcb-util-keysyms-devel libarchive-devel qt5-x11extras-devel"
-depends="bsdtar qt5-plugin-sqlite qt5-x11extras"
+version=0.4.0
+revision=1
+build_style=cmake
+makedepends="qt5-devel qt5-webkit-devel xcb-util-keysyms-devel libarchive-devel qt5-x11extras-devel sqlite-devel extra-cmake-modules"
+depends="bsdtar qt5-x11extras"
 short_desc="Simple offline API documentation browser"
 maintainer="Farhad Shahbazi <grauwolf@geekosphere.org>"
 license="GPL-3"
 homepage="http://zealdocs.org/"
 distfiles="https://github.com/zealdocs/${pkgname}/archive/v${version}.tar.gz"
-checksum=994c5fad079cb34952fc05b0663920118489ed7f00f8e5a5887ff2e2bd05861d
+checksum=1f6b50026036923ae0cfbf3f4eb1066ee2fdaf0425d4c321203e0dd9506823fd
 configure_args="CONFIG+=no_libappindicator"
+
+if [ -n "$CROSS_BUILD" ]; then
+	hostmakedepends+=" qt5-host-tools qt5-devel qt5-webkit-devel qt5-x11extras-devel"
+fi

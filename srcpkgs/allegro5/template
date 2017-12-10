@@ -1,7 +1,7 @@
 # Template file for 'allegro5'.
 pkgname=allegro5
-version=5.2.0
-revision=2
+version=5.2.2
+revision=1
 wrksrc="allegro-${version}.0"
 build_style=cmake
 configure_args="-DWANT_DOCS=1 -DWANT_PHYSFS=1"
@@ -16,7 +16,7 @@ maintainer="Diogo Leal <diogo@diogoleal.com>"
 license="Allegro License (MIT alike)"
 homepage="http://alleg.sourceforge.net/"
 distfiles="http://download.gna.org/allegro/allegro/${version}/allegro-${version}.tar.gz"
-checksum=af5a69cd423d05189e92952633f9c0dd0ff3a061d91fbce62fb32c4bd87f9fd7
+checksum=e285b9e12a7b33488c0e7e139326903b9df10e8fa9adbfcfe2e1105b69ce94fc
 
 post_install() {
 	vlicense LICENSE.txt

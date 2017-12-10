@@ -3,7 +3,7 @@
 This article contains an exhaustive manual of how to create new source
 packages for XBPS, the `Void Linux` native packaging system.
 
-*Table of Contents*  
+*Table of Contents*
 
 * [Introduction](#Introduction)
 	* [Quality Requirements](#quality_requirements)
@@ -18,6 +18,7 @@ packages for XBPS, the `Void Linux` native packaging system.
 	* [Available variables](#available_vars)
 		* [Mandatory variables](#mandatory_vars)
 		* [Optional variables](#optional_vars)
+		* [About the depends variables](#explain_depends)
 	* [Repositories](#repositories)
 		* [Repositories defined by Branch](#repo_by_branch)
 		* [Package defined repositories](#pkg_defined_repo)
@@ -40,7 +41,6 @@ packages for XBPS, the `Void Linux` native packaging system.
 	* [Notes](#notes)
 	* [Contributing via git](#contributing)
 * [Help](#help)
-	
 
 <a id="Introduction"></a>
 ## Introduction
@@ -53,13 +53,17 @@ The `template files` are `GNU bash` shell scripts that must define some required
 `variables` and `functions` that are processed by `xbps-src` (the package builder)
 to generate the resulting binary packages.
 
+By convention, all templates start with a comment briefly explaining what they
+are. In addition, pkgname and version can't have any characters in them that
+would require them to be quoted, so they are not quoted.
+
 A simple `template` example is as follows:
 
 ```
 # Template file for 'foo'
 
-pkgname="foo"
-version="1.0"
+pkgname=foo
+version=1.0
 revision=1
 build_style=gnu-configure
 short_desc="A short description max 72 chars"
@@ -81,7 +85,7 @@ in a directory matching `$pkgname`, i.e: `void-packages/srcpkgs/foo/template`.
 If everything went fine after running
 
     $ ./xbps-src pkg <pkgname>
-    
+
 a binary package named `foo-1.0_1.<arch>.xbps` will be generated in the local repository
 `hostdir/binpkgs`.
 
@@ -97,7 +101,7 @@ the Void packages system.
 
 1. System: The software should be installed system-wide, not per-user.
 
-1. Compiled: The software needs to be compiled before being used, even if it is 
+1. Compiled: The software needs to be compiled before being used, even if it is
    software that is not needed by the whole system.
 
 1. Required: Another package either within the repository or pending inclusion
@@ -119,6 +123,8 @@ function, which is the directory to be used to compile the `source package`.
 - `configure` This phase executes the `configuration` of a `source package`, i.e `GNU configure scripts`.
 
 - `build` This phase compiles/prepares the `source files` via `make` or any other compatible method.
+
+- `check` This optional phase checks the result of the `build` phase for example by running `make -k check`.
 
 - `install` This phase installs the `package files` into the package destdir `<masterdir>/destdir/<pkgname>-<version>`,
 via `make install` or any other compatible method.
@@ -142,7 +148,7 @@ Libraries are packages which provide shared objects (\*.so) in /usr/lib.
 They should be named like their upstream package name with the following
 exceptions:
 
-- The package is a subpackage of a front end application providing and provides
+- The package is a subpackage of a front end application and provides
 shared objects used by the base package and other third party libraries. In that
 case it should be prefixed with 'lib'. An exception from that rule is: If an
 executable is only used for building that package, it moves to the -devel
@@ -150,7 +156,7 @@ package.
 
 Example: wireshark -> subpkg libwireshark
 
-Libraries have to be split into two sub packages: <name> and <name>-devel.
+Libraries have to be split into two sub packages: `<name>` and `<name>-devel`.
 
 - `<name>` should only contain those parts of a package which are needed to run
 a linked program.
@@ -216,16 +222,16 @@ The following functions are defined by `xbps-src` and can be used on any templat
 
 - *vinstall()* `vinstall <file> <mode> <targetdir> [<name>]`
 
-	Installs `file` with the specified `mode` into `targetdir` into the pkg `$DESTDIR`
-The optional 4th argument can be used to change the `file name`.
+	Installs `file` with the specified `mode` into `targetdir` in the pkg `$DESTDIR`.
+	The optional 4th argument can be used to change the `file name`.
 
 - *vcopy()* `vcopy <pattern> <targetdir>`
 
-	Copies recursively all files in `pattern` to `targetdir` into the pkg `$DESTDIR`
+	Copies recursively all files in `pattern` to `targetdir` in the pkg `$DESTDIR`.
 
 - *vmove()* `vmove <pattern>`
 
-	Moves `pattern` to the specified directory in the pkg `$DESTDIR`
+	Moves `pattern` to the specified directory in the pkg `$DESTDIR`.
 
 - *vmkdir()* `vmkdir <directory> [<mode>]`
 
@@ -242,9 +248,9 @@ The optional 4th argument can be used to change the `file name`.
 	Installs `file` as a man page. `vman()` parses the name and
 	determines the section as well as localization. Example mappings:
 
-	`foo.1` -> `${DESTDIR}/usr/share/man/man1/foo.1`  
-	`foo.fr.1` -> `${DESTDIR}/usr/share/man/fr/man1/foo.1`  
-	`foo.1p` -> `${DESTDIR}/usr/share/man/man1/foo.1p`  
+	`foo.1` -> `${DESTDIR}/usr/share/man/man1/foo.1`
+	`foo.fr.1` -> `${DESTDIR}/usr/share/man/fr/man1/foo.1`
+	`foo.1p` -> `${DESTDIR}/usr/share/man/man1/foo.1p`
 
 - *vdoc()* `vdoc <file> [<name>]`
 
@@ -268,7 +274,7 @@ The optional 4th argument can be used to change the `file name`.
 
 	Installs `file` into `usr/share/licenses/<pkgname>` in the pkg
 	`$DESTDIR`. The optional 2nd argument can be used to change the
-	`file name`. Note: Non-`GPL` licenses, `MIT`, `BSD` and `ISC` require the 
+	`file name`. Note: Non-`GPL` licenses, `MIT`, `BSD` and `ISC` require the
 	license file to	be supplied with the binary package.
 
 - *vsv()* `vsv <service>`
@@ -332,7 +338,10 @@ The list of mandatory variables for a template:
 - `license` A string matching any license file available in `/usr/share/licenses`.
 Multiple licenses should be separated by commas, i.e `GPL-3, LGPL-2.1`.
 
-- `maintainer` A string in the form of `name <user@domain>`.
+- `maintainer` A string in the form of `name <user@domain>`.  The
+  email for this field must be a valid email that you can be reached
+  at.  Packages using `users.noreply.github.com` emails will not be
+  accepted.
 
 - `pkgname` A string with the package name, matching `srcpkgs/<pkgname>`.
 
@@ -342,8 +351,8 @@ the generated `binary packages` have been modified.
 
 - `short_desc` A string with a brief description for this package. Max 72 chars.
 
-- `version` A string with the package version. Must not contain dashes and at least
-one digit is required.
+- `version` A string with the package version. Must not contain dashes or underscore
+and at least one digit is required. Shell's variable substition usage is not allowed.
 
 <a id="optional_vars"></a>
 #### Optional variables
@@ -357,6 +366,10 @@ Example `hostmakedepends="foo blah"`.
 will be installed to the master directory. There is no need to specify a version
 because the current version in srcpkgs will always be required.
 Example `makedepends="foo blah"`.
+
+- `checkdepends` The list of dependencies required to run the package checks, i.e.
+the script or make rule specified in the template's `do_check()` function.
+Example `checkdepends="gtest"`.
 
 - `depends` The list of dependencies required to run the package. These dependencies
 are not installed to the master directory, rather are only checked if a binary package
@@ -396,7 +409,7 @@ Example:
   | KERNEL_SITE      | http://www.kernel.org/pub/linux                 |
   | MOZILLA_SITE     | http://ftp.mozilla.org/pub                      |
   | NONGNU_SITE      | http://download.savannah.nongnu.org/releases    |
-  | PYPI_SITE        | https://pypi.io/packages/source                 |
+  | PYPI_SITE        | https://files.pythonhosted.org/packages/source  |
   | SOURCEFORGE_SITE | http://downloads.sourceforge.net/sourceforge    |
   | UBUNTU_SITE      | http://archive.ubuntu.com/ubuntu/pool           |
   | XORG_HOME        | http://xorg.freedesktop.org/wiki/               |
@@ -414,8 +427,11 @@ set to `${pkgname}-${version}`.
 - `create_wrksrc` Enable it to create the `${wrksrc}` directory. Required if a package
 contains multiple `distfiles`.
 
-- `only_for_archs` This expects a separated list of architectures where the package can be
-built matching `uname -m` output. Example `only_for_archs="x86_64 armv6l"`
+- `only_for_archs` This expects a separated list of architectures where
+the package can be built matching `uname -m` output. Reserved for uses
+where the program really only will ever work on certain architectures, like
+binaries sources or when the program is written in assembly. Example
+`only_for_archs="x86_64 armv6l"`.
 
 - `build_style` This specifies the `build method` for a package. Read below to know more
 about the available package `build methods`. If `build_style` is not set,
@@ -439,6 +455,10 @@ By default set to `make`.
 `${build_style}` is set to `configure`, `gnu-configure` or `gnu-makefile`
 build methods. Unset by default.
 
+- `make_check_args` The arguments to be passed in to `${make_cmd}` at the check phase if
+`${build_style}` is set to `configure`, `gnu-configure` or `gnu-makefile`
+build methods. Unset by default.
+
 - `make_install_args` The arguments to be passed in to `${make_cmd}` at the `install-destdir`
 phase if `${build_style}` is set to `configure`, `gnu-configure` or
 `gnu-makefile` build methods. By default set to
@@ -447,6 +467,10 @@ phase if `${build_style}` is set to `configure`, `gnu-configure` or
 - `make_build_target` The target to be passed in to `${make_cmd}` at the build phase if
 `${build_style}` is set to `configure`, `gnu-configure` or `gnu-makefile`
 build methods. Unset by default (`all` target).
+
+- `make_check_target` The target to be passed in to `${make_cmd}` at the check phase if
+`${build_style}` is set to `configure`, `gnu-configure` or `gnu-makefile`
+build methods. By default set to `check`.
 
 - `make_install_target` The target to be passed in to `${make_cmd}` at the `install-destdir` phase
 if `${build_style}` is set to `configure`, `gnu-configure` or `gnu-makefile`
@@ -472,8 +496,8 @@ Example `skip_extraction="foo-${version}.tar.gz"`.
 paths, wildcards will be extended, and multiple entries can be separated by blanks i.e:
 `conf_files="/etc/foo.conf /etc/foo2.conf /etc/foo/*.conf"`.
 
-- `mutable_files` A list of files the binary package owns, with the expectation 
-  that those files will be changed. These act a lot like `conf_files` but 
+- `mutable_files` A list of files the binary package owns, with the expectation
+  that those files will be changed. These act a lot like `conf_files` but
   without the assumption that a human will edit them.
 
 - `make_dirs` A list of entries defining directories and permissions to be
@@ -495,15 +519,22 @@ default all binaries are stripped.
 sonames in shared libraries.
 
 - `nocross` If set, cross compilation won't be allowed and will exit immediately.
+This should be set to a string describing why it fails, or a link to a travis
+buildlog demonstrating the failure.
 
-- `python_versions` A white space separated list of python versions which will
-be used to build that package. This is only used by the `python-module` build style.
+- `restricted` If set, xbps-src will refuse to build the package unless
+`etc/conf` has `XBPS_ALLOW_RESTRICTED=yes`. The primary builders for Void
+Linux do not have this setting, so the primary repositories will not have any
+restricted package. This is useful for packages where the license forbids
+redistribution.
 
 - `subpackages` A white space separated list of subpackages (matching `foo_package()`)
 to override the guessed list. Only use this if a specific order of subpackages is required,
 otherwise the default would work in most cases.
 
 - `broken` If set, building the package won't be allowed because its state is currently broken.
+This should be set to a string describing why it is broken, or a link to a travis
+buildlog demonstrating the failure.
 
 - `shlib_provides` A white space separated list of additional sonames the package provides on.
 This appends to the generated file rather than replacing it.
@@ -511,7 +542,7 @@ This appends to the generated file rather than replacing it.
 - `shlib_requires` A white space separated list of additional sonames the package requires.
 This appends to the generated file rather than replacing it.
 
-- `nopie` Only needs to be set to something to make active, disables building the package with hardening 
+- `nopie` Only needs to be set to something to make active, disables building the package with hardening
   features (PIE, relro, etc). Not necessary for most packages.
 
 - `reverts` xbps supports a unique feature which allows to downgrade from broken
@@ -530,6 +561,33 @@ Example:
 - `alternatives` A white space separated list of supported alternatives the package provides.
 A list is composed of three components separated by a colon: group, symlink and target.
 i.e `alternatives="vi:/usr/bin/vi:/usr/bin/nvi ex:/usr/bin/ex:/usr/bin/nvi-ex"`.
+
+<a id="explain_depends"></a>
+#### About the many types of `depends` variable.
+
+So far we have listed three types of `depends`, there are `hostmakedepends`,
+`makedepends`, and plain old `depends`. To understand the difference between
+them, understand this: Void Linux cross compiles for many arches. Sometimes in
+a build process, certain programs must be run, for example `yacc`, or the
+compiler itself for a C program. Those programs get put in `hostmakedepends`.
+When the build runs, those will be installed on the host to help the build
+complete.
+
+Then there are those things for which a package either links against or
+includes header files. These are `makedepends`, and regardless of the
+architecture of the build machine, the architecture of the target machine must
+be used. Typically the `makedepends` will be the only one of the three types of
+`depends` to include `-devel` packages, and typically only `-devel` packages.
+
+The final variable, `depends`, is for those things the package needs at
+runtime and without which is unusable, and that xbps can't auto-detect.
+These are not all the packages the package needs at runtime, but only those
+that are not linked against. This variable is most useful for non-compiled
+programs.
+
+Finally, as a general rule, if something compiles the exact same way whether or
+not you add a particular package to `makedepends` or `hostmakedepends`, it
+shouldn't be added.
 
 <a id="repositories"></a>
 #### Repositories
@@ -608,7 +666,10 @@ arguments can be passed in via `configure_args`.
 - `gnu-makefile` For packages that use GNU make, build arguments can be passed in via
 `make_build_args` and install arguments via `make_install_args`. The build
 target can be overridden via `make_build_target` and the install target
-via `make_install_target`.
+via `make_install_target`. This build style tries to compensate for makefiles
+that do not respect environment variables, so well written makefiles, those
+that do such things as append (`+=`) to variables, should have `make_use_env`
+set in the body of the template.
 
 - `go` For programs written in Go that follow the standard package
   structure. The variable `go_import_path` must be set to the package's
@@ -623,6 +684,13 @@ depend on additional packages. This build style does not install
 dependencies to the root directory, and only checks if a binary package is
 available in repositories.
 
+- `R-cran` For packages that are available on The Comprehensive R Archive
+Network (CRAN). The build style requires the `pkgname` to start with
+`R-cran-` and any dashes (`-`) in the CRAN-given version to be replaced
+with the character `r` in the `version` variable. The `distfiles`
+location will automatically be set as well as the package made to depend
+on `R`.
+
 - `ruby-module` For packages that are ruby modules and are installable via `ruby install.rb`.
 Additional install arguments can be specified via `make_install_args`.
 
@@ -631,11 +699,6 @@ Additional install arguments can be specified via `make_install_args`.
 
 - `perl-module` For packages that use the Perl
 [ExtUtils::MakeMaker](http://perldoc.perl.org/ExtUtils/MakeMaker.html) build method.
-
-- `python-module` For packages that use the Python module build method (setup.py).
-By default the module will be built for python2. The `python_versions` variable may
-be defined to set the allowed python versions to be built, i.e:
-`python_versions="2.7 3.3"`.
 
 - `waf3` For packages that use the Python3 `waf` build method with python3.
 
@@ -649,6 +712,15 @@ for the configure phase can be passed in via `configure_args`, make build argume
 be passed in via `make_build_args` and install arguments via `make_install_args`. The build
 target can be overridden via `make_build_target` and the install target
 via `make_install_target`.
+
+For packages that use the Python module build method (`setup.py`), you
+can choose one of the following:
+
+- `python-module` to build *both* Python 2.x and 3.x modules
+
+- `python2-module` to build Python 2.x only modules
+
+- `python3-module` to build Python 3.x only modules
 
 > If `build_style` is not set, the template must (at least) define a
 `do_install()` function and optionally more phases via `do_xxx()` functions.
@@ -769,16 +841,16 @@ The supported build options for a source package can be shown with `xbps-src`:
 
 Build options can be enabled with the `-o` flag of `xbps-src`:
 
-    $ ./xbps-src -o option,option1 foo
+    $ ./xbps-src -o option,option1 <cmd> foo
 
 Build options can be disabled by prefixing them with `~`:
 
-    $ ./xbps-src -o ~option,~option1 foo
+    $ ./xbps-src -o ~option,~option1 <cmd> foo
 
 Both ways can be used together to enable and/or disable multiple options
 at the same time with `xbps-src`:
 
-    $ ./xbps-src -o option,~option1,~option2 foo
+    $ ./xbps-src -o option,~option1,~option2 <cmd> foo
 
 The build options can also be shown for binary packages via `xbps-query(8)`:
 
@@ -1055,9 +1127,9 @@ be your guidance to decide whether or not to split off a `-doc` subpackage.
 <a id="pkgs_python"></a>
 ### Python packages
 
-Python packages should be built with the `python-module` build style, if possible. This sets
-some environment variables required to allow cross compilation. Support to allow building
-a python module for multiple versions from a single template is also possible.
+Python packages should be built with the `python{,2,3}-module` build style, if possible.
+This sets some environment variables required to allow cross compilation. Support to allow
+building a python module for multiple versions from a single template is also possible.
 
 To allow cross compilation, the `python-devel` package (for python 2.7) must be added
 to `hostmakedepends` and `makedepends`. If any other python version is also supported,
@@ -1065,15 +1137,6 @@ for example python3.4, those must also be added as host and target build depende
 
 The following variables may influence how the python packages are built and configured
 at post-install time:
-
-- `python_versions`: this variable expects the python versions supported by the module.
-By default it's always set to `2.7`. If a package for another python version is wanted
-you can set all acceptable versions, i.e `python_versions="2.7 3.4"` will build a package
-for `python (2.7)` and `python3.4`.
-
-- `pycompile_version`: this variable expects the python version that is used to
-byte-compile the python code (it generates the `.py[co]` files at post-install time).
-By default it's set to `2.7` for `python 2.x` packages.
 
 - `pycompile_module`: this variable expects the python modules that should be `byte-compiled`
 at post-install time. Python modules are those that are installed into the `site-packages`
@@ -1083,6 +1146,30 @@ by blanks, i.e `pycompile_module="foo blah"`.
 - `pycompile_dirs`: this variable expects the python directories that should be `byte-compiled`
 recursively by the target python version. This differs from `pycompile_module` in that any
 path may be specified, i.e `pycompile_dirs="usr/share/foo"`.
+
+- `pycompile_version`: this variable expects the python version that is used to
+byte-compile the python code (it generates the `.py[co]` files at post-install time).
+By default it's set to `2.7` for `python 2.x` packages.
+
+> NOTE: you need to define it *only* for non-Python modules.
+
+- `python_version`: this variable expects the supported Python major version.
+By default it's set to `2`. This variable is needed for multi-language
+applications (e.g., the application is written in C while the command is
+written in Python) or just single Python file ones that live in `/usr/bin`.
+
+Also, a set of useful variables are defined to use in the templates:
+
+| Variable    | Value                            |
+|-------------|----------------------------------|
+| py2_ver     | 2.X                              |
+| py2_lib     | /usr/lib/python2.X               |
+| py2_sitelib | /usr/lib/python2.X/site-packages |
+| py2_inc     | /usr/include/python2.X           |
+| py3_ver     | 3.X                              |
+| py3_lib     | /usr/lib/python3.X               |
+| py3_sitelib | /usr/lib/python3.X/site-packages |
+| py3_inc     | /usr/include/python3.Xm          |
 
 > NOTE: it's expected that additional subpkgs must be generated to allow packaging for multiple
 python versions.
@@ -1109,6 +1196,12 @@ The following variables influence how Go packages are built:
 - `go_build_tags`: An optional, space-separated list of build tags to
   pass to Go.
 
+Occasionally it is necessary to perform operations from within the Go
+source tree.  This is usually needed by programs using go-bindata or
+otherwise preping some assets.  If possible do this in pre_build().
+The path to the package's source inside `$GOPATH` is available as
+`$GOSRCPATH`.
+
 <a id="pkgs_haskell"></a>
 ### Haskell packages
 
@@ -1120,8 +1213,10 @@ and set build style to `haskell-stack`.
 The following variables influence how Haskell packages are built:
 
 - `stackage`: The Stackage version used to build the package, e.g.
-  `lts-3.5`.  Alternatively, you can prepare a `stack.yaml`
-  configuration for the project and put it into `files/stack.yaml`.
+  `lts-3.5`. Alternatively:
+  - You can prepare a `stack.yaml` configuration for the project and put it
+    into `files/stack.yaml`.
+  - If a `stack.yaml` file is present in the source files, it will be used
 - `make_build_args`: This is passed as-is to `stack build ...`, so
   you can add your `--flag ...` parameters there.
 

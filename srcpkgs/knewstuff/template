@@ -1,0 +1,29 @@
+# Template file for 'knewstuff'
+pkgname=knewstuff
+version=5.40.0
+revision=1
+build_style=cmake
+configure_args="-DBUILD_TESTING=OFF"
+hostmakedepends="extra-cmake-modules"
+makedepends="kio-devel"
+short_desc="KDE Framework for downloading and sharing additional application data"
+maintainer="Denis Revin <denis.revin@gmail.com>"
+license="LGPL-2"
+homepage="https://projects.kde.org/projects/frameworks/knewstuff"
+distfiles="http://download.kde.org/stable/frameworks/${version%.*}/${pkgname}-${version}.tar.xz"
+checksum=71e00af7cfd4ead3dbd726c877c8f5c472af78881acd82e8155a1613fa5f9e44
+
+if [ -n "$CROSS_BUILD" ]; then
+	hostmakedepends+=" qt5-host-tools qt5-qmake python"
+fi
+
+knewstuff-devel_package() {
+	short_desc+=" - development"
+	depends="${makedepends} ${sourcepkg}>=${version}_${revision}"
+	pkg_install() {
+		vmove usr/include
+		vmove usr/lib/qt5/mkspecs
+		vmove usr/lib/cmake
+		vmove usr/lib/*.so
+	}
+}

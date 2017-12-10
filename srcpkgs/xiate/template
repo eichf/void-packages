@@ -1,0 +1,23 @@
+# Template file for 'xiate'
+pkgname=xiate
+version=17.10
+revision=1
+build_style=gnu-makefile
+hostmakedepends="pkg-config"
+makedepends="gtk+3-devel vte3-devel"
+depends="vte3 socat"
+short_desc="A terminal emulator"
+maintainer="Diogo Leal <diogo@diogoleal.com>"
+license="MIT"
+homepage="https://github.com/vain/xiate"
+distfiles="https://github.com/vain/xiate/archive/v${version}.tar.gz"
+checksum=b234a4e60ee7979f9e834158c616669575d0edb244dc355c4043845f9251d088
+
+pre_configure() {
+	cp config.def.h config.h
+	sed -i 's;/usr/local;/usr;g' Makefile
+}
+
+post_install() {
+	vlicense LICENSE
+}

@@ -1,15 +1,18 @@
 # Template file for 'libmpdclient'
 pkgname=libmpdclient
-version=2.10
-revision=1
-build_style=gnu-configure
-configure_args="--disable-documentation"
+version=2.13
+revision=2
+build_style=meson
 short_desc="Asynchronous API library for interfacing MPD"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="3-clause-BSD"
 homepage="http://www.musicpd.org/libs/libmpdclient/"
 distfiles="http://www.musicpd.org/download/${pkgname}/${version%.*}/${pkgname}-${version}.tar.xz"
-checksum=4f08cde82dae70895f8e4532a6e9b54b201efd5591c6b5d6834895807ed2ff82
+checksum=5115bd52bc20a707c1ecc7587e6389c17305348e2132a66cf767c62fc55ed45d
+
+post_install() {
+	vlicense COPYING
+}
 
 libmpdclient-devel_package() {
 	short_desc+=" - development files"
@@ -17,7 +20,6 @@ libmpdclient-devel_package() {
 	pkg_install() {
 		vmove usr/include
 		vmove usr/lib/pkgconfig
-		vmove "usr/lib/*.a"
 		vmove "usr/lib/*.so"
 		vmove usr/share/vala
 	}

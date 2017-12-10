@@ -1,14 +1,14 @@
 # Template file for 'sakura'
 pkgname=sakura
-version=3.3.4
+version=3.5.0
 revision=1
 build_style=cmake
 short_desc="Simple but powerful libvte based terminal emulator"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="GPL-2"
-hostmakedepends="cmake perl pkg-config"
+hostmakedepends="perl pkg-config"
 makedepends="gtk+3-devel vte3-devel"
 depends="desktop-file-utils"
 homepage="https://launchpad.net/sakura"
 distfiles="https://launchpad.net/sakura/trunk/${version}/+download/sakura-${version}.tar.bz2"
-checksum=27277214964851fa23ecc290f0eae391af3d11279ec42769d84a7be1feccd3ba
+checksum=eb30ede41083fda2b07c6a3b7393150f48867e81d28ef70b15824740cab00c3a

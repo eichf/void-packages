@@ -1,21 +1,22 @@
 # Template file for 'libnl3'
 pkgname=libnl3
-version=3.2.25
-revision=2
-wrksrc=libnl-${version}
+version=3.3.0
+revision=1
+wrksrc="libnl-${version}"
 build_style=gnu-configure
-configure_args="--sbindir=/usr/bin --disable-static"
+configure_args="--disable-static"
 hostmakedepends="automake flex libtool pkg-config"
 conf_files="/etc/libnl/pktloc /etc/libnl/classid"
 short_desc="Netlink Protocol Library Suite"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="LGPL-2.1"
-homepage="http://www.infradead.org/~tgr/libnl"
-distfiles="${homepage}/files/libnl-${version}.tar.gz"
-checksum=8beb7590674957b931de6b7f81c530b85dc7c1ad8fbda015398bc1e8d1ce8ec5
+homepage="https://github.com/thom311/libnl"
+distfiles="https://github.com/thom311/libnl/releases/download/libnl${version//./_}/libnl-${version}.tar.gz"
+checksum=705468b5ae4cd1eb099d2d1c476d6a3abe519bc2810becf12fb1e32de1e074e4
 
 pre_configure() {
 	autoreconf -fi
+	sed -i '/<linux\/if_bridge.h>/i#define _LINUX_IN6_H' lib/route/link/bridge.c
 }
 
 libnl3-devel_package() {
@@ -24,10 +25,9 @@ libnl3-devel_package() {
 	pkg_install() {
 		vmove usr/include
 		vmove usr/lib/pkgconfig
-		vmove "usr/lib/*.so"
+		vmove usr/lib/*.so
 	}
 }
-
 libnl3-progs_package() {
 	short_desc+=" - cli utilities"
 	pkg_install() {

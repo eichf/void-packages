@@ -1,0 +1,15 @@
+# Template file for 'speedtest-cli'
+pkgname=speedtest-cli
+version=1.0.7
+revision=1
+noarch=yes
+build_style=python3-module
+pycompile_module="speedtest.py speedtest_cli.py"
+hostmakedepends="python3-setuptools"
+depends="python3-setuptools"
+short_desc="Command line bandwidth test using speedtest.net"
+maintainer="Aaron Marcher <info@nulltime.net>"
+license="Apache-2.0"
+homepage="https://github.com/sivel/speedtest-cli"
+distfiles="${homepage}/archive/v${version}.tar.gz"
+checksum=3853bb7a3d16f686441d0d10ebbfc1fd49e974ecf17248ce03456ad4ef2478b9

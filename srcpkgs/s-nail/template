@@ -1,15 +1,15 @@
 # Template file for 's-nail'
 pkgname=s-nail
-version=14.8.5
-revision=4
+version=14.8.16
+revision=2
 makedepends="libressl-devel libidn-devel"
 conf_files="/etc/s-nail.rc"
 short_desc="Mail processing system with a command syntax reminiscent of ed"
 maintainer='Juan RP <xtraeme@voidlinux.eu>'
 license="BSD"
-homepage="http://s-nail.sourceforge.net/"
-distfiles="${SOURCEFORGE_SITE}/${pkgname}/${pkgname}-${version//./_}.tar.gz"
-checksum="0f4f157c9517ba1990dd68ccf1b48d3d167fe867399385d7a4e4d0492e981908"
+homepage="https://git.sdaoden.eu/cgit/s-nail.git"
+distfiles="https://www.sdaoden.eu/downloads/s-nail-${version}.tar.xz"
+checksum=9b6123499eea070d6f6c242661aed1522826d9fa78abc26d55e5dc2339b959df
 
 provides="mail-${version}_${revision}"
 

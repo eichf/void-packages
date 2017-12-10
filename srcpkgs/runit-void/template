@@ -1,6 +1,6 @@
 # Template file for 'runit-void'
 pkgname=runit-void
-version=20160419
+version=20171102
 revision=1
 wrksrc="void-runit-${version}"
 build_style=gnu-makefile
@@ -9,7 +9,7 @@ short_desc="Void Linux runit scripts"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="Public Domain"
 distfiles="https://github.com/voidlinux/void-runit/archive/${version}.tar.gz"
-checksum=06a9ac75399e321d29db6e083fe50cc67eda8dbee006af4c05b5751dce7e8a4f
+checksum=689790985d36bdda75bca6f1382c99092247b9534c22b15a1ca4a94c674a7843
 
 depends="virtual?awk procps-ng runit"
 conf_files="

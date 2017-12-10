@@ -1,24 +1,25 @@
 # Template file for 'docker-compose'
 pkgname=docker-compose
-version=1.6.2
+version=1.17.1
 revision=1
 noarch=yes
 wrksrc="compose-${version}"
-build_style=python-module
-hostmakedepends="python-setuptools"
-depends="python-setuptools python-jsonschema python-docker-py python-dockerpty
- python-websocket-client python-requests python-docopt python-yaml python-six
- python-enum34 python-texttable python-cached-property"
+build_style=python3-module
 pycompile_module="compose"
+hostmakedepends="python3-setuptools"
+depends="python3-setuptools python3-jsonschema python3-docker python3-dockerpty
+ python3-websocket-client python3-requests python3-docopt python3-yaml
+ python3-six python3-texttable python3-cached-property"
 short_desc="Tool to define and run multi-container Docker applications"
 maintainer="pancake <pancake@nopcode.org>"
 homepage="https://docs.docker.com/compose/"
 license="Apache-2.0"
 distfiles="https://github.com/docker/compose/archive/${version}.tar.gz"
-checksum=1c318cdf12bdc97e079224fb0cab45ed0f6ec2d1ce87599eff549b1aafa27837
+checksum=71f7b98af30c12bd4cf69421a09d16edecefb9d0b5e127934c5c832380ea78ba
 
 pre_build() {
-	sed -i '/requests/s|, < 2.8||' setup.py
+	# remove all upper bounds
+	sed -i 's/, *< *[0-9=.]*//' setup.py
 }
 post_install() {
 	vinstall contrib/completion/bash/docker-compose 644 \

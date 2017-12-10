@@ -1,7 +1,7 @@
 # Template file for 'libcdio-paranoia'
 pkgname=libcdio-paranoia
-version="10.2+0.93+1"
-revision=3
+version="10.2+0.94+2"
+revision=1
 build_style=gnu-configure
 configure_args="--enable-cpp-progs --disable-example-progs"
 hostmakedepends="automake libtool pkg-config"
@@ -10,15 +10,15 @@ short_desc="CD paranoia utility/libraries from libcdio"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="GPL-3"
 homepage="http://www.gnu.org/software/libcdio/"
-distfiles="${GNU_SITE}/libcdio/$pkgname-$version.tar.bz2"
-checksum=ec1d9b1d5a28cc042f2cb33a7cc0a2b5ce5525f102bc4c15db1fac322559a493
+distfiles="${GNU_SITE}/libcdio/$pkgname-$version.tar.gz"
+checksum=d60f82ece97eeb92407a9ee03f3499c8983206672c28ae5e4e22179063c81941
 
 pre_configure() {
 	autoreconf -fi
 }
 
 libcdio-paranoia-devel_package() {
-	depends="libcdio-devel ${sourcepkg}>=${version}_${revision}"
+	depends="${makedepends} ${sourcepkg}>=${version}_${revision}"
 	short_desc+=" - development files"
 	pkg_install() {
 		vmove usr/include

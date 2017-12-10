@@ -1,33 +1,33 @@
 # Template file for 'python-munkres'
 pkgname=python-munkres
-version=1.0.7
-revision=1
+version=1.0.11
+revision=2
 noarch=yes
 wrksrc="munkres-${version}"
 build_style="python-module"
-python_versions="2.7 3.4"
-hostmakedepends="python-devel python3.4-devel"
-makedepends="${hostmakedepends}"
+pycompile_module="munkres.py"
+hostmakedepends="python-setuptools python3-setuptools"
 depends="python"
-pycompile_module="munkres"
 short_desc="Algorithm for the Assignment Problem (Python2)"
-maintainer="Steven R <dev@styez.com>"
-homepage="http://software.clapper.org/munkres/"
-license="BSD"
+maintainer="Juan RP <xtraeme@voidlinux.eu>"
+homepage="https://github.com/bmc/munkres"
+license="Apache-2.0"
 distfiles="${PYPI_SITE}/m/munkres/munkres-${version}.tar.gz"
-checksum=334a5d849bcefed3e4c32ecfbca4ee8dfc8ef5f2f181334d6f7f4e100b71d6c4
+checksum=7188f2ed6e8d3eb6c5ec4919200faa6194732b99707b058f7e9f068c588f7eca
 
-pre_install() {
-	sed -i 's,#!/usr/bin/env python,&3.4,' build-3.4/lib/munkres.py
+python3-munkres_package() {
+	noarch=yes
+	pycompile_module="munkres.py"
+	replaces="python3.4-munkres>=0"
+	depends="python3"
+	short_desc="${short_desc/Python2/Python3}"
+	pkg_install() {
+		vmove usr/lib/python3*
+	}
 }
-
 python3.4-munkres_package() {
 	noarch=yes
-	depends="python3.4"
-	pycompile_version="3.4"
-	pycompile_module="munkres"
-	short_desc="${short_desc/Python2/Python3.4}"
-	pkg_install() {
-		vmove usr/lib/python3.4
-	}
+	build_style=meta
+	short_desc="${short_desc/Python2/Python3.4} (transitional dummy package)"
+	depends="python3-munkres>=${version}_${revision}"
 }

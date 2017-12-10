@@ -1,6 +1,6 @@
 # Template file for 'libosinfo'
 pkgname=libosinfo
-version=0.3.0
+version=1.1.0
 revision=1
 build_style=gnu-configure
 configure_args="--disable-static --disable-tests $(vopt_enable gir introspection)"
@@ -8,10 +8,10 @@ hostmakedepends="pkg-config intltool glib-devel wget"
 makedepends="libglib-devel libsoup-gnome-devel libxml2-devel libxslt-devel vala-devel $(vopt_if gir gobject-introspection)"
 short_desc="GObject based library API for managing info about operating systems"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
-homepage="https://fedorahosted.org/libosinfo/"
+homepage="https://libosinfo.org/"
 license="GPL-2, LGPL-2.1"
-distfiles="https://fedorahosted.org/releases/l/i/${pkgname}/${pkgname}-${version}.tar.gz"
-checksum=538a3468792e919edf5364fe102d751353ae600a92ad3a24f024424a182cefbc
+distfiles="https://releases.pagure.org/libosinfo/${pkgname}-${version}.tar.gz"
+checksum=600f43a4a8dae5086a01a3d44bcac2092b5fa1695121289806d544fb287d3136
 
 # Package build options
 build_options="gir"

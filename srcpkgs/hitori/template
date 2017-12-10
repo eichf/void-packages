@@ -1,6 +1,6 @@
 # Template file for 'hitori'
 pkgname=hitori
-version=3.20.0
+version=3.22.4
 revision=1
 build_style=gnu-configure
 hostmakedepends="glib-devel intltool itstool pkg-config"
@@ -10,4 +10,4 @@ maintainer="Jürgen Buchmüller <pullmoll@t-online.de>"
 license="GPL-2"
 homepage="https://wiki.gnome.org/Apps/Hitori"
 distfiles="${GNOME_SITE}/${pkgname}/${version%.*}/${pkgname}-${version}.tar.xz"
-checksum=877cae48144b7f6908fde55104f589788b42acaa5956d62fd32b4026fde3769d
+checksum=dcac6909b6007857ee425ac8c65fed179f2c71da138d5e5300cd62c8b9ea15d3

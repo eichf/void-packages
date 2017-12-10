@@ -1,6 +1,6 @@
 # Template file for 'cmark'
 pkgname=cmark
-version=0.25.2
+version=0.28.3
 revision=1
 build_style=cmake
 short_desc="CommonMark parsing and rendering library and program in C"
@@ -8,7 +8,7 @@ maintainer="pancake <pancake@nopcode.org>"
 license="MIT"
 homepage="https://github.com/jgm/cmark"
 distfiles="https://github.com/jgm/cmark/archive/${version}.tar.gz"
-checksum=530ae56d81a370ce29ed77fd3a34628c94277320f23657f5efb402283716f29b
+checksum=acc98685d3c1b515ff787ac7c994188dadaf28a2d700c10c1221da4199bae1fc
 
 post_install() {
 	vlicense COPYING
@@ -22,6 +22,7 @@ cmark-devel_package() {
 		vmove "usr/lib/*.so"
 		vmove "usr/lib/*.a"
 		vmove usr/lib/pkgconfig
+		vmove usr/lib/cmake
 		vmove usr/share/man/man3
 	}
 }

@@ -1,19 +1,20 @@
 # Template file for 'buildbot'
 pkgname=buildbot
-version=0.8.12
+version=0.8.14
 revision=2
 noarch=yes
-build_style=python-module
+build_style=python2-module
 hostmakedepends="python"
 makedepends="python-setuptools python-dateutil python-Jinja2 python-sqlalchemy-migrate Twisted"
 depends="${makedepends}"
 pycompile_module="buildbot"
+pycompile_dirs="/usr/share/buildbot/contrib"
 short_desc="A system to automate the compile/test cycle"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://buildbot.net/"
 license="GPL-2"
 distfiles="${PYPI_SITE}/b/${pkgname}/${pkgname}-${version}.tar.gz"
-checksum=c6b66976dff712268566574d57131ec15e5682f6d4390cd5c8559bab0980c4d6
+checksum=331efd07bd7522c222a8fb258801e8d78332c88d778ee76416b9e1028676e964
 
 pre_install() {
 	cd ${wrksrc}/contrib

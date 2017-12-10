@@ -1,22 +1,22 @@
 # Template file for 'vim'
 pkgname=vim
-version=7.4.1816
+version=8.0.1352
 revision=1
 hostmakedepends="pkg-config glib-devel"
 makedepends="ncurses-devel acl-devel libXt-devel gtk+-devel perl
- ruby-devel python-devel python3.4-devel lua-devel"
+ ruby-devel python-devel python3-devel lua-devel"
 depends="vim-common>=$version"
 short_desc="Vim editor (vi clone)"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://www.vim.org"
 license="Vim"
-distfiles="https://github.com/${pkgname}/${pkgname}/archive/v${version}.tar.gz>${pkgname}-${version}.tar.gz"
-checksum=cebc9d73b94101066aa8546772f9d630eea5b6c8417e281e01c82f8f31904a93
+distfiles="https://github.com/vim/vim/archive/v${version}.tar.gz"
+checksum=bf37a9a7d8436e0a09559e645166695481a4118c2b816c0977d8df2df4421bcc
 
 subpackages="xxd vim-common vim-x11 gvim"
 # XXX vim-huge cannot be cross compiled for now.
 if [ -z "$CROSS_BUILD" ]; then
-	subpackages+=" vim-huge vim-huge-python3"
+	subpackages+=" vim-huge vim-huge-python3 gvim-huge"
 fi
 
 alternatives="vim:vim:/usr/bin/vim-normal"
@@ -45,6 +45,7 @@ do_configure() {
 			vim_cv_tty_group=world vim_cv_getcwd_broken=no
 			vim_cv_stat_ignores_slash=yes
 			vim_cv_memmove_handles_overlap=yes
+			vim_cv_tgetent=zero
 			ac_cv_small_wchar_t=no"
 	fi
 
@@ -65,13 +66,22 @@ do_configure() {
 		cd $wrksrc/vim-huge
 		./configure ${configure_args} ${args} --with-x=yes --enable-gui=no \
 			--with-features=huge --enable-perlinterp --enable-pythoninterp \
-			--enable-rubyinterp --enable-luainterp --enable-clientserver
+			--enable-rubyinterp --enable-luainterp --enable-clientserver \
+			--enable-terminal
 
 		cd $wrksrc/vim-huge-python3
 		./configure ${configure_args} ${args} --with-x=yes --enable-gui=no \
 			--with-features=huge --enable-perlinterp \
 			--disable-pythoninterp --enable-python3interp \
-			--enable-rubyinterp --enable-luainterp
+			--enable-rubyinterp --enable-luainterp \
+			--enable-terminal
+
+		cd $wrksrc/gvim-huge
+		./configure ${configure_args} ${args} \
+			--enable-gui=gtk2 --with-x --with-vim-name=gvim-huge \
+			--with-features=huge --enable-perlinterp --enable-pythoninterp \
+			--enable-rubyinterp --enable-luainterp --enable-clientserver \
+			--enable-terminal
 	fi
 }
 
@@ -120,7 +130,6 @@ vim-common_package() {
 		vmove usr/share/licenses
 		vmove usr/share/vim
 		vinstall ${FILESDIR}/vimrc 644 usr/share/vim
-		vinstall runtime/doc/tags 644 usr/share/vim/vim74/doc
 	}
 }
 vim-x11_package() {
@@ -144,7 +153,23 @@ gvim_package() {
 			install -d ${PKGDESTDIR}/usr/share/icons/hicolor/${d}x${d}/apps
 		done
 		make -C src DESTDIR=${PKGDESTDIR} installvimbin install-icons
-		vinstall ${FILESDIR}/gvim.desktop 644 usr/share/applications
+		vmove usr/share/applications/gvim.desktop
+		rm "$PKGDESTDIR"/usr/share/applications/vim.desktop
+	}
+}
+gvim-huge_package() {
+	depends="python vim-common-${version}_${revision} desktop-file-utils hicolor-icon-theme"
+	provides="vim-${version}_${revision}"
+	short_desc+=" - GTK+ GUI - Huge (all features enabled, using Python 2)"
+	alternatives="vim:vim:/usr/bin/gvim-huge"
+	pkg_install() {
+		cd $wrksrc/gvim-huge
+		sed -i "s|/locolor|/hicolor|g" src/Makefile
+		for d in 16 32 48; do
+			install -d ${PKGDESTDIR}/usr/share/icons/hicolor/${d}x${d}/apps
+		done
+		make -C src DESTDIR=${PKGDESTDIR} installvimbin install-icons
+		vmove usr/share/applications/*.desktop
 	}
 }
 vim-huge_package() {
@@ -157,7 +182,7 @@ vim-huge_package() {
 	}
 }
 vim-huge-python3_package() {
-	depends="python3.4 vim-common-${version}_${revision}"
+	depends="python3 vim-common-${version}_${revision}"
 	short_desc+=" - Huge (all features enabled, using Python 3)"
 	provides="vim-${version}_${revision}"
 	alternatives="vim:vim:/usr/bin/vim-huge-python3"

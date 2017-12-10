@@ -1,17 +1,20 @@
 # Template file for 'nwipe'
 pkgname=nwipe
-version=0.17
+version=0.24
 revision=1
 build_style=gnu-configure
 hostmakedepends="automake pkg-config"
-makedepends="libparted-devel ncurses-devel"
+makedepends="libuuid-devel libparted-devel ncurses-devel"
 short_desc="Utility to securely erase disks"
-maintainer="beefcurtains <beefcurtains@voidlinux.eu>"
+maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="GPL-2"
 homepage="https://github.com/martijnvanbrummelen/nwipe"
-distfiles="${homepage}/archive/${version}.tar.gz"
-checksum=377a3250a45e7f75bb88f958e5ed232ca4f038d888d632fd6bb93dcdece52de3
+distfiles="${homepage}/archive/v${version}.tar.gz"
+checksum=5cd7292518bc479f7e28d223b13ab9091cc1e6ca9beaa381651ac80d01241302
+
+CFLAGS="-D_FILE_OFFSET_BITS=64"
 
 pre_configure() {
+	sed -i 's,off64_t,off_t,g' src/*.[ch]
 	sh init.sh
 }

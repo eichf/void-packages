@@ -1,60 +1,63 @@
 # Template file for 'gmic'
 pkgname=gmic
-version=1.6.9
-revision=1
-hostmakedepends="pkg-config gimp gimp-devel"
+version=2.0.2
+revision=2
+_communityhash=c43f88d9537c58be4eeac515282eec8096c4a797
+_qthash=c37a653270e69df1956b2614f0e9ce94934c4b06
+hostmakedepends="pkg-config gimp"
 makedepends="fftw-devel libopenexr-devel MesaLib-devel libopencv-devel
- libgomp-devel libpng-devel libjpeg-turbo-devel gimp-devel tiff-devel
- libcurl-devel gtk+-devel gimp-devel"
-short_desc="GREYC's Magic Image Converter (image processing framework)"
+ libgomp-devel libpng-devel libjpeg-turbo-devel tiff-devel libcurl-devel
+ gtk+-devel gimp-devel qt5-devel"
+short_desc="GREYC's Magic for Image Computing (image processing framework)"
 maintainer="Jakub Skrzypnik <jot.skrzyp@gmail.com>"
 license="CeCILL"
 homepage="http://gmic.eu/"
-distfiles="http://gmic.eu/files/source/gmic_${version}.tar.gz"
-checksum=8b836b4ac02a2d3963384951b6e00f2d8e19ede0b49ee93b041ef227cf9dd794
-build_options="zart"
-desc_option_zart="Enable zArt tool, depends on Qt4"
-
-if [ -z "$CROSS_BUILD" ]; then
-	build_options_default="zart"
-fi
-
-if [ "$build_option_zart" ]; then
-	hostmakedepends+=" qt-qmake"
-	makedepends+=" qt-devel"
-fi
+distfiles="http://gmic.eu/files/source/gmic_${version}.tar.gz https://github.com/dtschump/gmic-community/archive/${_communityhash}.tar.gz
+ https://github.com/c-koi/gmic-qt/archive/${_qthash}.tar.gz"
+checksum="7da9f08d62a9d23fc8badbc7c819cf76f4a9ce3db763710268fdcb80d83ecfc6 41f5cbd42a09c18c0e974a11113e4fc7181a9c607c40e677357e3df77be2bd9c
+ 0bb1683f7ad8f55476ec57e53d73454e05cb79fc55b297eb519b2a24df728b44"
+nopie=yes
 
 pre_build() {
-	sed -i  -e 's|qmake zart.pro|qmake-qt4 zart.pro|g'\
-	-e 's|/etc/bash_completion.d|/usr/share/bash-completion/completions|g'\
-	src/Makefile
-	make -C src all
+	mv ${XBPS_BUILDDIR}/gmic-qt-${_qthash} ${wrksrc}/gmic-qt
+	mv ${XBPS_BUILDDIR}/gmic-community-${_communityhash} ${wrksrc}/zart
 }
+
+do_build() {
+	sed -i 's|/etc/bash_completion.d|/usr/share/bash-completion/completions|g' src/Makefile
+	sed -i 's#GMIC_PATH = ../../gmic/src/#GMIC_PATH = ../../src/#' zart/zart/zart.pro
+	cd zart/zart && qmake-qt5 -o Makefile zart.pro
+	cd ${wrksrc}/src && make all ${makejobs}
+	cd ${wrksrc}/zart/zart && make ${makejobs}
+}
+
 do_install() {
-	make -C src install DESTDIR="${DESTDIR}" USR="/usr"
+	cd ${wrksrc}/src && make install DESTDIR="${DESTDIR}" USR="/usr"
+	cd ${wrksrc}/zart/zart && make install
+	cd ${wrksrc}
+	vbin zart/zart/zart
 	vlicense COPYING
 }
+
 gmic-gimp_package() {
 	short_desc+=" - GIMP plugin"
-	depends+=" gimp gmic"
+	depends="gimp ${sourcepkg}>=${version}_${revision}"
 	pkg_install() {
 		vmove usr/lib/gimp
 	}
 }
-if [ "$build_option_zart" ]; then
-	gmic-zart_package() {
-		short_desc+=" - zArt tool"
-		depends+=" qt4 gmic"
-		pkg_install() {
-			vmove usr/bin/zart
-		}
+gmic-zart_package() {
+	short_desc+=" - ZArt tool"
+	depends="${sourcepkg}>=${version}_${revision}"
+	pkg_install() {
+		vmove usr/bin/zart
 	}
-fi
+}
 gmic-devel_package() {
-	depends+=" gmic"
 	short_desc+=" - development files"
+	depends="${sourcepkg}>=${version}_${revision}"
 	pkg_install() {
 		vmove usr/include
-		vmove usr/lib/*.so*
+		vmove usr/lib/*.so
 	}
 }

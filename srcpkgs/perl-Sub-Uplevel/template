@@ -1,6 +1,6 @@
 # Template build file for 'perl-Sub-Uplevel'.
 pkgname=perl-Sub-Uplevel
-version=0.25
+version=0.2800
 revision=1
 wrksrc="${pkgname/perl-/}-${version}"
 build_style=perl-module
@@ -9,8 +9,8 @@ makedepends="${hostmakedepends}"
 depends="${makedepends}"
 noarch="yes"
 short_desc="Sub::Uplevel - apparently run a function in a higher stack frame"
-maintainer="Christian Neukirchen <chneukirchen@gmail.com>"
+maintainer="Leah Neukirchen <leah@vuxu.org>"
 homepage="http://search.cpan.org/dist/Sub-Uplevel"
 license="Artistic, GPL-1"
 distfiles="${CPAN_SITE}/Sub/${pkgname/perl-/}-$version.tar.gz"
-checksum=2dcca582a7ea5bada576eb27c4be1d1b064fb22175bdbd6d696c45d083560505
+checksum=b4f3f63b80f680a421332d8851ddbe5a8e72fcaa74d5d1d98f3c8cc4a3ece293

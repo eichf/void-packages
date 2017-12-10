@@ -3,18 +3,19 @@
 _desc="NVIDIA drivers for linux (long-lived series)"
 
 pkgname=nvidia
-version=364.19
+version=384.98
 revision=1
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="Proprietary NVIDIA license"
 homepage="http://www.nvidia.com"
 
 only_for_archs="i686 x86_64"
+nopie=yes
 repository="nonfree"
 create_wrksrc=yes
 short_desc="${_desc} - Libraries and Utilities"
 depends="nvidia-gtklibs-${version}_${revision} nvidia-dkms-${version}_${revision} pkg-config"
-conflicts="catalyst>=0 xserver-abi-video>21_1"
+conflicts="catalyst>=0 xserver-abi-video>23_1"
 
 build_options="glvnd"
 desc_option_glvnd="Add support for NVIDIA's GL Vendor Neutral Dispatch implementation"
@@ -23,11 +24,11 @@ build_options_default="glvnd"
 if [ "$XBPS_TARGET_MACHINE" = "i686" ]; then
 	_pkg="NVIDIA-Linux-x86-${version}"
 	distfiles="http://uk.download.nvidia.com/XFree86/Linux-x86/${version}/${_pkg}.run"
-	checksum=9f891d4b22c43c9094b59af5c8474e29c70813110b346834a5cad81a224d4112
+	checksum=93e38818b8fc5d0fc34f05449c15808e774de389545475a9536ffb6555b3bb57
 else
 	_pkg="NVIDIA-Linux-x86_64-${version}-no-compat32"
 	distfiles="http://uk.download.nvidia.com/XFree86/Linux-x86_64/${version}/${_pkg}.run"
-	checksum=d7fcc78409d9ebc5663d1d925076199de2c64bbc16df84d9ed783f8f873e8c5d
+	checksum=169909c756ce01abcb676d704638003f3b782173a8ea82f2de798e40212780f5
 fi
 
 subpackages="nvidia-gtklibs nvidia-dkms nvidia-opencl nvidia-libs"
@@ -38,10 +39,13 @@ do_extract() {
 	./${_pkg}.run --extract-only
 	rm -f ${_pkg}.run
 }
-do_configure() {
+
+pre_install() {
 	cd ${_pkg}
-	# patches
+	cp nvidia_icd.json.template nvidia_icd.json
+	sed -i -e 's:__NV_VK_ICD__:libGLX_nvidia.so.0:g' nvidia_icd.json
 }
+
 do_install() {
 	cd ${_pkg}
 
@@ -97,6 +101,12 @@ do_install() {
 
 	vinstall libGLESv2.so.2 755 usr/lib
 	ln -sf libGLESv2.so.2 ${DESTDIR}/usr/lib/libGLESv2.so
+
+	vinstall libnvidia-egl-wayland.so.1.0.1 755 usr/lib
+	ln -sf libnvidia-egl-wayland.so.1.0.1 ${DESTDIR}/usr/lib/libnvidia-egl-wayland.so.1
+
+	vinstall 10_nvidia.json 755 usr/share/glvnd/egl_vendor.d
+	vinstall 10_nvidia_wayland.json 755 usr/share/egl/egl_external_platform.d
 	# --------------------------------------------------
 
 	vinstall libEGL.so.1 755 usr/lib
@@ -208,6 +218,9 @@ do_install() {
 		${DESTDIR}/usr/lib/libnvidia-opencl.so
 	ln -sf libnvidia-opencl.so.${version} \
 		${DESTDIR}/usr/lib/libnvidia-opencl.so.1
+
+	# vulkan icd
+	vinstall nvidia_icd.json 644 usr/share/vulkan/icd.d
 
 	# dkms pkg
 	vmkdir usr/src/nvidia-${version}

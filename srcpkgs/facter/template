@@ -1,18 +1,24 @@
 # Template file for 'facter'
 pkgname=facter
-version=3.0.2
-revision=3
+version=3.9.3
+revision=1
 build_style=cmake
 configure_args="-DRUBY_CONFIG_INCLUDE_DIR=${XBPS_CROSS_BASE}/usr/include"
-hostmakedepends="cmake ruby-devel"
-makedepends="libressl-devel libcurl-devel libblkid-devel ruby-devel yaml-cpp-devel boost-devel"
+hostmakedepends="ruby-devel"
+makedepends="libressl-devel libcurl-devel libblkid-devel ruby-devel yaml-cpp-devel
+ boost-devel leatherman cpp-hocon"
 depends="ruby net-tools"
 short_desc="Collect and display system facts"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="Apache-2.0"
 homepage="http://puppetlabs.com/facter"
 distfiles="http://downloads.puppetlabs.com/$pkgname/$pkgname-$version.tar.gz"
-checksum=2fee1ee938196790f24b7b876ff04a5d69c0ac1492ff6935b003ae23500eced7
+checksum=a91a38b6ff1ea912e824bce7fff125452a7b4632c503d0c888fc2ce24551ebb8
+
+pre_configure() {
+	# Subdirectory does not exist (in distfile).
+	sed -i CMakeLists.txt -e "/^add_subdirectory(locales)/d"
+}
 
 post_install() {
 	vlicense LICENSE

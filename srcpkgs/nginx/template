@@ -1,7 +1,7 @@
 # Template file for 'nginx'
 pkgname=nginx
-version=1.8.1
-revision=2
+version=1.12.2
+revision=1
 makedepends="pcre-devel libressl-devel $(vopt_if geoip geoip-devel)"
 if [ "$CROSS_BUILD" ]; then
 	# fake configure run on host
@@ -26,9 +26,9 @@ make_dirs="
 short_desc="A high performance web and reverse proxy server"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="Simplified BSD"
-homepage="http://nginx.org"
-distfiles="http://nginx.org/download/nginx-$version.tar.gz"
-checksum=8f4b3c630966c044ec72715754334d1fdf741caa1d5795fb4646c27d09f797b7
+homepage="https://nginx.org"
+distfiles="https://nginx.org/download/nginx-$version.tar.gz"
+checksum=305f379da1d5fb5aefa79e45c829852ca6983c7cd2a79328f8e084a324cf0416
 
 build_options="geoip"
 build_options_default="geoip"
@@ -38,6 +38,7 @@ do_configure() {
 	local tmpdir=/var/tmp/nginx
 
 	if [ "$CROSS_BUILD" ]; then
+		# fake configure run on host
 		unset CC CPP LD CFLAGS CPPFLAGS LDFLAGS
 	fi
 
@@ -54,11 +55,11 @@ do_configure() {
 		--http-fastcgi-temp-path=${tmpdir}/fastcgi \
 		--http-scgi-temp-path=${tmpdir}/scgi \
 		--http-uwsgi-temp-path=${tmpdir}/uwsgi \
-		--with-imap --with-imap_ssl_module \
+		--with-mail --with-mail_ssl_module \
 		--with-ipv6 --with-pcre-jit \
 		--with-file-aio \
 		--with-http_gunzip_module \
-		--with-http_spdy_module \
+		--with-http_v2_module \
 		--with-http_dav_module \
 		--with-http_gzip_static_module \
 		--with-http_realip_module \
@@ -68,13 +69,15 @@ do_configure() {
 
 	if [ "$CROSS_BUILD" ]; then
 		case "$XBPS_TARGET_MACHINE" in
-			arm*) cp ${FILESDIR}/ngx_auto_config.h.armv6l objs/ngx_auto_config.h;;
+			arm*|aarch64*) cp ${FILESDIR}/ngx_auto_config.h.armv6l objs/ngx_auto_config.h;;
 		esac
 	fi
+
+	sed -i 's/-lcrypt/$(LDFLAGS) &/' objs/Makefile
 }
 
 do_build() {
-	make ${makejobs} CC="${CC}" LD="${LD}" CFLAGS="${CFLAGS}" LDFLAGS="${LDFLAGS}"
+	make ${makejobs} CC="${CC}" CFLAGS="${CFLAGS}" LDFLAGS="${LDFLAGS}"
 }
 do_install() {
 	make DESTDIR=$DESTDIR install
@@ -88,6 +91,14 @@ do_install() {
 	vmkdir usr/share/nginx
 	mv $DESTDIR/etc/nginx/html/ $DESTDIR/usr/share/nginx
 
+	vman man/nginx.8
+
 	vlicense LICENSE
 	vsv nginx
 }
+
+# REMARKS:
+# The pregnerated header file for ARM must be syncrhonized on update. After the
+# configure step, the diff between srcpkgs/nginx/files/ngx_auto_config.h.armv6l
+# and masterdir/builddir/nginx-$version/objs/ngx_auto_config.h must be checked
+# for changes that must be made.

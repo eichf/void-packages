@@ -1,18 +1,17 @@
 # Template file for 'docker-machine'
 pkgname=docker-machine
-version=0.6.0
+version=0.13.0
 revision=2
 wrksrc="machine-${version}"
 build_style=go
 go_import_path="github.com/docker/machine"
 go_package="${go_import_path}/cmd"
-hostmakedepends="git"
 short_desc="Docker Machine management for a container-centric world"
 maintainer="Sergi Alvarez <pancake@nopcode.org>"
 license="Apache-2.0"
 homepage="https://github.com/docker/machine/"
 distfiles="https://github.com/docker/machine/archive/v${version}.tar.gz"
-checksum=e95f1d0efee8de1b0d97ddc2620cd8ee57ea0de9950a302307e9a9cd3d32ae5a
+checksum=f75f6602a6d013a7b2ae517c3bdb07d8977825c1a0506157831fcd2ae083dc25
 
 do_install() {
 	vlicense LICENSE

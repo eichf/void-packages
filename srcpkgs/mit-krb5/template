@@ -1,18 +1,18 @@
 # Template file for 'mit-krb5'
 pkgname=mit-krb5
-version=1.14.2
+version=1.15.2
 revision=1
 short_desc="MIT Kerberos 5 implementation"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="MIT"
 homepage="http://web.mit.edu/kerberos"
-distfiles="$homepage/dist/krb5/1.14/krb5-${version}.tar.gz"
-checksum=6bcad7e6778d1965e4ce4af21d2efdc15b274c5ce5c69031c58e4c954cda8b27
+distfiles="$homepage/dist/krb5/1.15/krb5-${version}.tar.gz"
+checksum=1639e392edf25e3b6cfec2ae68f97eb53e07c2dbe74bfeede0108465d5d1c87e
 
 build_style=gnu-configure
 wrksrc="krb5-${version}"
 hostmakedepends="perl flex e2fsprogs-devel"
-makedepends="db-devel e2fsprogs-devel libressl-devel"
+makedepends="db-devel e2fsprogs-devel libressl-devel libldap-devel"
 depends="mit-krb5-client>=${version}_${revision}"
 
 post_extract() {
@@ -21,12 +21,16 @@ post_extract() {
 }
 do_configure() {
 	WARN_CFLAGS= ./src/configure ${configure_args} --sbindir=/usr/bin \
-		--disable-rpath --with-system-et --without-system-verto \
+		--disable-rpath --with-system-et --without-system-verto --with-ldap \
 		--with-system-ss --with-system-db --enable-shared --without-tcl \
 		ac_cv_func_pthread_once=yes ac_cv_func_pthread_rwlock_init=yes \
 		acx_pthread_ok=yes ac_cv_func_regcomp=yes ac_cv_printf_positional=yes \
 		krb5_cv_attr_constructor_destructor=yes,yes
 }
+pre_build() {
+	sed -i "/LDFLAGS=/d" src/build-tools/krb5-config.in
+}
+
 do_build() {
 	make
 }

@@ -1,6 +1,6 @@
 # Template file for 'zita-resampler'
 pkgname=zita-resampler
-version=1.3.0
+version=1.6.0
 revision=2
 build_style=gnu-makefile
 make_install_args="LIBDIR=lib"
@@ -11,11 +11,16 @@ maintainer="silvernode <mollusk@homebutter.com>"
 license="GPL-3"
 homepage="http://kokkinizita.linuxaudio.org/linuxaudio/zita-resampler/resampler.html"
 distfiles="http://kokkinizita.linuxaudio.org/linuxaudio/downloads/${pkgname}-${version}.tar.bz2"
-checksum="98034c8c77b03ad1093f7ca0a83ccdfad5a36040a5a95bd4dac80fa68bcf2a65"
+checksum=10888d76299d8072990939be45d6fc5865f5a45d766d7690819c5899d2a588f0
 
 pre_build() {
 	sed -i 's/g++/$(CXX)/' Makefile
 	sed -i '/march=native/d' Makefile
+}
+
+post_install() {
+	# add missing symlink
+	ln -s libzita-resampler.so.${version} ${PKGDESTDIR}/usr/lib/libzita-resampler.so.${version%%.*}
 }
 
 zita-resampler-devel_package() {

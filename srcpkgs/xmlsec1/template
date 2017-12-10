@@ -1,17 +1,16 @@
 # Template file for 'xmlsec'
 pkgname=xmlsec1
-version=1.2.20
-revision=4
+version=1.2.25
+revision=2
 hostmakedepends="automake libtool pkg-config gnutls-devel"
 makedepends="libxslt-devel libltdl-devel libgcrypt-devel gnutls-devel"
 build_style="gnu-configure"
 maintainer="Enno Boland <gottox@voidlinux.eu>"
 license="MIT"
-homepage="http://www.aleksey.com/xmlsec/"
+homepage="https://www.aleksey.com/xmlsec/"
 short_desc="XML Security Library is a C library based on LibXML2"
-#distfiles="https://www.aleksey.com/xmlsec/download/xmlsec1-${version}.tar.gz"
-distfiles="http://pkgs.fedoraproject.org/repo/pkgs/xmlsec1/${pkgname}-${version}.tar.gz/ce12af00283eb90d9281956524250d6e/${pkgname}-${version}.tar.gz"
-checksum=3221593ca50f362b546a0888a1431ad24be1470f96b2469c0e0df5e1c55e7305
+distfiles="https://www.aleksey.com/xmlsec/download/xmlsec1-${version}.tar.gz"
+checksum=967ca83edf25ccb5b48a3c4a09ad3405a63365576503bf34290a42de1b92fcd2
 
 pre_configure() {
 	autoreconf -if
@@ -21,6 +20,8 @@ post_install() {
 	if [ "$CROSS_BUILD" ]; then
 		sed -e "s,${XBPS_CROSS_BASE},,g" -i ${DESTDIR}/usr/lib/xmlsec1Conf.sh
 	fi
+
+	vlicense COPYING
 }
 
 xmlsec1-devel_package() {

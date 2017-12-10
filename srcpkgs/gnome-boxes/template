@@ -1,15 +1,14 @@
 # Template file for 'gnome-boxes'
 pkgname=gnome-boxes
-version=3.18.1
-revision=2
+version=3.26.2
+revision=1
 # XXX ovirt support.
 build_style=gnu-configure
-configure_args="--enable-smartcard"
 hostmakedepends="pkg-config intltool itstool $(vopt_if gir gobject-introspection)"
 makedepends="clutter-gtk-devel gtk+3-devel gtk-vnc-devel libuuid-devel
  libvirt-glib-devel libxml2-devel libgudev-devel libosinfo-devel
  tracker-devel spice-gtk-devel spice-protocol vala-devel
- libsoup-devel libarchive-devel libusb-devel"
+ libsoup-devel libarchive-devel libusb-devel libsecret-devel"
 depends="qemu libvirt-glib>=0.1.6 libosinfo>=0.2.10 desktop-file-utils
  hicolor-icon-theme shared-mime-info"
 short_desc="GNOME 3 application to access remote or virtual systems"
@@ -17,7 +16,8 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="https://live.gnome.org/Boxes"
 license="LGPL-2"
 distfiles="${GNOME_SITE}/$pkgname/${version%.*}/$pkgname-$version.tar.xz"
-checksum=0235d7f76cf3faa3889b302c743d608759e84506657ed4e374592c39f768fb2b
+checksum=d00fc083182963dc1bbdee5e743ceb28ba03fbf5a9ea87c78d29dca5fb5b9210
+nocross="won't cross-compile without gobject-introspection, gobject-intropection can't be cross compiled"
 
 build_options="gir"
 if [ -z "$CROSS_BUILD" ]; then

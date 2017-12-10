@@ -1,0 +1,24 @@
+# Template file for 'epstopdf'
+pkgname="epstopdf"
+version="2.26"
+revision=1
+depends="ghostscript perl"
+hostmakedepends="unzip"
+short_desc="Convert EPS to PDF using Ghostscript"
+maintainer="Julien Dehos <dehos@lisic.univ-littoral.fr>"
+homepage="http://tug.org/epstopdf"
+license="public domain"
+distfiles="http://mirrors.ctan.org/support/${pkgname}.zip"
+checksum="28ed5987532e46db8c6d8623dfe0e225fbe124bed00b32a5192d10661644bc8b"
+noarch="yes"
+wrksrc="epstopdf"
+
+do_build() {
+	mv epstopdf.pl epstopdf
+}
+
+do_install() {
+	vbin epstopdf
+	vman epstopdf.1
+}
+

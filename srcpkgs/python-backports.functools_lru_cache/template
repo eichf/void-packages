@@ -1,0 +1,26 @@
+# Template file for 'python-backports.functools_lru_cache'
+pkgname=python-backports.functools_lru_cache
+version=1.4
+revision=2
+noarch=yes
+wrksrc="backports.functools_lru_cache-${version}"
+build_style=python2-module
+pycompile_module="backports/functools_lru_cache.py"
+hostmakedepends="python-setuptools"
+depends="python-backports"
+short_desc="Backport of functools.lru_cache from Python 3.3"
+maintainer="Alessio Sergi <al3hex@gmail.com>"
+homepage="https://github.com/jaraco/backports.functools_lru_cache"
+license="PSF"
+distfiles="${PYPI_SITE}/b/backports.functools_lru_cache/backports.functools_lru_cache-${version}.tar.gz"
+checksum=31f235852f88edc1558d428d890663c49eb4514ffec9f3650e7f3c9e4a12e36f
+
+pre_build() {
+	sed -i setup.py \
+		-e "/setuptools_scm/d" \
+		-e "s/use_scm_version=True,/version=\"${version}\",/"
+}
+post_install() {
+	# namespace provided by python-backports package
+	rm -f ${DESTDIR}/usr/lib/python*/site-packages/backports/__init__.py
+}

@@ -1,20 +1,20 @@
 # Template file for 'cifs-utils'
 pkgname=cifs-utils
-version=6.5
+version=6.7
 revision=1
 build_style=gnu-configure
-configure_args="--sbindir=/usr/bin"
 make_install_args="ROOTSBINDIR=/usr/bin"
-hostmakedepends="pkg-config libcap-ng-devel"
+hostmakedepends="automake pkg-config libcap-ng-devel"
 makedepends="mit-krb5-devel talloc-devel libcap-ng-devel samba-devel keyutils-devel pam-devel"
 short_desc="CIFS filesystem user-space tools"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="GPL-2"
 homepage="http://wiki.samba.org/index.php/LinuxCIFS_utils"
 distfiles="https://ftp.samba.org/pub/linux-cifs/$pkgname/$pkgname-$version.tar.bz2"
-checksum=e2776578b8267c6dc0862897f5e10f87f10f8337fca9ca6a9118f5eb30cf49f7
+checksum=b2f21612474ab012e75accd167aab607a0614ff67efb56ea0f36789fa785cfab
 
 pre_configure() {
+	autoreconf -fi
 	# Fix musl build
 	sed -i ${wrksrc}/mtab.c \
 		-e "/#include <stdlib.h>/a #include <limits.h>" \

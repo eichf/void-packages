@@ -1,16 +1,16 @@
 # Template file for 's6-dns'
 pkgname=s6-dns
-version=2.0.1.0
+version=2.2.0.1
 revision=1
 build_style=gnu-configure
 makedepends="execline-devel skalibs-devel"
-configure_args="--libdir=/usr/lib"
+configure_args="--libdir=/usr/lib --with-sysdeps=${XBPS_CROSS_BASE}/usr/lib/skalibs/sysdeps --with-lib=${XBPS_CROSS_BASE}/usr/lib"
 short_desc="Suite of DNS client programs and libraries for Unix systems"
 maintainer="lemmi <lemmi@nerd2nerd.org>"
 license="ISC"
 homepage="http://skarnet.org/software/${pkgname}/"
 distfiles="http://skarnet.org/software/${pkgname}/${pkgname}-${version}.tar.gz"
-checksum=9c807f9202b498ea0d8132b287f126d72ef9a869bd0d736295a47f867c3c24ca
+checksum=e31b454aef2bd0e35afb497c42dd0d49c011e0535ad2bf4dd6719afcf6e5e6b4
 
 post_install() {
 	vlicense COPYING

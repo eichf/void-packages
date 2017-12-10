@@ -1,32 +1,38 @@
 # Template file for 'network-manager-applet'
 pkgname=network-manager-applet
-version=1.0.10
+version=1.8.6
 revision=1
 lib32disabled=yes
 build_style=gnu-configure
-configure_args="--disable-static --without-bluetooth
- --with-modem-manager-1 --disable-migration
- $(vopt_enable gir introspection) LDFLAGS="
+configure_args="--disable-static --with-modem-manager-1 --disable-migration
+ --without-selinux
+ $(vopt_enable gir introspection)"
 hostmakedepends="pkg-config intltool glib-devel dbus-glib-devel
  $(vopt_if gir gobject-introspection)"
 makedepends="
  dbus-glib-devel libgnome-keyring-devel libsecret-devel
  NetworkManager-devel gtk+3-devel libnotify-devel
- ModemManager-devel polkit-devel libgudev-devel iso-codes"
+ ModemManager-devel polkit-devel libgudev-devel iso-codes
+ jansson-devel"
 depends="iso-codes NetworkManager>=1.0 hicolor-icon-theme"
 short_desc="NetworkManager panel applet for GNOME"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://www.gnome.org/projects/NetworkManager/"
 license="GPL-2"
 distfiles="${GNOME_SITE}/$pkgname/${version%.*}/$pkgname-$version.tar.xz"
-checksum=b045ac3eaa68ccbbefe91510ad67b4002a7e09d1e5ce1c4bf9a67619bd2cf0eb
+checksum=01749e2c27d84ac858f59bc923af50860156eb510e2b6cf7d4941f753bef9c30
 
 # Package build options
 build_options="gir"
-
-# Disable gir for cross builds.
+# Enable gir for non-cross builds
 if [ -z "$CROSS_BUILD" ]; then
-	build_options_default="gir"
+	build_options_default+=" gir"
+fi
+
+CFLAGS="-O2 -pipe"
+if [ ${XBPS_GCC_VERSION_MAJOR} -gt 5 ]; then
+	# Fix gcc6 build error for warning -Wmisleading-indentation
+	CFLAGS+=" -Wno-error=misleading-indentation"
 fi
 
 libnm-gtk_package() {

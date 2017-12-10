@@ -1,16 +1,17 @@
 # Template file for 'xen'
 pkgname=xen
-version=4.6.1
-revision=2
+version=4.7.2
+revision=1
 short_desc="The Xen hypervisor utilities"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://xen.org"
 license="GPL-2"
 distfiles="http://bits.xensource.com/oss-xen/release/$version/xen-$version.tar.gz"
-checksum=44cc2fccba1e147ef4c8da0584ce0f24189c8743de0e3e9a9226da88ddb5f589
+checksum=61494a56d9251e2108080f95b0dc8e3d175f1ba4da34603fc07b91cfebf358d5
 
 patch_args="-Np1"
 only_for_archs="x86_64 x86_64-musl"
+nopie=yes
 
 hostmakedepends="automake wget bison perl pkg-config git"
 makedepends="
@@ -18,7 +19,7 @@ makedepends="
  libbluetooth-devel pciutils-devel libX11-devel libXext-devel SDL-devel MesaLib-devel
  ncurses-devel liblzma-devel python-devel yajl-devel libuuid-devel libglib-devel
  acpica-utils pixman-devel dev86"
-depends="xen-hypervisor"
+depends="xen-hypervisor perl bridge-utils"
 
 case "$XBPS_TARGET_MACHINE" in
 	*-musl) makedepends+=" argp-standalone";;
@@ -43,6 +44,17 @@ nostrip_files="
 	s390-ccw.img"
 pycompile_module="xen grub"
 
+pre_configure() {
+	local i
+	[ ${XBPS_GCC_VERSION_MAJOR} -lt 6 ] && return 0
+
+	sed -i tools/configure -e's;-Werror;-Wno-error;g'
+	# Copy patches for _ipxe.tar.gz contents
+	for i in $(seq 1 6); do
+		cp ${FILESDIR}/gcc6_fix_${i}.patch tools/firmware/etherboot/patches
+		echo "gcc6_fix_${i}.patch" >> tools/firmware/etherboot/patches/series
+	done
+}
 do_configure() {
 	rm -f ${XBPS_WRAPPERDIR}/strip
 	cp ${FILESDIR}/*.h ${wrksrc}/tools/firmware

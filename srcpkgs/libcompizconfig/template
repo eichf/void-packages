@@ -1,0 +1,32 @@
+# Template file for 'libcompizconfig' of Compiz Reloaded
+pkgname=libcompizconfig
+version=0.8.14
+revision=1
+build_style=gnu-configure
+configure_args="--disable-static"
+
+hostmakedepends="automake intltool libtool pkg-config protobuf"
+makedepends="MesaLib-devel compiz-core-devel libSM-devel
+ libxml++-devel protobuf-devel startup-notification-devel"
+conf_files="/etc/compizconfig/config"
+
+short_desc="Compiz Reloaded configuration system library"
+maintainer="CoolOhm <micvlas@gmail.com>"
+homepage="https://github.com/compiz-reloaded"
+license="GPL-2"
+distfiles="https://github.com/compiz-reloaded/libcompizconfig/archive/v${version}.tar.gz>${pkgname}-${version}.tar.gz"
+checksum=e91b9768ecaebd456062a839c3d56caee487c5580b5180a0680db1577c89f07f
+
+pre_configure() {
+	NOCONFIGURE=1 ./autogen.sh
+}
+
+libcompizconfig-devel_package() {
+	depends="${makedepends} ${sourcepkg}>=${version}_${revision}"
+	short_desc+=" - development files"
+	pkg_install() {
+		vmove usr/include
+		vmove usr/lib/pkgconfig
+		vmove usr/lib/*.so
+	}
+}

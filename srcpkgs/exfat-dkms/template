@@ -1,0 +1,21 @@
+# Template file for 'exfat-dkms'
+pkgname=exfat-dkms
+version=1.2.8
+revision=3
+_commit=de4c760bc9a05ead83bc3ec6eec6cf1fb106f523
+wrksrc=exfat-nofuse-${_commit}
+short_desc="Exfat kernel driver (nofuse)"
+maintainer="Andrea Brancaleoni <abc@pompel.me>"
+license="GPL-2"
+homepage="https://github.com/dorimanx/exfat-nofuse"
+distfiles="$homepage/archive/$_commit.tar.gz"
+checksum=789e6f1679dde175e44fa18038bb07bae9c524a1fb7b99da1e5e60a5ea219ccb
+
+triggers="dkms"
+dkms_modules="exfat ${version}"
+depends="dkms"
+
+do_install() {
+	vmkdir usr/src/exfat-${version}
+	vcopy "*" usr/src/exfat-${version}
+}

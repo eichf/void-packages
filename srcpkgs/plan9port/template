@@ -1,19 +1,29 @@
 # Template file for 'plan9port'
 pkgname=plan9port
-version=20160418
-revision=2
-_githash=35d43924484b88b9816e40d2f6bff4547f3eec47
+version=20170922
+revision=1
+_githash=3f8ac29339ad67f05d32064fcc810035d55a3985
 wrksrc="${pkgname}-${_githash}"
-hostmakedepends="which perl"
+hostmakedepends="perl"
 makedepends="libX11-devel libXt-devel libXext-devel freetype-devel fontconfig-devel"
 short_desc="Port of many Plan 9 programs to Unix-like operating systems"
-maintainer="Christian Neukirchen <chneukirchen@gmail.com>"
+maintainer="Leah Neukirchen <leah@vuxu.org>"
 license="custom"
-homepage="http://swtch.com/plan9port/"
+homepage="https://9fans.github.io/plan9port/"
 distfiles="https://github.com/9fans/plan9port/archive/${_githash}.tar.gz"
-checksum=21b0d8ccb79975e49cb16a809c51557e5fe1659061591d1098544e0c5dea1d38
+checksum=15b6e943c48bc926c700bf446c4ca1f454d9b56a3987cc7d76b020c92068084b
 nocross=yes
 
+post_extract() {
+	# add missing LDFLAGS for some rules
+	sed -i '/prereq$/s/$/ $LDFLAGS/' \
+		src/cmd/auth/factotum/mkfile \
+		src/cmd/auth/secstore/mkfile \
+		src/cmd/devdraw/mkfile \
+		src/cmd/faces/mkfile \
+		src/cmd/mkfile
+	sed -i 's/-lX11$/& $LDFLAGS/g' src/cmd/rio/mkfile
+}
 do_build() {
 	CFLAGS+=' -D_DEFAULT_SOURCE'
 	echo "CFLAGS='$CFLAGS'" >LOCAL.config
@@ -23,13 +33,15 @@ do_build() {
 	./INSTALL
 }
 do_install() {
-	xargs -a lib/moveplan9.files -d'\n' sed -i "s#$wrksrc#/usr/share/plan9#"
+	xargs -a lib/moveplan9.files -d'\n' sed -i "s#$wrksrc#/usr/lib/plan9#"
 
 	vinstall $FILESDIR/plan9.sh 644 etc/profile.d
 	vlicense LICENSE
 
-	vmkdir usr/share
-	cp -a $wrksrc $DESTDIR/usr/share/plan9
-	cd $DESTDIR/usr/share/plan9
+	vmkdir usr/lib
+	cp -a $wrksrc $DESTDIR/usr/lib/plan9
+	cd $DESTDIR/usr/lib/plan9
 	rm -f install.{log,sum}
+
+	sed -i -e "s|\(-specs=.*hardened-ld\)||g" -e "s|\(-specs=.*hardened-cc1\)||g" $DESTDIR/usr/lib/plan9/config $DESTDIR/usr/lib/plan9/LOCAL.config
 }

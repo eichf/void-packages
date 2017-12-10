@@ -1,28 +1,38 @@
 # Template file for 'python-alabaster'
 pkgname=python-alabaster
-version=0.7.8
-revision=1
+version=0.7.10
+revision=2
 noarch=yes
 wrksrc="alabaster-${version}"
 build_style=python-module
-python_versions="2.7 3.4"
-hostmakedepends="python-setuptools python3.4-setuptools"
+hostmakedepends="python-setuptools python3-setuptools"
 depends="python"
 pycompile_module="alabaster"
 short_desc="Configurable sidebar-enabled Sphinx theme (Python2)"
 maintainer="Alessio Sergi <al3hex@gmail.com>"
 homepage="https://github.com/bitprophet/alabaster"
-license="BSD"
+license="3-clause-BSD"
 distfiles="${PYPI_SITE}/a/alabaster/alabaster-${version}.tar.gz"
-checksum=a1cb1b94fcc192ff74ca212d6ef5cb543bb169cfe7991c2b9df256bb354c1fff
+checksum=37cdcb9e9954ed60912ebc1ca12a9d12178c26637abdf124e3cde2341c257fe0
 
+post_install() {
+	vlicense LICENSE
+}
+
+python3-alabaster_package() {
+	noarch=yes
+	depends="python3"
+	replaces="python3.4-alabaster>=0"
+	pycompile_module="alabaster"
+	short_desc="${short_desc/Python2/Python3}"
+	pkg_install() {
+		vmove usr/lib/python3*
+		vlicense LICENSE
+	}
+}
 python3.4-alabaster_package() {
 	noarch=yes
-	depends="python3.4"
-	pycompile_version="3.4"
-	pycompile_module="alabaster"
-	short_desc="${short_desc/Python2/Python3.4}"
-	pkg_install() {
-		vmove usr/lib/python3.4
-	}
+	build_style=meta
+	short_desc="${short_desc/Python2/Python3.4} (transitional dummy package)"
+	depends="python3-alabaster>=${version}_${revision}"
 }

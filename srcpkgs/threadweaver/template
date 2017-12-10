@@ -1,0 +1,25 @@
+# Template file for 'threadweaver'
+pkgname=threadweaver
+version=5.40.0
+revision=1
+build_style=cmake
+configure_args="-DBUILD_TESTING=OFF"
+hostmakedepends="extra-cmake-modules qt5-host-tools qt5-devel"
+makedepends="qt5-devel"
+short_desc="KDE Helper for multithreaded programming"
+maintainer="Denis Revin <denis.revin@gmail.com>"
+license="LGPL-2"
+homepage="https://projects.kde.org/projects/frameworks/threadweaver"
+distfiles="http://download.kde.org/stable/frameworks/${version%.*}/${pkgname}-${version}.tar.xz"
+checksum=2f35c4b370c379fa10fbde3270e2576012f81cf357648706a3dd1a5bce65c346
+
+threadweaver-devel_package() {
+	short_desc+=" - development"
+	depends="${makedepends} ${sourcepkg}>=${version}_${revision}"
+	pkg_install() {
+		vmove usr/include
+		vmove usr/lib/qt5/mkspecs
+		vmove usr/lib/cmake
+		vmove usr/lib/*.so
+	}
+}

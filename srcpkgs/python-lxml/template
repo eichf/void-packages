@@ -1,25 +1,35 @@
 # Template file for 'python-lxml'
 pkgname=python-lxml
-version=3.6.0
+version=4.1.1
 revision=1
-wrksrc="lxml-${version}"
+wrksrc="lxml-lxml-${version}"
 build_style=python-module
-python_versions="2.7 3.4"
-hostmakedepends="python-setuptools python3.4-setuptools libxslt-devel"
-makedepends="python-devel python3.4-devel libxslt-devel"
+hostmakedepends="python-setuptools python3-setuptools
+ python-Cython python3-Cython libxslt-devel"
+makedepends="python-devel python3-devel libxslt-devel"
 pycompile_module="lxml"
 short_desc="Python2 binding for the libxml2 and libxslt libraries"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://lxml.de/"
-license="BSD, ElementTree, GPL-2, ZPL"
-distfiles="${PYPI_SITE}/l/lxml/lxml-${version}.tar.gz"
-checksum=9c74ca28a7f0c30dca8872281b3c47705e21217c8bc63912d95c9e2a7cac6bdf
+license="3-clause-BSD, ElementTree, GPL-2, ZPL-2.0"
+distfiles="https://github.com/lxml/lxml/archive/lxml-${version}.tar.gz"
+checksum=776608f4bcb97bb3b51578d324922dabc7f5518f22a066ea3c1e5f7cf0deca4b
 
-python3.4-lxml_package() {
-	pycompile_version="3.4"
+post_install() {
+	vlicense LICENSES.txt LICENSES
+}
+
+python3-lxml_package() {
+	replaces="python3.4-lxml>=0"
 	pycompile_module="lxml"
-	short_desc="${short_desc/Python2/Python3.4}"
+	short_desc="${short_desc/Python2/Python3}"
 	pkg_install() {
-		vmove usr/lib/python3.4
+		vmove usr/lib/python3*
+		vlicense LICENSES.txt LICENSES
 	}
+}
+python3.4-lxml_package() {
+	build_style=meta
+	short_desc="${short_desc/Python2/Python3.4} (transitional dummy package)"
+	depends="python3-lxml>=${version}_${revision}"
 }

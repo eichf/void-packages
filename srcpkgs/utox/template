@@ -1,20 +1,20 @@
 # Template file for 'utox'
 pkgname=utox
-version=0.8.0
+version=0.16.1
 revision=1
+wrksrc="uTox-${version}"
+build_style=cmake
+configure_args="-DENABLE_ASAN=OFF"
 short_desc="Lightweight TOX instant messenger client written in C"
 maintainer="Spencer Hill <spencernh77@gmail.com>"
 license="GPL-3"
 homepage="http://utox.org/"
-makedepends="toxcore-devel-git filteraudio-devel-git fontconfig-devel
- freetype-devel libopenal-devel libvpx-devel libX11-devel libXext-devel
- libXrender-devel dbus-devel v4l-utils-devel libsodium-devel opus-devel"
 hostmakedepends="pkg-config"
-distfiles="https://github.com/GrayHatter/uTox/archive/v${version}.tar.gz"
-checksum=79effa9755beb9b6884a7660ae0e2c0e42a237faa18a4e32fac68dc30c6c0064
-build_style=gnu-makefile
-wrksrc="uTox-${version}"
+makedepends="toxcore-devel filter_audio-devel fontconfig-devel
+ freetype-devel libopenal-devel libvpx-devel libX11-devel libXext-devel
+ libXrender-devel dbus-devel v4l-utils-devel libsodium-devel opus-devel
+ check-devel"
+distfiles="https://github.com/uTox/uTox/archive/v${version}.tar.gz"
+checksum=d8fcee0dbf25596e67c4323fc153069552eeeb4d99cdcdc09ca2074ebc38b493
 
-do_build() {
-	make CC=$CC PREFIX=/usr GIT_V=${version} ${makejobs}
-}
+nocross=yes

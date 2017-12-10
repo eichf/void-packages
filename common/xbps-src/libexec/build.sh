@@ -33,7 +33,6 @@ show_pkg_build_options
 check_pkg_arch $XBPS_CROSS_BUILD
 
 if [ -z "$XBPS_CROSS_PREPARE" ]; then
-    install_cross_pkg $XBPS_CROSS_BUILD || exit $?
     prepare_cross_sysroot $XBPS_CROSS_BUILD || exit $?
 fi
 if [ -z "$XBPS_DEPENDENCY" -a -z "$XBPS_TEMP_MASTERDIR" -a -n "$XBPS_KEEP_ALL" -a "$XBPS_CHROOT_CMD" = "proot" ]; then
@@ -42,6 +41,10 @@ fi
 # Install dependencies from binary packages
 if [ "$PKGNAME" != "$XBPS_TARGET_PKG" -o -z "$XBPS_SKIP_DEPS" ]; then
     install_pkg_deps $PKGNAME $XBPS_TARGET_PKG pkg $XBPS_CROSS_BUILD $XBPS_CROSS_PREPARE || exit $?
+fi
+
+if [ -z "$XBPS_CROSS_PREPARE" ]; then
+    install_cross_pkg $XBPS_CROSS_BUILD || exit $?
 fi
 
 # Fetch distfiles after installing required dependencies,
@@ -60,6 +63,10 @@ $XBPS_LIBEXECDIR/xbps-src-doconfigure.sh $SOURCEPKG $XBPS_CROSS_BUILD || exit 1
 # Run build phase
 $XBPS_LIBEXECDIR/xbps-src-dobuild.sh $SOURCEPKG $XBPS_CROSS_BUILD || exit 1
 [ "$XBPS_TARGET" = "build" ] && exit 0
+
+# Run check phase
+$XBPS_LIBEXECDIR/xbps-src-docheck.sh $SOURCEPKG $XBPS_CROSS_BUILD || exit 1
+[ "$XBPS_TARGET" = "check" ] && exit 0
 
 # Install pkgs into destdir.
 $XBPS_LIBEXECDIR/xbps-src-doinstall.sh $SOURCEPKG no $XBPS_CROSS_BUILD || exit 1

@@ -1,0 +1,30 @@
+# Template file for 'kross'
+pkgname=kross
+version=5.40.0
+revision=1
+build_style=cmake
+configure_args="-DBUILD_TESTING=OFF"
+hostmakedepends="extra-cmake-modules"
+makedepends="qt5-tools-devel kdoctools-devel kparts-devel"
+short_desc="KDE scripting bridge"
+maintainer="Denis Revin <denis.revin@gmail.com>"
+license="LGPL-2"
+homepage="https://projects.kde.org/projects/frameworks/kross"
+distfiles="http://download.kde.org/stable/frameworks/${version%.*}/portingAids/${pkgname}-${version}.tar.xz"
+checksum=17a570e2e742e06dc6b28e8610fc1795312be960938ce25acf480005f5d409f9
+
+if [ -n "$CROSS_BUILD" ]; then
+	hostmakedepends+=" qt5-host-tools qt5-qmake python kdoctools-devel"
+	configure_args+=" -DMEINPROC5_EXECUTABLE=/usr/bin/meinproc5"
+fi
+
+kross-devel_package() {
+	short_desc+=" - development"
+	depends="${makedepends} ${sourcepkg}>=${version}_${revision}"
+	pkg_install() {
+		vmove usr/include
+		vmove usr/lib/qt5/mkspecs
+		vmove usr/lib/cmake
+		vmove usr/lib/*.so
+	}
+}

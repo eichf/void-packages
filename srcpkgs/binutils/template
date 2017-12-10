@@ -1,17 +1,20 @@
 # Template file for 'binutils'
 pkgname=binutils
-version=2.26
-revision=2
+version=2.29.1
+revision=1
 bootstrap=yes
 short_desc="GNU binary utilities"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://www.gnu.org/software/binutils/"
 license="GPL-3"
 distfiles="${GNU_SITE}/$pkgname/$pkgname-$version.tar.bz2"
-checksum=c2ace41809542f5237afc7e3b8f32bb92bc7bc53c6232a84463c423b0714ecd9
+checksum=1509dff41369fb70aed23682351b663b56db894034773e6dbf7d5d6071fc55cc
 
 if [ "$CHROOT_READY" ]; then
 	hostmakedepends="flex perl"
+	checkdepends="bc"
+else
+	unset XBPS_CHECK_PKGS
 fi
 makedepends+=" zlib-devel"
 
@@ -36,7 +39,7 @@ do_configure() {
 		--enable-plugins --enable-secureplt --with-mmap \
 		--disable-shared --enable-gold --disable-werror \
 		--enable-deterministic-archives --enable-ld=default \
-		--disable-nls $CONFIGFLAG LDFLAGS=
+		--disable-nls $CONFIGFLAG
 }
 do_build() {
 	make ${makejobs}
@@ -56,6 +59,9 @@ do_build() {
 	cp -a opcodes opcodes-pic
 	make -C opcodes-pic clean
 	make CFLAGS="$CFLAGS -fPIC" -C opcodes-pic
+}
+do_check() {
+	make -k check
 }
 do_install() {
 	if [ "$XBPS_TARGET_MACHINE" = "x86_64" ]; then

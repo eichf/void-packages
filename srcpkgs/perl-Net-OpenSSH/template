@@ -1,6 +1,6 @@
 # Template file for 'perl-Net-OpenSSH'
 pkgname=perl-Net-OpenSSH
-version=0.70
+version=0.74
 revision=1
 noarch=yes
 wrksrc="${pkgname/perl-/}-${version}"
@@ -9,8 +9,8 @@ hostmakedepends="perl"
 makedepends="${hostmakedepends}"
 depends="${makedepends} openssh"
 short_desc="Net::OpenSSH - Perl SSH client package implemented on top of OpenSSH"
-maintainer="Christian Neukirchen <chneukirchen@gmail.com>"
+maintainer="Leah Neukirchen <leah@vuxu.org>"
 homepage="http://search.cpan.org/dist/Net-OpenSSH"
 license="Artistic, GPL-1"
 distfiles="${CPAN_SITE}/Net/Net-OpenSSH-${version}.tar.gz"
-checksum=3fcb36a5a2fc296c1d0def54f3201cecffe7d81157ef5fa2bac9868875f63b95
+checksum=bd06e66cef82b5a07585deeddc91a093b32f4d080ae6b5e8033231030a1c27b6

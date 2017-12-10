@@ -1,0 +1,27 @@
+# Template file for 'kded'
+pkgname=kded
+version=5.40.0
+revision=1
+build_style=cmake
+configure_args="-DBUILD_TESTING=OFF"
+hostmakedepends="extra-cmake-modules"
+makedepends="kdoctools-devel kinit-devel"
+short_desc="Central daemon of KDE workspaces"
+maintainer="Denis Revin <denis.revin@gmail.com>"
+license="LGPL-2"
+homepage="https://projects.kde.org/projects/frameworks/kded"
+distfiles="http://download.kde.org/stable/frameworks/${version%.*}/${pkgname}-${version}.tar.xz"
+checksum=0439d68e2b08a0084b6d15e92679692090271a873ee90dca8ed0a0afa1eac449
+
+if [ -n "$CROSS_BUILD" ]; then
+	hostmakedepends+=" qt5-host-tools qt5-qmake kdoctools"
+	configure_args+=" -DMEINPROC5_EXECUTABLE=/usr/bin/meinproc5"
+fi
+
+kded-devel_package() {
+	short_desc+=" - development"
+	depends="${makedepends} ${sourcepkg}>=${version}_${revision}"
+	pkg_install() {
+		vmove usr/lib/cmake
+	}
+}

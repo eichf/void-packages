@@ -1,0 +1,25 @@
+# Template file for 'libsysstat'
+pkgname=libsysstat
+version=0.4.0
+revision=1
+build_style=cmake
+hostmakedepends="pkg-config qt5-qmake qt5-host-tools qt5-tools"
+makedepends="lxqt-build-tools liblxqt-devel libXcursor-devel"
+short_desc="Qt-based interface to system statistics"
+maintainer="Juan RP <xtraeme@voidlinux.eu>"
+license="LGPL-2.1"
+homepage="http://lxde.org/"
+distfiles="https://github.com/lxde/libsysstat/releases/download/${version}/libsysstat-${version}.tar.xz"
+checksum=8fea723545aeb266f1a998d450aa4c985194b8b79d314817c7c2a78e9b4e996b
+replaces="lxde-libsysstat>=0"
+
+libsysstat-devel_package() {
+	short_desc+=" - development files"
+	depends="${makedepends} ${sourcepkg}>=${version}_${revision}"
+	pkg_install() {
+		vmove usr/include
+		vmove usr/lib/pkgconfig
+		vmove usr/lib/*.so
+		vmove usr/share/cmake
+	}
+}

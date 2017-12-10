@@ -1,56 +1,34 @@
 # Template file for 'python-ipython'
 pkgname=python-ipython
-version=4.2.0
-revision=2
+version=5.5.0
+revision=1
 noarch=yes
 wrksrc="ipython-${version}"
-build_style=python-module
-python_versions="2.7 3.4"
-hostmakedepends="python-setuptools python3.4-setuptools"
-depends="python-decorator python-pexpect python-pickleshare python-simplegeneric
- python-traitlets python-backports.shutil_get_terminal_size"
+build_style=python2-module
+hostmakedepends="python-setuptools"
+depends="python-pickleshare python-simplegeneric python-traitlets python-pexpect
+ python-prompt_toolkit python-Pygments python-backports.shutil_get_terminal_size"
 pycompile_module="IPython"
 short_desc="Enhanced interactive Python2 shell"
 maintainer="Alessio Sergi <al3hex@gmail.com>"
-homepage="http://ipython.org/"
+homepage="https://ipython.org/"
 license="3-clause-BSD"
 distfiles="${PYPI_SITE}/i/ipython/ipython-${version}.tar.gz"
-checksum=dba42f182b5f6f26630d2202efd30383712d9f7d8d8d9896b37ae2145deca616
+checksum=66469e894d1f09d14a1f23b971a410af131daa9ad2a19922082e02e0ddfd150f
 
 alternatives="
- ipython:ipython:/usr/bin/ipython2.7
- ipython:ipython.1:/usr/share/man/man1/ipython2.7.1"
+ ipython:ipython:/usr/bin/ipython2
+ ipython:ipython.1:/usr/share/man/man1/ipython2.1"
 
 post_install() {
 	# use decorators of numpy
 	rm -f ${DESTDIR}/usr/lib/python*/site-packages/IPython/external/decorators/_decorators.py
 	# remove iptest
 	rm -f ${DESTDIR}/usr/bin/iptest*
-	# create ipython2 symlink
-	ln -sf ipython2.7 ${DESTDIR}/usr/bin/ipython2
+	# remove ipython for alternatives
+	rm -f ${DESTDIR}/usr/bin/ipython
 	# create versioned man pages
-	mv ${DESTDIR}/usr/share/man/man1/ipython{,2.7}.1
-	vman docs/man/ipython.1 ipython3.4.1
-	# install license
-	vlicense COPYING.rst LICENSE
-}
+	mv ${DESTDIR}/usr/share/man/man1/ipython{,2}.1
 
-python3.4-ipython_package() {
-	alternatives="
-	 ipython:ipython:/usr/bin/ipython3.4
-	 ipython:ipython.1:/usr/share/man/man1/ipython3.4.1
-	 ipython3:ipython3:/usr/bin/ipython3.4
-	 ipython3:ipython3.1:/usr/share/man/man1/ipython3.4.1"
-	noarch=yes
-	depends="python3.4-decorator python3.4-pexpect python3.4-pickleshare
-	 python3.4-simplegeneric python3.4-traitlets"
-	pycompile_version="3.4"
-	pycompile_module="IPython"
-	short_desc="${short_desc/Python2/Python3.4}"
-	pkg_install() {
-		vmove usr/bin/ipython3.4
-		vmove usr/lib/python3.4
-		vmove usr/share/man/man1/ipython3.4.1
-		vlicense COPYING.rst LICENSE
-	}
+	vlicense COPYING.rst LICENSE
 }

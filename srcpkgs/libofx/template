@@ -1,21 +1,18 @@
 # Template file for 'libofx'
 pkgname=libofx
-version=0.9.10
-revision=4
+version=0.9.12
+revision=1
 hostmakedepends="pkg-config"
 makedepends="opensp-devel libcurl-devel libxml++-devel"
 build_style="gnu-configure"
 configure_args="--with-opensp-includes=${XBPS_CROSS_BASE}/usr/include/OpenSP
  --with-opensp-libs=${XBPS_CROSS_BASE}/usr/lib"
 maintainer="Enno Boland <gottox@voidlinux.eu>"
-license="GPL"
+license="GPL-2"
 homepage="http://libofx.sourceforge.net"
 short_desc="Parser and an API designed to allow applications to very easily support OFX command responses"
-distfiles="${SOURCEFORGE_SITE}/$pkgname/$pkgname/$version/$pkgname-$version.tar.gz"
-checksum=54e26a4944ef2785087cfd8ed8f187ab9d397d9b92b5acc199dd7d5d095cf695
-
-CFLAGS="-std=c++11"
-CXXFLAGS="-std=c++11"
+distfiles="${SOURCEFORGE_SITE}/$pkgname/$pkgname/$pkgname-$version.tar.gz"
+checksum=c15fa062fa11e759eb6d8c7842191db2185ee1b221a3f75e9650e2849d7b7373
 
 libofx-devel_package() {
 	depends="${sourcepkg}>=${version}_${revision}"

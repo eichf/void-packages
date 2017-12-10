@@ -1,33 +1,38 @@
 # Template file for 'python-pandas'
 pkgname=python-pandas
-version=0.18.1
+version=0.21.0
 revision=1
 wrksrc="pandas-${version}"
 build_style=python-module
-python_versions="2.7 3.4"
-hostmakedepends="python-setuptools python3.4-setuptools"
-makedepends="python-devel python3.4-devel python-numpy python3.4-numpy
- python-dateutil python3.4-dateutil python-pytz python3.4-pytz"
+hostmakedepends="python-setuptools python3-setuptools"
+makedepends="python-devel python3-devel python-numpy python3-numpy
+ python-dateutil python3-dateutil python-pytz python3-pytz
+ python-Cython python3-Cython"
 depends="python-numpy python-dateutil python-pytz"
 pycompile_module="pandas"
 short_desc="Python2 data analysis library"
 maintainer="Alessio Sergi <al3hex@gmail.com>"
-homepage="http://pandas.pydata.org/"
+homepage="https://pandas.pydata.org/"
 license="3-clause-BSD"
-distfiles="${PYPI_SITE}/p/pandas/pandas-${version}.tar.gz"
-checksum=d2e483692c7915916dffd1b83256ea9761b4224c8d45646ceddf48b977ee77b2
+distfiles="https://github.com/pandas-dev/pandas/archive/v${version}.tar.gz"
+checksum=9de7b333de3af8f4f1b5c83503ccd475e8bdb26505f6309400bd89a3539223d0
 
 post_install() {
 	vlicense LICENSE
 }
 
-python3.4-pandas_package() {
-	depends="python3.4-numpy python3.4-dateutil python3.4-pytz"
-	pycompile_version="3.4"
+python3-pandas_package() {
+	depends="python3-numpy python3-dateutil python3-pytz"
 	pycompile_module="pandas"
-	short_desc="${short_desc/Python2/Python3.4}"
+	replaces="python3.4-pandas>=0"
+	short_desc="${short_desc/Python2/Python3}"
 	pkg_install() {
-		vmove usr/lib/python3.4
+		vmove usr/lib/python3*
 		vlicense LICENSE
 	}
+}
+python3.4-pandas_package() {
+	build_style=meta
+	short_desc="${short_desc/Python2/Python3.4} (transitional dummy package)"
+	depends="python3-pandas>=${version}_${revision}"
 }

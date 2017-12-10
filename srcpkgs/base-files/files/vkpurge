@@ -5,6 +5,11 @@
 #
 : ${progname:=$(basename $0)}
 
+case "$(xbps-uhelper arch)" in
+    aarch64*) KIMAGE="vmlinux";;
+    *) KIMAGE="vmlinuz";;
+esac
+
 usage()
 {
 	cat <<_EOF
@@ -25,7 +30,7 @@ list_kernels()
 {
 	local k kpkg installed kver _f
 
-	for k in /boot/vmlinuz-*; do
+	for k in /boot/$KIMAGE-*; do
 		_f=$(basename $k)
 		kver=$(echo ${_f}|sed -e 's|-rc|rc|')
 		installed=$(xbps-query -o "$k" 2>/dev/null)
@@ -54,13 +59,13 @@ remove_kernel()
 	local rmkver="$1"
 	local installed f kfile
 
-	if [ ! -f /boot/vmlinuz-${rmkver} -a ! -d /lib/modules/${rmkver} ]; then
+	if [ ! -f /boot/$KIMAGE-${rmkver} -a ! -d /lib/modules/${rmkver} ]; then
 		echo "Kernel ${rmkver} not installed."
 		exit 0
 	fi
 
-	installed=$(xbps-uhelper -r / version $rmkver)
-	if [ -n "$installed" ]; then
+	installed=$(xbps-uhelper version "linux${rmkver%*.*}" 2>/dev/null)
+	if [ -n "$installed" -a "$installed" = "$rmkver" ]; then
 		echo "Kernel $rmkver is currently installed."
 		exit 0
 	fi
@@ -68,7 +73,7 @@ remove_kernel()
 	# Execute pre-remove kernel hooks.
 	run_hooks pre-remove $rmkver
 	# Remove kernel files in /boot.
-	for f in config System.map vmlinuz; do
+	for f in config System.map $KIMAGE; do
 		kfile="/boot/${f}-${rmkver}"
 		[ ! -f "${kfile}" ] && continue
 		echo "Removing ${kfile}..."
@@ -97,15 +102,14 @@ remove_kernel()
 	fi
 }
 
-ARCH=$(uname -m)
-case "$ARCH" in
-	i686*|x86_64*);;
-	*) echo "vkpurge is x86 specific, exiting..."; exit 0;;
-esac
-
 if [ "$1" = "list" ]; then
 	list_kernels
 elif [ "$1" = "rm" ]; then
+	if [ "$(id -u)" -ne 0 ]; then
+		echo "You have to run this script as root!"
+		exit 1
+	fi
+
 	if [ -z "$2" ]; then
 		usage
 	elif [ "$2" = "all" ]; then

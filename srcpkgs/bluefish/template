@@ -1,7 +1,7 @@
 # Template file for 'bluefish'
 pkgname=bluefish
-version=2.2.8
-revision=1
+version=2.2.10
+revision=2
 lib32disabled=yes
 build_style=gnu-configure
 configure_args="--enable-spell-check --disable-update-databases
@@ -18,7 +18,7 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="GPL-3"
 homepage="http://bluefish.openoffice.nl/"
 distfiles="http://www.bennewitz.com/bluefish/stable/source/bluefish-${version}.tar.bz2"
-checksum=32578f955cee3f43e5b3a86e2588e6a679df94438b21dcbe38e3c82282745000
+checksum=afeca12b693bb58e30c2199e6a21cc06da02d88e0ac9d08b7a231a9c8e7c3eb2
 
 # XXX python option broken with cross compilation
 build_options="python"

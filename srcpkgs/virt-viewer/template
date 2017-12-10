@@ -1,15 +1,14 @@
 # Template file for 'virt-viewer'
 pkgname=virt-viewer
-version=3.1
+version=6.0
 revision=1
-nocross=yes
 build_style=gnu-configure
 configure_args="--disable-update-mimedb"
-maintainer="Dominik Honnef <dominik@honnef.co>"
-hostmakedepends="intltool pkg-config"
-makedepends="glib-devel libxml2-devel gtk+3-devel spice-gtk-devel spice-devel gtk-vnc-devel libvirt-devel"
+maintainer="Duncaen <duncaen@voidlinux.eu>"
+hostmakedepends="glib-devel intltool pkg-config"
+makedepends="gtk-vnc-devel libvirt-glib-devel spice-devel spice-gtk-devel"
 license="GPL-2"
 homepage="http://virt-manager.org/"
 short_desc="A tool for displaying the graphical console of a virtual machine"
 distfiles="http://virt-manager.org/download/sources/${pkgname}/${pkgname}-${version}.tar.gz"
-checksum=be4e49470b650fc22513c2c01f2e13e30ee2d494d0d7b319b6f414ca781078c7
+checksum=9037bd7773da4dae761871ec1ab646cfefb4d7e48b1504dddf315a548ccb18b2

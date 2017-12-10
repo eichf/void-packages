@@ -1,0 +1,38 @@
+# Template file for 'suricata'
+pkgname=suricata
+version=4.0.3
+revision=1
+build_style=gnu-configure
+configure_args="--disable-gccmarch-native"
+hostmakedepends="pkg-config"
+makedepends="libnet-devel libpcap-devel pcre-devel libyaml-devel libcap-ng-devel file-devel"
+short_desc="Next Generation Intrusion Detection and Prevention Engine"
+maintainer="Andrea Brancaleoni <abc@pompel.me>"
+license="GPL-2"
+homepage="https://suricata-ids.org/"
+distfiles="https://www.openinfosecfoundation.org/download/$pkgname-$version.tar.gz
+https://rules.emergingthreats.net/open/suricata/emerging.rules.tar.gz"
+checksum="81a0bcb10b5c0b00efeafb4aac3ef70bf0e36b060ac6300d867f15f3dbe0e437
+ 7872886d47f318ab2f636be8ad289365b25ca21c1e8e667b870b55d416b1bf98"
+
+system_accounts="$pkgname"
+conf_files="/etc/$pkgname/*.* /etc/$pkgname/rules/*"
+
+post_build() {
+	sed -i 's|#run-as:|run-as:|g' $pkgname.yaml
+	sed -i "s|#  user: suri|  user: $pkgname|g" $pkgname.yaml
+	sed -i "s|#  group: suri|  group: $pkgname|g" $pkgname.yaml
+	sed -i "s|#daemon-directory: \"/\"|daemon-directory: \"/var/lib/suricata\"|g" $pkgname.yaml
+}
+
+post_install() {
+	vsv $pkgname
+	vinstall $pkgname.yaml 644 etc/$pkgname
+	vinstall classification.config 644 etc/$pkgname
+	vinstall reference.config 644 etc/$pkgname
+	vinstall threshold.config 644 etc/$pkgname
+	vmkdir etc/$pkgname/rules
+	vcopy rules/*.rules etc/$pkgname/rules
+	vcopy ../rules/*.rules etc/$pkgname/rules
+	vlicense ../rules/LICENSE  emerging-rules.LICENSE
+}

@@ -1,7 +1,7 @@
 # Template file for 'lrzip'
 pkgname=lrzip
-version=0.621
-revision=2
+version=0.631
+revision=1
 build_style="gnu-configure"
 hostmakedepends="perl automake libtool"
 makedepends="zlib-devel bzip2-devel lzo-devel"
@@ -10,7 +10,7 @@ homepage="http://lrzip.kolivas.org/"
 license="GPL-2"
 short_desc="Multi-threaded compression using the rzip/lzma, lzo, and zpaq algorithms"
 distfiles="https://github.com/ckolivas/lrzip/archive/v${version}.tar.gz"
-checksum=4bf93c1df076b6e6a57f32c0c4b7790b4d25d724c259394e1d32b680c0657121
+checksum=10315c20d5a47590e7220c210735ba169677824d5672509266682eccec84d952
 
 pre_configure() {
 	NOCONFIGURE=1 ./autogen.sh

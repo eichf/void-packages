@@ -1,6 +1,6 @@
 # Template build file for 'xkeyboard-config'.
 pkgname=xkeyboard-config
-version=2.17
+version=2.22
 revision=1
 noarch=yes
 build_style=gnu-configure
@@ -10,7 +10,11 @@ makedepends="libX11-devel"
 depends="xkbcomp"
 short_desc="X Keyboard Configuration Database"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
-homepage="http://www.freedesktop.org/wiki/Software/XKeyboardConfig"
+homepage="https://www.freedesktop.org/wiki/Software/XKeyboardConfig"
 license="MIT"
-distfiles="http://xorg.freedesktop.org/releases/individual/data/$pkgname/$pkgname-$version.tar.bz2"
-checksum=dec6be44bd31775cdc1ab95bfd75d5f2c0055613eeca8b4e9c6480b183430701
+distfiles="${XORG_SITE}/data/$pkgname/$pkgname-$version.tar.bz2"
+checksum=deaec9989fbc443358b43864437b7b6d39caff07890a4a8055105ce9fcaa59bd
+
+post_install() {
+	vlicense COPYING
+}

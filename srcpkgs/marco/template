@@ -1,9 +1,9 @@
 # Template file for 'marco'
 pkgname=marco
-version=1.14.1
+version=1.18.2
 revision=1
 build_style=gnu-configure
-configure_args="--disable-static --with-gtk=3.0 --enable-startup-notification --disable-schemas-compile"
+configure_args="--disable-static --enable-startup-notification --disable-schemas-compile"
 hostmakedepends="automake libtool gettext-devel pkg-config
  intltool itstool glib-devel gdk-pixbuf-devel mate-common zenity"
 makedepends="gtk+3-devel libnotify-devel libgtop-devel libSM-devel
@@ -15,7 +15,7 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="LGPL-2"
 homepage="http://mate-desktop.org"
 distfiles="http://pub.mate-desktop.org/releases/${version%.*}/${pkgname}-${version}.tar.xz"
-checksum=7c371b055e8ad0d54eb0f193f9f35fc8e95c556b21af517be9198e4fcb2cb20d
+checksum=c5a53e694b36f7630ecacd23c52cc30cd086e30896aa1a9461f2b169734d6f9c
 
 pre_configure() {
 	NOCONFIGURE=1 ./autogen.sh

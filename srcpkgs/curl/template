@@ -1,15 +1,17 @@
 # Template build file for 'curl'.
 pkgname=curl
-version=7.48.0
-revision=2
+version=7.57.0
+revision=1
 build_style=gnu-configure
-configure_args="ac_cv_sizeof_off_t=8 --without-gssapi
+configure_args="ac_cv_sizeof_off_t=8
  --enable-threaded-resolver --enable-ipv6 $(vopt_with rtmp)
- $(vopt_with ldap '--enable-ldap --enable-ldaps' '--disable-ldap --disable-ldaps')
+ $(vopt_with gssapi)
+ $(vopt_enable ldap) $(vopt_enable ldap ldaps)
  $(vopt_with ssh ssh2) $(vopt_with ssl) $(vopt_with gnutls)
- --with-ca-bundle=/etc/ssl/certs/ca-certificates.crt"
+ --with-ca-bundle=/etc/ssl/certs/ca-certificates.crt --without-libidn2"
 hostmakedepends="pkg-config perl groff"
-makedepends="zlib-devel libidn-devel nghttp2-devel
+makedepends="zlib-devel nghttp2-devel
+ $(vopt_if gssapi mit-krb5-devel)
  $(vopt_if rtmp librtmp-devel)
  $(vopt_if ldap libldap-devel) $(vopt_if ssh libssh2-devel)
  $(vopt_if ssl libressl-devel) $(vopt_if gnutls gnutls-devel)"
@@ -17,13 +19,18 @@ depends="ca-certificates"
 short_desc="Client that groks URLs"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="MIT"
-homepage="http://curl.haxx.se"
+homepage="https://curl.haxx.se"
 distfiles="$homepage/download/$pkgname-$version.tar.bz2"
-checksum=864e7819210b586d42c674a1fdd577ce75a78b3dda64c63565abe5aefd72c753
-
-build_options="gnutls ldap rtmp ssh ssl"
+checksum=c92fe31a348eae079121b73884065e600c533493eb50f1f6cee9c48a3f454826
+build_options="gnutls gssapi ldap rtmp ssh ssl"
 build_options_default="ssh ssl"
 vopt_conflict ssl gnutls
+
+pre_configure() {
+	export CFLAGS="${CFLAGS/-D_FORTIFY_SOURCE=2/}"
+	export CFLAGS="${CFLAGS/-I${XBPS_CROSS_BASE}\/usr\/include/}"
+	export CPPFLAGS="-D_FORTIFY_SOURCE=2"
+}
 
 post_install() {
 	vlicense COPYING
@@ -31,8 +38,10 @@ post_install() {
 
 libcurl_package() {
 	short_desc="The multiprotocol file transfer library"
+	shlib_provides="libcurl-gnutls.so.4"
 	pkg_install() {
 		vmove "usr/lib/*.so.*"
+		ln -sf ${PKGDESTDIR}/usr/lib/libcurl.so.4.5.0 ${PKGDESTDIR}/usr/lib/libcurl-gnutls.so.4
 	}
 }
 libcurl-devel_package() {
@@ -41,11 +50,11 @@ libcurl-devel_package() {
 	pkg_install() {
 		vmove usr/bin/curl-config
 		vmove "usr/share/man/man1/curl-config*"
+		vmove usr/share/man/man3
+		vmove usr/share/aclocal
 		vmove usr/include
 		vmove "usr/lib/*.a"
 		vmove "usr/lib/*.so"
 		vmove usr/lib/pkgconfig
-		vmove usr/share/man/man3
-		vmove usr/share/aclocal
 	}
 }

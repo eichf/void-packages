@@ -1,19 +1,20 @@
 # Template file for 'libgweather'
 pkgname=libgweather
-version=3.20.0
-revision=2
+version=3.26.1
+revision=1
 build_style=gnu-configure
 build_options="gir"
 configure_args="$(vopt_if gir '--enable-introspection --enable-vala' '--disable-introspection --disable-vala')
  --disable-schemas-compile --enable-locations-compression --with-zoneinfo-dir=/usr/share/zoneinfo"
 hostmakedepends="pkg-config intltool glib-devel $(vopt_if gir 'gobject-introspection vala-devel')"
 makedepends="libxml2-devel libsoup-gnome-devel gtk+3-devel geocode-glib-devel"
+checkdepends="tzdata"
 short_desc="GNOME Weather information access library"
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
+maintainer="Enno Boland <gottox@voidlinux.eu>"
 license="LGPL-2.1"
 homepage="http://www.gnome.org/"
 distfiles="${GNOME_SITE}/$pkgname/${version%.*}/$pkgname-$version.tar.xz"
-checksum=52629b8e9fcd979377f43a2223cf0e7096d3c3e940faa94021132ee0f879b8d6
+checksum=fca78470b345bce948e0333cab0a7c52c32562fc4a75de37061248a64e8fc4b8
 
 if [ -z "$CROSS_BUILD" ]; then
 	build_options_default="gir"

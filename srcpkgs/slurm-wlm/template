@@ -1,26 +1,35 @@
 # Template file for 'slurm-wlm'
 pkgname=slurm-wlm
-version=15.08.11.1
+version=17.11.0.1
 revision=1
 _distver="${version//./-}"
 wrksrc="slurm-slurm-${_distver}"
 build_style=gnu-configure
 configure_args="--disable-static"
 hostmakedepends="perl cgit python pkg-config"
-# XXX: ofed, DataWarp, netloc, freeipmi, blcr
+# XXX: ofed, DataWarp, netloc, blcr
 makedepends="munge-devel lua-devel pam-devel libressl-devel gtk+-devel
- ncurses-devel readline-devel libmysqlclient-devel json-c-devel libhwloc-devel"
+ ncurses-devel readline-devel libmysqlclient-devel json-c-devel libhwloc-devel
+ freeipmi-devel"
 short_desc="Workload manager for Linux clusters of all sizes"
-maintainer="Toyam Cox <Vaelatern@gmail.com>"
+maintainer="Toyam Cox <Vaelatern@voidlinux.eu>"
 license="GPL-2"
 homepage="http://slurm.schedmd.com/slurm.html"
 distfiles="https://github.com/SchedMD/slurm/archive/slurm-${_distver}.tar.gz"
-checksum=2e5327e23f05b0f30a6c0a1ae8b8172ec9b861121d3d1d703f65b02b7048ca61
+checksum=a541bb34d66b6a6f69933102006840a52ebae5b9c3cde7daa3f9db77405c2ac5
+
 case "${XBPS_TARGET_MACHINE}" in
 	# Undefined: inet_nsap_addr and getgrent_r
+	# Used in the core of the program.
 	*-musl) broken="https://api.travis-ci.org/jobs/124091254/log.txt";;
 esac
+
 if [ -z "${CROSS_BUILD}" ]; then
 	# The below at time of writing can not be cross compiled
 	makedepends+=" rrdtool-devel hdf5-devel libnuma-devel"
 fi
+
+post_install() {
+	# Rename slurm(1) manpage to avoid conflict with slurm
+	mv ${DESTDIR}/usr/share/man/man1/slurm.1 ${DESTDIR}/usr/share/man/man1/slurm-wlm.1
+}

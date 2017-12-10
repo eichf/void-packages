@@ -1,9 +1,9 @@
 # Template file for 'zbackup'
 pkgname=zbackup
 version=1.4.4
-revision=2
+revision=6
 build_style=cmake
-hostmakedepends="cmake protobuf"
+hostmakedepends="protobuf"
 makedepends="zlib-devel liblzma-devel protobuf-devel libressl-devel lzo-devel"
 short_desc="A versatile deduplicating backup tool"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"

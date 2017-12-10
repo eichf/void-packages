@@ -1,7 +1,7 @@
 # Template file for 'rhythmbox'
 pkgname=rhythmbox
-version=3.2.1
-revision=5
+version=3.4.2
+revision=1
 build_style=gnu-configure
 configure_args="--disable-static --disable-schemas-compile
  --with-webkit --with-gudev --without-hal $(vopt_if gir --enable-vala)"
@@ -11,14 +11,16 @@ makedepends="gtk+3-devel libsoup-gnome-devel totem-pl-parser-devel
  libmtp-devel avahi-glib-libs-devel libpeas-devel brasero-devel
  libnotify-devel tdb-devel libsecret-devel libSM-devel webkitgtk-devel
  grilo-devel gst-plugins-base1-devel clutter-gtk-devel
- python3.4-devel python-gobject-devel libdmapsharing-devel"
+ python3-devel python-gobject-devel libdmapsharing-devel"
 depends="gir-freedesktop desktop-file-utils hicolor-icon-theme"
+pycompile_version="$py3_ver"
+pycompile_dirs="/usr/lib/rhythmbox/plugins /usr/lib/rhythmbox/sample-plugins"
 short_desc="GNOME integrated music management application"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="GPL-2"
 homepage="http://www.rhythmbox.org"
 distfiles="${GNOME_SITE}/${pkgname}/${version::3}/${pkgname}-${version}.tar.xz"
-checksum=bf43ca4f5b7531751241f5e67eaba7da6d9748dd827a600eedf9444961537938
+checksum=c27622fb7658d3c8e935937a562ebd8a65f5316a12694d6a06cb17f790b6ec43
 
 build_options="gir"
 if [ -z "$CROSS_BUILD" ]; then

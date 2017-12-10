@@ -1,6 +1,6 @@
 # Template file for 'hwloc'
 pkgname=hwloc
-version=1.11.3
+version=1.11.8
 revision=1
 build_style=gnu-configure
 hostmakedepends="pkg-config"
@@ -9,11 +9,11 @@ case "$XBPS_TARGET_MACHINE" in
 	i686*|x86_64*) makedepends+=" libnuma-devel";;
 esac
 short_desc="Portable abstraction of hierarchical hardware architectures"
-maintainer="Christian Neukirchen <chneukirchen@gmail.com>"
-license="BSD"
+maintainer="Leah Neukirchen <leah@vuxu.org>"
+license="3-clause-BSD"
 homepage="http://www.open-mpi.org/projects/hwloc/"
 distfiles="http://www.open-mpi.org/software/hwloc/v${version%.*}/downloads/${pkgname}-${version}.tar.bz2"
-checksum=e7748e4412fb94cf22fd1971de939d9770e6068f7003dea107417f21146333fa
+checksum=ecef10265084d9123dc0b03d82ff5ee06fbf5ba755a912e7511ae590c9ee594d
 
 post_install() {
 	rm -rf ${DESTDIR}/usr/share/doc

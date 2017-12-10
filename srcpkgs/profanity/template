@@ -1,15 +1,16 @@
 # Template file for 'profanity'
 pkgname=profanity
-version=0.4.7
+version=0.5.1
 revision=1
 # Package build options
 build_options="notify xscreensaver"
 build_options_default="notify xscreensaver"
 build_style=gnu-configure
-configure_args="$(vopt_enable notify notifications) $(vopt_with xscreensaver)"
-hostmakedepends="pkg-config"
+configure_args="$(vopt_enable notify notifications) $(vopt_with xscreensaver)
+ --disable-python-plugins"
+hostmakedepends="pkg-config python-devel"
 makedepends="libglib-devel expat-devel ncurses-devel libgcrypt-devel libotr-devel
- libcurl-devel libstrophe-devel readline-devel libuuid-devel
+ libcurl-devel libstrophe-devel readline-devel libuuid-devel python-devel
  $(vopt_if notify libnotify-devel)
  $(vopt_if xscreensaver libXScrnSaver-devel)"
 short_desc="A console based XMPP client"
@@ -17,4 +18,4 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="GPL-3"
 homepage="http://www.profanity.im/"
 distfiles="http://www.profanity.im/${pkgname}-${version}.tar.gz"
-checksum=b02c4e029fe84941050ccab6c8cdf5f15df23de5d1384b4d1ec66da6faee11dd
+checksum=e3513713e74ec3363fbdbac2919bdc17e249988780cc5a4589d1425807a7feb8

@@ -1,16 +1,16 @@
 # Template file for 'libssh'
 pkgname=libssh
-version=0.7.3
-revision=2
+version=0.7.5
+revision=1
 build_style=cmake
-hostmakedepends="cmake pkg-config"
+hostmakedepends="pkg-config"
 makedepends="zlib-devel libressl-devel"
 short_desc="Multiplatform C library implementing the SSH v2 protocol"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="LGPL-2.1"
 homepage="http://www.libssh.org/"
 distfiles="http://git.libssh.org/projects/libssh.git/snapshot/${pkgname}-${version}.tar.bz2"
-checksum=5a3de53b77235bb2984c73c12dd7c6558ccfbf91e8ef77e2fad233a4b0d64d7d
+checksum=ff914e2ec6596badec453efaa63ef68c82c60074466f951167a4c60e49903336
 
 libssh-devel_package() {
 	depends="${sourcepkg}>=${version}_${revision}"

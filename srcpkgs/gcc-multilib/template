@@ -1,22 +1,22 @@
 # Template build file for 'gcc-multilib'
 only_for_archs="x86_64"
 _triplet="x86_64-unknown-linux-gnu"
-_majorver=4.9
+_majorver=7.2
 
 pkgname=gcc-multilib
-version=${_majorver}.3
+version=${_majorver}.0
 revision=1
 wrksrc="gcc-${version}"
 short_desc="The GNU C Compiler (multilib files)"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://gcc.gnu.org"
 license="GFDL-1.2, GPL-3, LGPL-2.1"
-distfiles="${GNU_SITE}/gcc/gcc-$version/gcc-$version.tar.bz2"
-checksum=2332b2a5a321b57508b9031354a8503af6fdfb868b8c1748d33028d100a8b67e
+distfiles="${GNU_SITE}/gcc/gcc-${version}/gcc-${version}.tar.xz"
+checksum=1cf7adf8ff4b5aa49041c8734bbcf1ad18cc4c94d0029aae0f4e48841088479a
 
 hostmakedepends="perl flex zip unzip"
-makedepends="zlib-devel libmpc-devel ppl-devel cloog-devel
- isl-devel libfl-devel glibc-32bit glibc-devel-32bit"
+makedepends="zlib-devel libmpc-devel isl15-devel libfl-devel
+ glibc-32bit glibc-devel-32bit"
 
 depends="
  gcc>=${_majorver}
@@ -24,6 +24,7 @@ depends="
  libssp-devel-32bit>=${_majorver}
  libgomp-devel-32bit>=${_majorver}
  libitm-devel-32bit>=${_majorver}
+ libmpx-devel-32bit>=${_majorver}
  libsanitizer-devel-32bit>=${_majorver}
  libatomic-devel-32bit>=${_majorver}
  libcilkrts-devel-32bit>=${_majorver}
@@ -36,20 +37,32 @@ do_configure() {
 
 	# _FORTIFY_SOURCE needs an optimization level.
 	sed -i "/ac_cpp=/s/\$CPPFLAGS/\$CPPFLAGS -O2/" {gcc,libiberty}/configure
-	# As specified in the LFS book, disable installing libiberty.
-	sed -i 's/install_to_$(INSTALL_DEST) //' libiberty/Makefile.in
-	# Do not run fixincludes
-	sed -i 's@\./fixinc\.sh@-c true@' gcc/Makefile.in
+	# hack! some configure tests for header files using "$CPP $CPPFLAGS"
+	sed -i "/ac_cpp=/s/\$CPPFLAGS/\$CPPFLAGS -O2/" {libiberty,gcc}/configure
 
-	./configure --prefix=/usr --mandir=/usr/share/man \
-		--infodir=/usr/share/info --libexecdir=/usr/lib \
-		--enable-clocale=gnu --disable-bootstrap --libdir=/usr/lib \
-		--enable-threads=posix --enable-__cxa_atexit --enable-multilib \
-		--disable-rpath --with-system-zlib --enable-shared --enable-lto \
-		--enable-linker-build-id --enable-gnu-unique-object \
-		--enable-checking=release --disable-libstdcxx-pch \
-		--with-ppl --enable-cloog-backend=isl --enable-libstdcxx-time \
-		--enable-tls --enable-languages="c,c++,lto" \
+	./configure --prefix=/usr \
+		--mandir=/usr/share/man \
+		--infodir=/usr/share/info \
+		--libexecdir=/usr/lib \
+		--enable-clocale=gnu \
+		--disable-bootstrap \
+		--libdir=/usr/lib \
+		--enable-threads=posix \
+		--enable-__cxa_atexit \
+		--enable-multilib \
+		--disable-rpath \
+		--with-system-zlib \
+		--enable-shared \
+		--enable-lto \
+		--enable-linker-build-id \
+		--enable-gnu-unique-object \
+		--enable-checking=release \
+		--disable-libstdcxx-pch \
+		--disable-target-libiberty \
+		--with-isl \
+		--enable-libstdcxx-time \
+		--enable-tls \
+		--enable-languages="c,c++,lto" \
 		--with-linker-hash-style=gnu
 }
 
@@ -81,14 +94,8 @@ do_install() {
 	rm -f ${DESTDIR}/usr/lib64
 }
 
-gcc-c++-multilib_package() {
-	depends="gcc-c++>=${_majorver} gcc-multilib>=${_majorver} libstdc++-devel-32bit>=${_majorver}"
-	short_desc="GCC C++ compiler (multilib files)"
-	pkg_install() {
-		vmove usr/include/c++
-	}
-}
 gcc-objc-multilib_package() {
 	depends="gcc-multilib>=${_majorver} gcc-objc>=${_majorver} libobjc-devel-32bit>=${_majorver}"
 	short_desc="The GNU Objective-C compiler (multilib files)"
+	build_style=meta
 }

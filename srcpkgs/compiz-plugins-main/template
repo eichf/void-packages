@@ -1,0 +1,29 @@
+# Template file for 'compiz-plugins-main' of Compiz Reloaded
+pkgname=compiz-plugins-main
+version=0.8.14
+revision=1
+build_style=gnu-configure
+configure_args="--disable-static"
+
+hostmakedepends="automake compiz-bcop gettext-devel intltool libtool pkg-config"
+makedepends="compiz-core-devel pango-devel"
+
+short_desc="Basic plugins for Compiz Reloaded"
+maintainer="CoolOhm <micvlas@gmail.com>"
+homepage="https://github.com/compiz-reloaded"
+license="GPL-2"
+distfiles="https://github.com/compiz-reloaded/compiz-plugins-main/archive/v${version}.tar.gz>${pkgname}-${version}.tar.gz"
+checksum=2275178b9c43223904f4e8a4307adb864237281c6127dbbcd5b3e200fc80c132
+
+pre_configure() {
+	NOCONFIGURE=1 ./autogen.sh
+}
+
+compiz-plugins-main-devel_package() {
+	depends="${makedepends} ${sourcepkg}>=${version}_${revision}"
+	short_desc+=" - development files"
+	pkg_install() {
+		vmove usr/include
+		vmove usr/lib/pkgconfig
+	}
+}

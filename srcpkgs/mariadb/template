@@ -1,7 +1,7 @@
 # Template file for 'mariadb'
 pkgname=mariadb
-version=10.1.13
-revision=2
+version=10.1.28
+revision=1
 build_style=cmake
 configure_args="-DMYSQL_DATADIR=/var/lib/mysql
  -DMYSQL_UNIX_ADDR=/run/mysqld/mysqld.sock -DDEFAULT_CHARSET=utf8
@@ -18,7 +18,7 @@ configure_args="-DMYSQL_DATADIR=/var/lib/mysql
  -DWITH_EXTRA_CHARSETS=complex -DWITH_LIBWRAP=OFF -DSTACK_DIRECTION=1
  -DWITHOUT_PBXT_STORAGE_ENGINE=1 -DWITH_INNOBASE_STORAGE_ENGINE=1"
 lib32disabled=yes
-hostmakedepends="perl bison ncurses-devel"
+hostmakedepends="perl bison ncurses-devel libressl-devel"
 makedepends="zlib-devel ncurses-devel libressl-devel readline-devel pcre-devel"
 depends="mariadb-client"
 provides="mysql-${version}_${revision}"
@@ -28,16 +28,11 @@ system_accounts="mysql"
 mysql_homedir="/var/lib/mysql"
 short_desc="Fast SQL database server, drop-in replacement for MySQL"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
-homepage="http://mariadb.org/"
+homepage="https://mariadb.org/"
 license="GPL-2"
 distfiles="https://downloads.$pkgname.org/f/$pkgname-$version/source/$pkgname-$version.tar.gz"
-checksum=21e1c7da1421146c69f5e8077333aaac06778a87046a1943ee4f449fbcefc00d
+checksum=292dc8fff420c4bdaf3a2c3381ec3c99292965db2b09de0d7fec414c00032bbd
 CFLAGS="-w"
-
-case "$XBPS_TARGET_MACHINE" in
-armv*)
-	configure_args+=" -DHAVE_FALLOC_PUNCH_HOLE_AND_KEEP_SIZE_EXITCODE=0" ;;
-esac
 
 pre_configure() {
 	# We need some host binaries before starting cross compilation.
@@ -127,9 +122,9 @@ mariadb-client_package() {
 }
 mytop_package() {
 	noarch=yes
-	depends="perl-Term-ReadKey perl-DBD-mysql"
+	depends="${sourcepkg}>=${version}_${revision} perl-Term-ReadKey perl-DBD-mysql"
 	short_desc="Top-like query monitor for MariaDB"
 	pkg_install() {
-		vbin ${DESTDIR}/usr/bin/mytop
+		vmove usr/bin/mytop
 	}
 }

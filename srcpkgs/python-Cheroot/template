@@ -1,0 +1,36 @@
+# Template file for 'python-Cheroot'
+pkgname=python-Cheroot
+version=6.0.0
+revision=1
+noarch=yes
+wrksrc="cheroot-${version}"
+build_style=python-module
+pycompile_module="cheroot"
+hostmakedepends="python-setuptools python3-setuptools"
+depends="python-six"
+short_desc="High-performance, pure-Python HTTP server"
+maintainer="Andrea Brancaleoni <abc@pompel.me>"
+license="3-clause-BSD"
+homepage="https://github.com/cherrypy/cheroot"
+distfiles="${PYPI_SITE}/c/cheroot/cheroot-${version}.tar.gz"
+checksum=ba474e5149b03fabc2bba2d0b490b4d95443894d45b1430b799dccea3b3f4683
+
+pre_build() {
+	sed -i setup.py \
+		-e '/setuptools_scm/d' \
+		-e "s|use_scm_version=True|version='${version}'|"
+}
+post_install() {
+	vlicense LICENSE.md
+}
+
+python3-Cheroot_package() {
+	noarch=yes
+	depends="python3-six"
+	pycompile_module="cheroot"
+	short_desc="${short_desc/Python2/Python3}"
+	pkg_install() {
+		vmove usr/lib/python3*
+		vlicense LICENSE.md
+	}
+}

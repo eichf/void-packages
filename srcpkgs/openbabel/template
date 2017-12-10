@@ -1,0 +1,26 @@
+# Template file for 'openbabel'
+pkgname=openbabel
+version=2.4.0
+revision=2
+_ver=${version//./-}
+wrksrc=${pkgname}-${pkgname}-${_ver}
+build_style=cmake
+hostmakedepends="pkg-config eigen"
+makedepends="cairo-devel libxml2-devel wxWidgets-devel"
+short_desc="The Open Source Chemistry Toolbox"
+maintainer="Diogo Leal <diogo@diogoleal.com>"
+license="GPL-2"
+homepage="http://openbabel.org"
+distfiles="https://github.com/openbabel/openbabel/archive/openbabel-${_ver}.tar.gz"
+checksum=b210cc952ce1ecab6efaf76708d3bd179c9b0f0d73fe8bd1e0c934df7391a82a
+
+openbabel-devel_package() {
+	depends="${sourcepkg}>=${version}_${revision}"
+	short_desc+=" - development files"
+	pkg_install() {
+		vmove usr/include
+		vmove "usr/lib/*.so"
+		vmove usr/lib/cmake
+		vmove usr/lib/pkgconfig
+	}
+}

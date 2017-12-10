@@ -1,5 +1,7 @@
 # vim: set ts=4 sw=4 et:
 
+# FIXME: $XBPS_FFLAGS is not set when chroot_init() is run
+# It is set in common/build-profiles/bootstrap.sh but lost somewhere?
 chroot_init() {
     XBPSSRC_CF=$XBPS_MASTERDIR/etc/xbps/xbps-src.conf
 
@@ -15,6 +17,7 @@ _EOF
 XBPS_MASTERDIR=/
 XBPS_CFLAGS="$XBPS_CFLAGS"
 XBPS_CXXFLAGS="$XBPS_CXXFLAGS"
+XBPS_FFLAGS="-fPIC -pipe"
 XBPS_CPPFLAGS="$XBPS_CPPFLAGS"
 XBPS_LDFLAGS="$XBPS_LDFLAGS"
 XBPS_HOSTDIR=/host
@@ -32,14 +35,19 @@ XBPS_SRC_VERSION="$XBPS_SRC_VERSION"
 
 PATH=/void-packages:/usr/bin:/usr/sbin
 
-exec env -i SHELL=/bin/sh PATH="\$PATH" DISTCC_HOSTS="\$XBPS_DISTCC_HOSTS" DISTCC_DIR="/host/distcc" @@XARCH@@ \
-    CCACHE_DIR="/host/ccache" IN_CHROOT=1 LC_COLLATE=C LANG=en_US.UTF-8 TERM=linux HOME="/tmp" \
+exec env -i -- SHELL=/bin/sh PATH="\$PATH" DISTCC_HOSTS="\$XBPS_DISTCC_HOSTS" DISTCC_DIR="/host/distcc" @@XARCH@@ \
+    @@CHECK@@ CCACHE_DIR="/host/ccache" IN_CHROOT=1 LC_COLLATE=C LANG=en_US.UTF-8 TERM=linux HOME="/tmp" \
     PS1="[\u@$XBPS_MASTERDIR \W]$ " /bin/bash +h
 _EOF
     if [ -n "$XBPS_ARCH" ]; then
         sed -e "s,@@XARCH@@,XBPS_ARCH=${XBPS_ARCH},g" -i $XBPS_MASTERDIR/bin/xbps-shell
     else
         sed -e 's,@@XARCH@@,,g' -i $XBPS_MASTERDIR/bin/xbps-shell
+    fi
+    if [ -z "$XBPS_CHECK_PKGS" ]; then
+        sed -e 's,@@CHECK@@,,g' -i $XBPS_MASTERDIR/bin/xbps-shell
+    else
+        sed -e "s,@@CHECK@@,XBPS_CHECK_PKGS=$XBPS_CHECK_PKGS,g" -i $XBPS_MASTERDIR/bin/xbps-shell
     fi
     chmod 755 $XBPS_MASTERDIR/bin/xbps-shell
 
@@ -110,6 +118,8 @@ chroot_sync_repos() {
     local f=
 
     # Copy xbps configuration files to the masterdir.
+    install -Dm644 ${XBPS_DISTDIR}/etc/xbps.conf \
+        ${XBPS_MASTERDIR}/etc/xbps.d/00-xbps-src.conf
     install -Dm644 ${XBPS_DISTDIR}/etc/repos-local.conf \
         ${XBPS_MASTERDIR}/etc/xbps.d/10-repository-local.conf
     install -Dm644 ${XBPS_DISTDIR}/etc/repos-remote.conf \
@@ -145,11 +155,11 @@ chroot_sync_repos() {
     if [ -n "$XBPS_CROSS_BUILD" ]; then
         # Copy host keys to the target rootdir.
         mkdir -p $XBPS_MASTERDIR/$XBPS_CROSS_BASE/var/db/xbps/keys
-        cp -a $XBPS_MASTERDIR/var/db/xbps/keys/*.plist \
+        cp $XBPS_MASTERDIR/var/db/xbps/keys/*.plist \
             $XBPS_MASTERDIR/$XBPS_CROSS_BASE/var/db/xbps/keys
         # Make sure to sync index for remote repositories.
         if [ -z "$XBPS_SKIP_REMOTEREPOS" ]; then
-            env XBPS_TARGET_ARCH=$XBPS_TARGET_MACHINE \
+            env -- XBPS_TARGET_ARCH=$XBPS_TARGET_MACHINE \
                 xbps-install -r $XBPS_MASTERDIR/$XBPS_CROSS_BASE -S
         fi
     fi
@@ -170,7 +180,7 @@ chroot_handler() {
     [ -z "$action" -a -z "$pkg" ] && return 1
 
     case "$action" in
-        fetch|extract|build|configure|install|install-destdir|pkg|build-pkg|bootstrap-update|chroot)
+        fetch|extract|build|check|configure|install|install-destdir|pkg|build-pkg|bootstrap-update|chroot)
             chroot_prepare || return $?
             chroot_init || return $?
             chroot_sync_repos || return $?
@@ -188,6 +198,9 @@ chroot_handler() {
         [ -n "$XBPS_BUILD_FORCEMODE" ] && arg="$arg -f"
         [ -n "$XBPS_MAKEJOBS" ] && arg="$arg -j$XBPS_MAKEJOBS"
         [ -n "$XBPS_DEBUG_PKGS" ] && arg="$arg -g"
+        [ -n "$XBPS_CHECK_PKGS" ] && arg="$arg -Q"
+        [ -n "$XBPS_BUILD_ONLY_ONE_PKG" ] && arg="$arg -1"
+        [ -n "$XBPS_QUIET" ] && arg="$arg -q"
         [ -n "$XBPS_SKIP_DEPS" ] && arg="$arg -I"
         [ -n "$XBPS_ALT_REPOSITORY" ] && arg="$arg -r $XBPS_ALT_REPOSITORY"
         [ -n "$XBPS_USE_GIT_REVS" ] && arg="$arg -G"
@@ -196,7 +209,7 @@ chroot_handler() {
         [ -n "$XBPS_BINPKG_EXISTS" ] && arg="$arg -E"
 
         action="$arg $action"
-        env -i PATH="/usr/bin:/usr/sbin:$PATH" SHELL=/bin/sh \
+        env -i -- PATH="/usr/bin:/usr/sbin:$PATH" SHELL=/bin/sh \
             HOME=/tmp IN_CHROOT=1 LC_COLLATE=C LANG=en_US.UTF-8 \
             SOURCE_DATE_EPOCH="$SOURCE_DATE_EPOCH" \
             $XBPS_COMMONDIR/chroot-style/${XBPS_CHROOT_CMD:=uunshare}.sh \

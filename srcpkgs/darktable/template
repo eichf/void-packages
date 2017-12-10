@@ -1,7 +1,7 @@
 # Template file for 'darktable'
 pkgname=darktable
-version=2.0.4
-revision=1
+version=2.2.5
+revision=2
 build_style=cmake
 # this makes sure to use -march=generic and -msse3
 configure_args="-DBINARY_PACKAGE_BUILD=ON"
@@ -9,18 +9,15 @@ maintainer="lemmi <lemmi@nerd2nerd.org>"
 homepage="http://www.darktable.org/"
 license="GPL-3"
 short_desc="Virtual lighttable and darkroom for photographers"
-hostmakedepends="cmake pkg-config intltool"
+hostmakedepends="pkg-config intltool libxslt-devel"
 makedepends="gtk+3-devel glib-devel exiv2-devel libglade-devel libxslt-devel
  dbus-glib-devel libcurl-devel libgphoto2-devel libwebp-devel libsoup-devel
  lensfun-devel sqlite-devel librsvg-devel lua52-devel json-glib-devel
- libgomp-devel libopenjpeg-devel libopenexr-devel libgraphicsmagick-devel
- SDL-devel libsecret-devel pugixml-devel libosmgpsmap-devel flickcurl-devel
- colord-gtk-devel"
+ libgomp-devel libopenjpeg2-devel libopenexr-devel libgraphicsmagick-devel
+ libsecret-devel pugixml-devel libosmgpsmap-devel flickcurl-devel
+ colord-gtk-devel desktop-file-utils"
 depends="adwaita-icon-theme"
-# out of the box, darktable runs on i686 and x86_64 only.
-# musl will need custom patches and are likely to break between versions
-# there are no non-sse paths at the moment, but upstream works on porting to
-# openmp-simd, which will enable other architectures aswell.
-only_for_archs="i686 x86_64"
+# upstream only supports these archs:
+only_for_archs="i686 i686-musl x86_64 x86_64-musl aarch64 aarch64-musl"
 distfiles="https://github.com/darktable-org/darktable/releases/download/release-${version}/darktable-${version}.tar.xz"
-checksum=80e448622ff060bca1d64bf6151c27de34dea8fe6b7ddb708e1e3526a5961e62
+checksum=e303a42b33f78eb1f48d3b36d1df46f30873df4c5a7b49605314f61c49fbf281

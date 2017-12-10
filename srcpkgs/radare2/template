@@ -1,6 +1,6 @@
 # Template file for 'radare2'
 pkgname=radare2
-version=0.10.2
+version=2.1.0
 revision=1
 build_style=gnu-configure
 configure_args="--with-syscapstone"
@@ -10,5 +10,5 @@ short_desc="Advanced command line debugger and hexadecimal editor"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="LGPL-3"
 homepage="http://www.radare.org"
-distfiles="${homepage}/get/${pkgname}-${version}.tar.xz"
-checksum=1bc9ce6f5d6bec366324bc542653bba5c1b89a6980c17253ec3a1f75264beb3b
+distfiles="https://github.com/radare/radare2/archive/${version}.tar.gz"
+checksum=cf34e6260fafb543edb919ed0b80b57b431817e91b624843fc1b82aa4bbf5f7a

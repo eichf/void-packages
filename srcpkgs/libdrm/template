@@ -1,6 +1,6 @@
 # Template build file for 'libdrm'.
 pkgname=libdrm
-version=2.4.68
+version=2.4.88
 revision=1
 build_style=gnu-configure
 configure_args="--enable-udev --disable-valgrind"
@@ -8,13 +8,12 @@ hostmakedepends="libtool automake pkg-config xorg-util-macros"
 makedepends="eudev-libudev-devel libpciaccess-devel"
 short_desc="Userspace interface to kernel DRM services"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
-homepage="http://dri.freedesktop.org/"
+homepage="https://dri.freedesktop.org/"
 license="MIT"
-distfiles="http://dri.freedesktop.org/libdrm/$pkgname-$version.tar.bz2"
-checksum=5b4bd9a5922929bc716411cb74061fbf31b06ba36feb89bc1358a91a8d0ca9df
+distfiles="https://dri.freedesktop.org/libdrm/$pkgname-$version.tar.bz2"
+checksum=b5e55dbac2124e742e639f5b8553e8b7395863bf73dab4f77e99fe2fc25572b5
 
 pre_configure() {
-	sed -e '/pthread-stubs/d' -i configure.ac
 	autoreconf -fi
 }
 

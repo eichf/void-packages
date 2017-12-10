@@ -1,10 +1,12 @@
 # Template file for 'fish-shell'
 pkgname=fish-shell
-version=2.2.0
-revision=3
+version=2.7.0
+revision=1
 build_style=gnu-configure
-hostmakedepends="automake"
+configure_args="ac_cv_file__proc_self_stat=yes"
+hostmakedepends="automake libtool"
 makedepends="ncurses-devel"
+depends="bc groff"
 register_shell="/usr/bin/fish"
 conf_files="/etc/fish/config.fish"
 wrksrc="fish-${version}"
@@ -12,8 +14,8 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://fishshell.com/"
 license="GPL-2"
 short_desc="User friendly shell intended mostly for interactive use"
-distfiles="http://fishshell.com/files/${version}/fish-${version}.tar.gz"
-checksum=a76339fd14ce2ec229283c53e805faac48c3e99d9e3ede9d82c0554acfc7b77a
+distfiles="https://github.com/fish-shell/fish-shell/releases/download/${version}/fish-${version}.tar.gz"
+checksum=3a76b7cae92f9f88863c35c832d2427fb66082f98e92a02203dc900b8fa87bcb
 
 if [ -n "$CROSS_BUILD" ]; then
 	case "$XBPS_TARGET_MACHINE" in
@@ -23,11 +25,8 @@ if [ -n "$CROSS_BUILD" ]; then
 		CXXFLAGS="-D_GNU_SOURCE=1 -D_ISO99_SOURCE=1"
 		;;
 	esac
-	export ac_cv_file__proc_self_stat=yes
 fi
+
 pre_configure() {
-	if [ -n "$CROSS_BUILD" ]; then
-		patch -p0 < ${FILESDIR}/no-glibc-check.patch
-	fi
 	autoreconf -fi
 }

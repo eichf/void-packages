@@ -1,6 +1,6 @@
 # Template file for 'uget'
 pkgname=uget
-version=2.1.3
+version=2.1.6
 revision=1
 build_style=gnu-configure
 hostmakedepends="pkg-config intltool"
@@ -10,4 +10,4 @@ maintainer="Alexander Mamay <alexander@mamay.su>"
 license="LGPL-2.1"
 homepage="http://ugetdm.com/"
 distfiles="${SOURCEFORGE_SITE}/urlget/${pkgname}-${version}.tar.gz"
-checksum=dce30247bbbdc57cf2e6eb9d0feebf6e7317fe4f7877b7184192cebba0574639
+checksum=339f899f5b0a434350b77008ef45d04c61ed9fcbcd14a1b7b9892b2833661da2

@@ -1,6 +1,6 @@
 # Template file for 'lua'
 pkgname=lua
-version=5.3.2
+version=5.3.4
 revision=1
 makedepends="ncurses-devel readline-devel"
 short_desc="Powerful, fast, lightweight, embeddable scripting language"
@@ -8,7 +8,7 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://www.lua.org"
 license="MIT"
 distfiles="http://www.lua.org/ftp/lua-$version.tar.gz"
-checksum=c740c7bb23a936944e1cc63b7c3c5351a8976d7867c5252c8854f7b2af9da68f
+checksum=f681aa518233bc407e23acf0f5887c884f17436f000d453b2491a9f11a52400c
 
 alternatives="
  lua:lua:/usr/bin/lua5.3

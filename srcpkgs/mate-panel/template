@@ -1,22 +1,22 @@
 # Template file for 'mate-panel'
 pkgname=mate-panel
-version=1.14.0
+version=1.18.6
 revision=1
 build_style=gnu-configure
-configure_args="--with-gtk=3.0 --disable-static --disable-schemas-compile
- --enable-network-manager $(vopt_enable gir introspection)"
+configure_args="--disable-static --disable-schemas-compile
+ $(vopt_enable gir introspection)"
 hostmakedepends="pkg-config intltool itstool glib-devel
  $(vopt_if gir gobject-introspection)"
 makedepends="gtk+3-devel libcaja-devel libwnck-devel libcanberra-devel libSM-devel
  libmateweather-devel librsvg-devel libXau-devel libmarco-devel mate-menus-devel
- dbus-glib-devel mate-desktop-devel NetworkManager-devel"
+ dbus-glib-devel mate-desktop-devel"
 depends="caja dconf marco mate-session-manager"
 short_desc="The MATE Panel"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
-license="LGPL-3"
-homepage="http://mate-desktop.org"
-distfiles="http://pub.mate-desktop.org/releases/${version%.*}/${pkgname}-${version}.tar.xz"
-checksum=c5766e5f67e9e66742b4b7e428ddfc01ef9a6c1b762080ca06b8e5147fccc042
+license="GPL-2, LGPL-2"
+homepage="https://mate-desktop.org"
+distfiles="https://pub.mate-desktop.org/releases/${version%.*}/${pkgname}-${version}.tar.xz"
+checksum=7d9a40810fbd4d7ae02a1e671b82d103f8447392c4abeeb0e134e2110fc6ce33
 
 build_options="gir"
 if [ -z "$CROSS_BUILD" ]; then

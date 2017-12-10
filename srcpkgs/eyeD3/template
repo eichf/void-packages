@@ -1,15 +1,15 @@
 # Template file for 'eyeD3'
 pkgname=eyeD3
-version=0.7.9
+version=0.8.4
 revision=1
 noarch=yes
-build_style="python-module"
+build_style=python2-module
 hostmakedepends="python-setuptools"
-depends="python"
+depends="python python-magic python-grako python-six python-setuptools python-pathlib"
 pycompile_module="eyeD3"
 short_desc="Python2 tool for mp3's ID3 tags manipulation"
 homepage="http://eyed3.nicfit.net/"
 license="GPL-2"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 distfiles="${homepage}/releases/${pkgname}-${version}.tar.gz"
-checksum=f7e7973b27b47b6eefd47efa9496a9a9a3957bf0a0f1c708116d98391e86bf22
+checksum=9a8f334c640813647062aaa46c52d65641bec6f7d7e73e51441c95d3d93c3f43

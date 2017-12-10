@@ -1,16 +1,16 @@
 # Template file for 'nmon'
 pkgname=nmon
-version=16d
-revision=2
+version=16g
+revision=1
 build_style=fetch
-maintainer="Dominik Honnef <dominik@honnef.co>"
+maintainer="Orphaned <orphan@voidlinux.eu>"
 makedepends="ncurses-devel"
 depends="ncurses"
 license="GPL-3"
 homepage="http://nmon.sourceforge.net/pmwiki.php?n=Main.HomePage"
 short_desc="Nigel's performance Monitor for Linux"
 distfiles="${SOURCEFORGE_SITE}/nmon/files/lmon${version}.c"
-checksum=6bed2e8f4dd8c612d39b30460f6499714d295f4a9576710fb4faf4918b1a8956
+checksum=da82dd693b503b062854dfe7dbb5d36b347872ab44a4aa05b97e9d577747f688
 
 do_build() {
 	$CC ${CFLAGS} ${LDFLAGS} -D JFS -D GETUSER -D LARGEMEM -D X86 \

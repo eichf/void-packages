@@ -1,6 +1,6 @@
 # Template file for 'geocode-glib'
 pkgname=geocode-glib
-version=3.18.2
+version=3.24.0
 revision=1
 build_style=gnu-configure
 configure_args="--disable-static $(vopt_enable gir introspection)"
@@ -11,7 +11,7 @@ homepage="http://www.gnome.org"
 license="LGPL-2.1"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 distfiles="${GNOME_SITE}/$pkgname/${version%.*}/${pkgname}-${version}.tar.xz"
-checksum=95b11ef2697ac5dbb2f397e7117e08e157b2168624c71507656928095012494e
+checksum=19c1fef4fd89eb4bfe6decca45ac45a2eca9bb7933be560ce6c172194840c35e
 
 # Package build options
 build_options="gir"

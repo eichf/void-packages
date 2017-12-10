@@ -1,21 +1,20 @@
 # Template file for 'python-keyring'
 pkgname=python-keyring
-version=9.0
-revision=2
+version=10.5.0
+revision=1
 noarch=yes
 wrksrc="keyring-${version}"
 build_style=python-module
-python_versions="2.7 3.4"
-hostmakedepends="python-setuptools python3.4-setuptools"
-depends="python-setuptools"
+hostmakedepends="python-setuptools python3-setuptools"
+depends="python-setuptools python-SecretStorage"
 pycompile_module="keyring"
 short_desc="Python2 interface to the system keyring service"
 maintainer="Oliver Kiddle <okiddle@yahoo.co.uk>"
 license="MIT"
 homepage="https://github.com/jaraco/keyring"
 distfiles="${PYPI_SITE}/k/keyring/keyring-${version}.tar.gz"
-checksum=1c1222298da2100128f821c57096c69cb6cec0d22ba3b66c2859ae95ae473799
-alternatives="keyring:keyring:/usr/bin/keyring2.7"
+checksum=0e6129e8c5bc80da34cc1942d30daad79ed40419fcaaa538278c3b2ff235b313
+alternatives="keyring:keyring:/usr/bin/keyring2"
 
 pre_build() {
 	sed -e '/setuptools_scm/d' \
@@ -23,15 +22,26 @@ pre_build() {
 		-i setup.py
 }
 
+post_install() {
+	vlicense LICENSE
+}
+
+python3-keyring_package() {
+	noarch=yes
+	pycompile_module="keyring"
+	depends="python3-setuptools python3-SecretStorage"
+	replaces="python3.4-keyring>=0"
+	short_desc="${short_desc/Python2/Python3}"
+	alternatives="keyring:keyring:/usr/bin/keyring3"
+	pkg_install() {
+		vmove usr/bin/keyring3
+		vmove usr/lib/python3*
+		vlicense LICENSE
+	}
+}
 python3.4-keyring_package() {
 	noarch=yes
-	pycompile_version="3.4"
-	pycompile_module="keyring"
-	depends="python3.4-setuptools"
-	short_desc="${short_desc/Python2/Python3.4}"
-	alternatives="keyring:keyring:/usr/bin/keyring3.4"
-	pkg_install() {
-		vmove usr/bin/keyring3.4
-		vmove usr/lib/python3.4
-	}
+	build_style=meta
+	short_desc="${short_desc/Python2/Python3.4} (transitional dummy package)"
+	depends="python3-keyring>=${version}_${revision}"
 }

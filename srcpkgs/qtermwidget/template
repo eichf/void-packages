@@ -1,21 +1,21 @@
 # Template file for 'qtermwidget'
 pkgname=qtermwidget
-version=0.6.0
+version=0.8.0
 revision=1
 build_style=cmake
-configure_args="-DUSE_QT5=1 -DBUILD_DESIGNER_PLUGIN=0"
-hostmakedepends="cmake"
-makedepends="qt5-devel"
-short_desc="The qterminal widget"
+configure_args="-DPULL_TRANSLATIONS=0"
+hostmakedepends="qt5-qmake qt5-host-tools qt5-devel qt5-tools-devel"
+makedepends="qt5-devel lxqt-build-tools qt5-tools-devel"
+short_desc="The terminal widget for QTerminal"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="GPL-2"
-homepage="https://github.com/qterminal/qtermwidget"
-distfiles="https://github.com/qterminal/qtermwidget/releases/download/${version}/qtermwidget-${version}.tar.xz"
-checksum=1ea148e67c3e28a53ca24a3c91532507ddd6c5d28611467e7a67334d945cd010
+homepage="http://lxqt.org/"
+distfiles="https://github.com/lxde/qtermwidget/releases/download/${version}/qtermwidget-${version}.tar.xz"
+checksum=ef01c2a2bedff008578b65efd47b3fff8e542dfcdf9779b547533c9c75825169
 
 qtermwidget-devel_package() {
 	short_desc+=" - development files"
-	depends="qt5-devel ${sourcepkg}>=${version}_${revision}"
+	depends="${makedepends} ${sourcepkg}>=${version}_${revision}"
 	pkg_install() {
 		vmove usr/include
 		vmove usr/lib/pkgconfig

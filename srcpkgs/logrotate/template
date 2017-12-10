@@ -1,18 +1,17 @@
 # Template file for 'logrotate'
 pkgname=logrotate
-version=3.9.1
-revision=2
+version=3.13.0
+revision=1
 build_style=gnu-configure
-configure_args="--sbindir=/usr/bin"
 hostmakedepends="automake libtool"
 makedepends="acl-devel popt-devel"
 conf_files="/etc/logrotate.conf"
 short_desc="Log file rotation and periodic maintenance"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
-homepage="https://fedorahosted.org/logrotate/"
 license="GPL-2"
-distfiles="https://fedorahosted.org/releases/l/o/$pkgname/${pkgname}-${version}.tar.gz"
-checksum=022769e3288c80981559a8421703c88e8438b447235e36dd3c8e97cd94c52545
+homepage="https://github.com/logrotate/logrotate"
+distfiles="${homepage}/releases/download/${version}/logrotate-${version}.tar.xz"
+checksum=3222ca032f99be8d7a4a8c6ad69f3dcc49b9511bfe384bd5a271ebcd9bd3e52c
 
 pre_configure() {
 	./autogen.sh

@@ -1,22 +1,11 @@
 # Template file for 'mccabe'
 pkgname=mccabe
-version=0.4.0
-revision=1
+version=0.5.2
+revision=3
 noarch=yes
-build_style=python-module
-hostmakedepends="python-setuptools"
-depends="python"
-pycompile_module="mccabe.py"
-short_desc="McCabe complexity checker for Python"
+build_style=meta
+short_desc="McCabe complexity checker for Python2 (transitional dummy package)"
+depends="python-mccabe>=${version}_${revision}"
 maintainer="Alessio Sergi <al3hex@gmail.com>"
 homepage="https://github.com/PyCQA/mccabe"
 license="MIT"
-distfiles="${PYPI_SITE}/m/mccabe/mccabe-${version}.tar.gz"
-checksum=9a2b12ebd876e77c72e41ebf401cc2e7c5b566649d50105ca49822688642207b
-
-pre_build() {
-	sed -i '/setup_requires=/d' setup.py
-}
-post_install() {
-	vlicense LICENSE
-}

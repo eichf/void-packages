@@ -1,13 +1,16 @@
 # Template build file for 'pkg-config'
 pkgname=pkg-config
-version=0.29.1
+version=0.29.2
 revision=1
 bootstrap=yes
 build_style=gnu-configure
 configure_args="--with-internal-glib --disable-host-tool"
+# required for gcc6 bootstrap
+hostmakedepends="gcc"
 short_desc="System for managing library compile/link flags"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://pkgconfig.freedesktop.org/wiki/"
 license="GPL-2"
 distfiles="http://pkgconfig.freedesktop.org/releases/$pkgname-$version.tar.gz"
-checksum=beb43c9e064555469bd4390dcfd8030b1536e0aa103f08d7abf7ae8cac0cb001
+checksum=6fc69c01688c9458a57eb9a1664c9aba372ccda420a02bf4429fe610e7e7d591
+

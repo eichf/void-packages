@@ -1,15 +1,15 @@
+# Template file for 'meson'
 pkgname=meson
-version=0.31.0
+version=0.43.0
 revision=1
 noarch=yes
-build_style=python-module
-python_versions="3.4"
-pycompile_version="3.4"
-hostmakedepends="python3.4-devel"
-depends="python3.4 ninja"
-short_desc="A super fast build system"
+build_style=python3-module
+pycompile_module="mesonbuild"
+hostmakedepends="python3-devel"
+depends="python3 ninja"
+short_desc="Super fast build system"
 license="Apache-2.0"
 maintainer="Dylan Katz <muddmaker.97@gmail.com>"
 homepage="http://mesonbuild.com"
 distfiles="https://github.com/mesonbuild/meson/archive/${version}.tar.gz"
-checksum=3d59a8e31d96838916e0e1c7581ed1e3013c3e9e93252ea7eb0b7f7908103bae
+checksum=324894427dcd29f6156fe06b046c6ad1b998470714debd7c5705902f21aaaa73

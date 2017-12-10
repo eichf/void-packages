@@ -1,8 +1,7 @@
 # Template file for 'task'
 pkgname=task
 version=2.5.1
-revision=1
-hostmakedepends="cmake"
+revision=2
 makedepends="libuuid-devel gnutls-devel"
 build_style="cmake"
 short_desc="A command-line todo list manager"

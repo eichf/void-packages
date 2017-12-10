@@ -1,21 +1,21 @@
 # Template file for 'mate-power-manager'
 pkgname=mate-power-manager
-version=1.14.0
+version=1.18.1
 revision=1
 build_style=gnu-configure
-configure_args="--sbindir=/usr/bin --with-gtk=3.0 --disable-schemas-compile"
+configure_args="--sbindir=/usr/bin --disable-schemas-compile"
 hostmakedepends="pkg-config intltool itstool libtool glib-devel dbus-glib-devel
  mate-common mate-desktop-devel"
 makedepends="gtk+3-devel dbus-glib-devel libnotify-devel libunique-devel
  upower0-devel libcanberra-devel libgnome-keyring-devel libmate-panel-devel
  mate-desktop-devel"
-depends="dconf"
+depends="dconf upower0"
 short_desc="Power management tool for the MATE desktop"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="GPL-2"
 homepage="http://mate-desktop.org"
 distfiles="http://pub.mate-desktop.org/releases/${version%.*}/${pkgname}-${version}.tar.xz"
-checksum=2306f7210298dba705277b748f8e3da1481889af4cb047a3eb76f196c4ded898
+checksum=25dbd47c063d9aa2ed4be6401f6650aec11e0baa6bdd5dbb12cbb6952461cbeb
 
 pre_configure() {
 	NOCONFIGURE=1 ./autogen.sh

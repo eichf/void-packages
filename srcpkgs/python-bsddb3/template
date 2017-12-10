@@ -1,33 +1,39 @@
 # Template file for 'python-bsddb3'
 pkgname=python-bsddb3
-version=6.2.0
+version=6.2.5
 revision=1
 wrksrc="bsddb3-${version}"
 build_style=python-module
 make_build_args="--berkeley-db=${XBPS_CROSS_BASE}/usr"
 make_install_args="--berkeley-db=${XBPS_CROSS_BASE}/usr"
-python_versions="2.7 3.4"
-hostmakedepends="python-setuptools python3.4-setuptools"
-makedepends="python-devel python3.4-devel db-devel"
+hostmakedepends="python-setuptools python3-setuptools"
+makedepends="python-devel python3-devel db-devel"
 pycompile_module="bsddb3"
 short_desc="Python2 interface for BerkeleyDB"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="ttp://www.jcea.es/programacion/pybsddb.htm"
-license="BSD"
+license="3-clause-BSD"
 distfiles="${PYPI_SITE}/b/bsddb3/bsddb3-${version}.tar.gz"
-checksum=3c24cb287e1dd08be387a2b4d32ae5dfeba5ef4e3785878f0030e4d4f608aba9
+checksum=784bf40ad935258507594a89b32ea11f362cde120751c8b96de163955ced7db8
 
 post_install() {
+	# get rid of unneeded header
+	rm -f ${DESTDIR}/usr/include/python*/bsddb3/bsddb.h
 	vlicense LICENSE.txt LICENSE
 }
 
-python3.4-bsddb3_package() {
-	depends="python3.4"
-	pycompile_version="3.4"
+python3-bsddb3_package() {
+	depends="python3"
 	pycompile_module="bsddb3"
-	short_desc="${short_desc/Python2/Python3.4}"
+	replaces="python3.4-bsddb3>=0"
+	short_desc="${short_desc/Python2/Python3}"
 	pkg_install() {
-		vmove usr/lib/python3.4
+		vmove usr/lib/python3*
 		vlicense LICENSE.txt LICENSE
 	}
+}
+python3.4-bsddb3_package() {
+	build_style=meta
+	short_desc="${short_desc/Python2/Python3.4} (transitional dummy package)"
+	depends="python3-bsddb3>=${version}_${revision}"
 }

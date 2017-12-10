@@ -1,24 +1,24 @@
 # Template file for 'flex'
 pkgname=flex
-version=2.6.0
-revision=1
+version=2.6.4
+revision=3
 build_style=gnu-configure
-# YES REALLY! WE DONT WANT BINS LINKED TO LIBFL!
-configure_args="--disable-shared"
-hostmakedepends="help2man bison"
+configure_args="--disable-bootstrap --disable-shared"
+hostmakedepends="bison"
 makedepends="bison"
-depends="bison libfl-devel-${version}_${revision}"
+depends="bison libfl-devel-${version}_${revision} m4"
 short_desc="The Fast Lexical Analyzer"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://flex.sourceforge.net"
 license="BSD"
-distfiles="${SOURCEFORGE_SITE}/flex/${pkgname}-${version}.tar.bz2"
-checksum=24e611ef5a4703a191012f80c1027dc9d12555183ce0ecd46f3636e587e9b8e9
+distfiles="https://github.com/westes/${pkgname}/releases/download/v${version}/${pkgname}-${version}.tar.gz"
+checksum=e87aae032bf07c26f85ac0ed3250998c37621d95f8bd748b31f15b33c45ee995
 
-pre_install() {
-	sed -i "s|.SUFFIXES: .dvi .html .info .pdf .ps .texi|.SUFFIXES: .info .texi|g" doc/Makefile
-}
+# Required to enable the definition of reallocarray() in stdlib.h
+CFLAGS="-D_GNU_SOURCE"
+
 post_install() {
+	ln -s flex ${DESTDIR}/usr/bin/lex
 	vlicense COPYING
 }
 

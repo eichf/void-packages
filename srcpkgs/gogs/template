@@ -1,6 +1,6 @@
 # Template build file for 'gogs'
 pkgname=gogs
-version=0.9.13
+version=0.11.29
 revision=3
 build_style=go
 go_import_path="github.com/gogits/gogs"
@@ -10,7 +10,7 @@ license="MIT"
 homepage="http://gogs.io"
 depends="git"
 distfiles="https://github.com/gogits/gogs/archive/v${version}.tar.gz"
-checksum=9b67d9d77b753800fe1e880f900ec87b9b178cb60e3bb7c92895d6fcfd55c8c5
+checksum=3da2799e85d78ae36bc78725b4f19d409d45949831bb9aa306af43e851b89b13
 hostmakedepends="git-perl curl"
 
 conf_files="/etc/gogs.ini"
@@ -19,6 +19,8 @@ gogs_homedir="/srv/gogs"
 gogs_shell="/bin/bash"
 
 export CGO_ENABLED=1
+
+broken=https://build.voidlinux.eu/builders/i686_builder/builds/4423/steps/shell_3/logs/stdio
 
 post_extract() {
 	mkdir tmp

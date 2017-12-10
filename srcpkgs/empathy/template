@@ -1,6 +1,6 @@
 # Template file for 'empathy'
 pkgname=empathy
-version=3.12.11
+version=3.12.14
 revision=1
 disable_parallel_build=yes
 build_style=gnu-configure
@@ -15,13 +15,13 @@ makedepends="
  telepathy-glib-devel telepathy-logger-devel libnotify-devel
  telepathy-farstream-devel telepathy-mission-control-devel
  evolution-data-server-devel geocode-glib-devel folks-devel
- webkitgtk-devel libgudev-devel pulseaudio-devel cheese-devel
+ webkit2gtk-devel libgudev-devel pulseaudio-devel cheese-devel
  enchant-devel NetworkManager-devel libchamplain-devel
- gnutls-devel gsettings-desktop-schemas-devel geoclue2 iso-codes"
-depends="gsettings-desktop-schemas>=3.12 geoclue2>=2.1 iso-codes"
+ gnutls-devel gsettings-desktop-schemas-devel geoclue2-devel iso-codes"
+depends="gsettings-desktop-schemas>=3.12 iso-codes"
 short_desc="GNOME instant messaging client using the Telepathy framework"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://live.gnome.org/Empathy"
 license="GPL-2"
 distfiles="${GNOME_SITE}/$pkgname/${version%.*}/$pkgname-$version.tar.xz"
-checksum=d1e4ff4e5f502b7f4ca2c6140462bad2a712b82f019aea4e0a2700e77545d487
+checksum=7d86942ce97edd10ade0e6ae6a210d35e4d627fe4d223377d71fd1840bc6e3a3

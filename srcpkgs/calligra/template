@@ -1,22 +1,21 @@
 # Template file for 'calligra'
 pkgname=calligra
 version=2.9.11
-revision=1
+revision=17
 build_style=cmake
-configure_args="-Wno-dev -DBUILD_active=OFF -DWITH_Soprano=OFF"
-hostmakedepends="cmake automoc4 perl pkg-config eigen"
+configure_args="-Wno-dev -DBUILD_active=OFF -DWITH_Soprano=OFF -DBUILD_krita=OFF"
+hostmakedepends="automoc4 perl pkg-config eigen3.2"
 short_desc="Illustration application"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
-makedepends="vc phonon-devel libpng-devel sqlite-devel boost-devel exiv2-devel
- qt-devel kdelibs-devel libressl-devel lcms2-devel libwpd-devel libwpg-devel
- libwps-devel libodfgen-devel libvisio-devel libetonyek-devel fontconfig-devel
- libXi-devel poppler-qt4-devel libgomp-devel glew-devel opencolorio-devel
- fftw-devel libopenexr-devel libopenjpeg-devel gsl-devel libcurl-devel
- libkdcraw-devel libokular-devel qca-devel kactivities-devel kdepimlibs-devel
+makedepends="phonon-devel libpng-devel sqlite-devel boost-devel exiv2-devel
+ qt-webkit-devel kdelibs-devel libressl-devel lcms2-devel libwpd-devel
+ libwpg-devel libwps-devel libodfgen-devel libvisio-devel libetonyek-devel
+ fontconfig-devel poppler-qt4-devel glew-devel fftw-devel libspnav-devel
+ gsl-devel libokular-devel qca-devel kactivities-devel kdepimlibs-devel
  marble-devel libmysqlclient-devel postgresql-libs-devel freetds-devel"
 license="GPL-2"
 homepage="http://www.calligra-suite.org/"
-distfiles="http://download.kde.org/stable/${pkgname}-${version}/${pkgname}-${version}.tar.xz"
+distfiles="https://download.kde.org/Attic/calligra-2.9.11/calligra-2.9.11.tar.xz"
 checksum=b18d2d0f87bc92753ec8b1eb780a596770a49141e3e60d811da51e752e54ea09
 
 subpackages="calligra-filters calligra-libs calligra-plugins calligra-karbon
@@ -96,12 +95,9 @@ calligra-stage_package() {
 	}
 }
 calligra-krita_package() {
-	depends="calligra-plugins-${version}_${revision}"
-	short_desc+=" - Edit and paint images"
-	pkg_install() {
-		cd ${wrksrc}/build/krita
-		make DESTDIR=$PKGDESTDIR install
-	}
+	build_style=meta
+	short_desc+=" - Edit and paint images (transitional dummy package)"
+	depends="krita>=${version}_${revision}"
 }
 calligra-sheets_package() {
 	short_desc+=" - Write spreadsheet documents"
@@ -135,6 +131,7 @@ calligra-braindump_package() {
 	}
 }
 calligra-flow_package() {
+	depends="calligra-plugins"
 	short_desc+=" - Flowchart & Diagram Editing"
 	pkg_install() {
 		cd ${wrksrc}/build/flow

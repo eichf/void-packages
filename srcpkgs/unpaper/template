@@ -1,9 +1,9 @@
 # Template file for 'unpaper'
 pkgname=unpaper
 version=6.1
-revision=1
+revision=2
 build_style=gnu-configure
-maintainer="Dominik Honnef <dominik@honnef.co>"
+maintainer="Orphaned <orphan@voidlinux.eu>"
 hostmakedepends="pkg-config libxslt"
 makedepends="ffmpeg-devel"
 license="GPL-2"

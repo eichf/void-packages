@@ -3,18 +3,19 @@
 _desc="NVIDIA drivers (GeForce 8, 9, 9M, 100, 100M, 200, 300 series)"
 
 pkgname=nvidia340
-version=340.96
+version=340.104
 revision=3
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
-license="Propietary NVIDIA license"
+license="Proprietary NVIDIA license"
 homepage="http://www.nvidia.com"
 
 only_for_archs="i686 x86_64"
+nopie=yes
 repository="nonfree"
 create_wrksrc=yes
 short_desc="${_desc} - Libraries and Utilities"
 depends="${pkgname}-dkms-${version}_${revision} pkg-config"
-conflicts="catalyst>=0 xserver-abi-video>21_1"
+conflicts="catalyst>=0 xserver-abi-video>23_1"
 
 provides="nvidia-${version}_${revision}"
 replaces="nvidia>=0 nvidia-stable>=0"
@@ -23,11 +24,11 @@ subpackages="${pkgname}-dkms ${pkgname}-opencl ${pkgname}-libs"
 if [ "$XBPS_TARGET_MACHINE" = "i686" ]; then
 	_pkg="NVIDIA-Linux-x86-${version}"
 	distfiles="http://us.download.nvidia.com/XFree86/Linux-x86/${version}/${_pkg}.run"
-	checksum=c40e2778cd1ab036a76e1896fe2f77c4aa7baa215dbbdb11a2f4c5f05e1a478e
+	checksum=e39015f8e2c6c87037be340fd1899f703ac15356c5694ad8187cd67e71491cd1
 else
 	_pkg="NVIDIA-Linux-x86_64-${version}-no-compat32"
 	distfiles="http://us.download.nvidia.com/XFree86/Linux-x86_64/${version}/${_pkg}.run"
-	checksum=280f9db2aea52cab42e141f0393604c7a6d43e7f65d3e60c2319c2674ecc14c4
+	checksum=ed112523ae424aea46904d2dcfc769b0263cf552f5bfec0e30601f6f0f95eada
 fi
 
 do_extract() {
@@ -36,10 +37,13 @@ do_extract() {
 	./${_pkg}.run --extract-only
 	rm -f ${_pkg}.run
 }
+
 do_configure() {
 	cd ${_pkg}
-	patch -sNp0 -i ${FILESDIR}/nv-drm.patch
+	patch -p0 < ${FILESDIR}/kernel-4.11.patch
+	patch -p0 < ${FILESDIR}/kernel-4.14.patch
 }
+
 do_install() {
 	cd ${_pkg}
 

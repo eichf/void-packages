@@ -1,0 +1,16 @@
+# Template file for 'perl-Template-Toolkit'
+pkgname=perl-Template-Toolkit
+version=2.27
+revision=1
+noarch=yes
+wrksrc="${pkgname/perl-/}-${version}"
+build_style=perl-module
+hostmakedepends="perl"
+makedepends="${hostmakedepends}"
+depends="${makedepends}"
+short_desc="Template Toolkit"
+maintainer="Andrea Brancaleoni <abc@pompel.me>"
+homepage="http://search.cpan.org/dist/Template-Toolkit"
+license="Artistic, GPL-1"
+distfiles="http://search.cpan.org/CPAN/authors/id/A/AB/ABW/Template-Toolkit-${version}.tar.gz"
+checksum=1311a403264d0134c585af0309ff2a9d5074b8ece23ece5660d31ec96bf2c6dc

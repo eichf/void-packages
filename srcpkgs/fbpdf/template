@@ -1,21 +1,18 @@
 # Template file for 'fbpdf'
 pkgname=fbpdf
-version=0.0.20150504
+version=0.0.20161202
 revision=2
-wrksrc="fbpdf-d8a4ae1"
+wrksrc="fbpdf-e31a61b"
 build_style=gnu-makefile
-makedepends="mupdf-devel djvulibre-devel freetype-devel libressl-devel"
+makedepends="djvulibre-devel freetype-devel harfbuzz-devel libressl-devel
+ mupdf-devel"
 short_desc="Small framebuffer PDF/DJVU viewer"
-maintainer="Christian Neukirchen <chneukirchen@gmail.com>"
-license="BSD"
+maintainer="Leah Neukirchen <leah@vuxu.org>"
+license="ISC"
 homepage="http://repo.or.cz/w/fbpdf.git"
-distfiles="http://repo.or.cz/fbpdf.git/snapshot/d8a4ae17148d8cb68cadcb1caf8b00ac823f2ba4.tar.gz"
-checksum=2ea335d4e4b143adce5753f45ee60a246917bb9cd2f4c29a654799dd0a2ba0db
-
-post_extract() {
-	sed -i s/lopenjpeg/lopenjp2/g Makefile
-	sed -i 's/CTRL(/CTRLKEY(/g' fbpdf.c
-}
+distfiles="http://repo.or.cz/fbpdf.git/snapshot/e31a61bb7c00395817fc8b06c907398cf97e73f8.tar.gz"
+checksum=4ba342d63e49558a19810fb905b67aa9dee5372c9f223b30fef35c2d6a67802b
+LDFLAGS="-lmupdf -lfreetype -lopenjp2 -lharfbuzz -ljbig2dec -lz"
 
 do_install() {
 	vbin fbpdf

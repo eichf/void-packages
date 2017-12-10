@@ -1,7 +1,7 @@
 # Template file for 'zfs'
 pkgname=zfs
-version=0.6.5.6
-revision=1
+version=0.7.3
+revision=2
 patch_args="-Np1"
 wrksrc="${pkgname}-${pkgname}-${version/r/-}"
 build_style=gnu-configure
@@ -9,23 +9,25 @@ configure_args="--with-config=user --with-mounthelperdir=/usr/bin
  --with-udevdir=/usr/lib/udev --with-udevruledir=/usr/lib/udev/rules.d
  --with-dracutdir=/usr/lib/dracut --with-tirpc --with-blkid"
 hostmakedepends="dracut automake libtool pkg-config"
-makedepends="spl-devel zlib-devel libuuid-devel libblkid-devel libtirpc-devel"
+makedepends="spl-devel zlib-devel libuuid-devel libblkid-devel libtirpc-devel attr-devel"
 conf_files="/etc/zfs/zed.d/zed.rc"
 short_desc="Z File System -- userland and kernel modules (using DKMS)"
-maintainer="Toyam Cox <Vaelatern@gmail.com>"
+maintainer="Toyam Cox <Vaelatern@voidlinux.eu>"
 license="CDDL"
 homepage="http://zfsonlinux.org/"
 distfiles="https://github.com/zfsonlinux/${pkgname}/archive/${pkgname}-${version/r/-}.tar.gz"
-checksum=07226a03de84d37bf38393f73f32a881e2090bfb16abf9c9ff0871e67ddb2ecc
+checksum=9f766eb111d11825130547aba093f42bdbae9a388e9b133f2048c431c955a591
 
 triggers="dkms"
 dkms_modules="zfs ${version/r/-}"
 depends="dkms>=2.2.0.3_9 spl>=${version}"
 
 pre_configure() {
+	export CFLAGS+=" -I${XBPS_CROSS_BASE}/usr/include/tirpc/"
 	autoreconf -fi
 	tar czf ../clean.tar.gz .
 }
+
 post_install() {
 	vlicense COPYRIGHT
 	vlicense OPENSOLARIS.LICENSE
@@ -34,11 +36,10 @@ post_install() {
 	tar xf ../clean.tar.gz -C ${DESTDIR}/usr/src/${pkgname}-${version/r/-}
 	scripts/dkms.mkconf -v ${version/r/-} -f ${DESTDIR}/usr/src/${pkgname}-${version/r/-}/dkms.conf -n zfs
 
-	vsv zfs-import
-
 	rm -rf ${DESTDIR}/usr/lib/systemd
 	rm -rf ${DESTDIR}/usr/share/initramfs-tools
 }
+
 zfs-devel_package() {
 	depends="${sourcepkg}>=${version}_${revision}"
 	short_desc="Z File System -- development files"
@@ -48,6 +49,7 @@ zfs-devel_package() {
 		vmove "usr/lib/*.so"
 	}
 }
+
 do_clean() {
 	rm -f ../clean.tar.gz
 }

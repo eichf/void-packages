@@ -1,7 +1,7 @@
 # Template file for 'i3lock'
 pkgname=i3lock
-version=2.7
-revision=2
+version=2.10
+revision=1
 hostmakedepends="pkg-config"
 makedepends="libev-devel cairo-devel pam-devel libxkbcommon-devel
  xcb-util-devel xcb-util-image-devel"
@@ -9,9 +9,9 @@ conf_files="/etc/pam.d/i3lock"
 short_desc="An improved screenlocker based upon XCB and PAM"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="MIT"
-homepage="http://i3wm.org/i3lock/"
-distfiles="http://i3wm.org/i3lock/i3lock-${version}.tar.bz2"
-checksum=6882183ed0eca439e3ad1ae3e9d48b4d0a0b6f075e3850b46bf84aec97538fe2
+homepage="https://i3wm.org/i3lock/"
+distfiles="https://i3wm.org/i3lock/i3lock-${version}.tar.bz2"
+checksum=29eb32bf317fad7b292e15be6c02d693bfc6dbfdd6d98f0a6db71e189140c8ee
 
 do_build() {
 	sed -i 's:login:system-auth:' i3lock.pam
@@ -20,4 +20,5 @@ do_build() {
 do_install() {
 	make PREFIX=/usr DESTDIR=${DESTDIR} install
 	vman i3lock.1
+	vlicense LICENSE
 }

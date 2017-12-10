@@ -1,38 +1,34 @@
 # Template file for 'unicorn'
 pkgname=unicorn
-version=0.9
+version=1.0.1
 revision=2
 only_for_archs="x86_64 x86_64-musl i686 i686-musl"
-hostmakedepends="pkg-config python-setuptools python3.4-setuptools"
-makedepends="glib-devel"
+hostmakedepends="python-devel python3-devel python-setuptools python3-setuptools"
 short_desc="Lightweight multi-platform, multi-architecture CPU emulator framework"
 maintainer="Michael Gehring <mg@ebfe.org>"
 license="GPL-2"
 homepage="http://www.unicorn-engine.org/"
 distfiles="https://github.com/unicorn-engine/unicorn/archive/${version}.tar.gz"
-checksum=1ca03b1c8f6360335567b528210713461e839d47c4eb7c676ba3aa4f72b8cf10
+checksum=3a6a4f2b8c405ab009040ca43af8e4aa10ebe44d9c8b336aa36dc35df955017c
 
 post_extract() {
 	# don't build the samples
 	echo "clean:" > samples/Makefile
-	# fix unicorn.pc paths
-	sed 's,libdir=$(LIBDIR),libdir=$(PREFIX)/${LIBDIRARCH},g' -i Makefile
-	sed 's,includedir=$(INCDIR),includedir=$(PREFIX)/include,g' -i Makefile
 }
 
 do_build() {
 	make
 	make -C bindings
 	cd bindings/python
-	for pyver in 2.7 3.4; do
+	for pyver in $py2_ver $py3_ver; do
 		python${pyver} setup.py build --build-base=build-${pyver}
 	done
 }
 
 do_install() {
-	make DESTDIR=${PKGDESTDIR} install
+	make DESTDIR=${DESTDIR} install
 	cd bindings/python
-	for pyver in 2.7 3.4; do
+	for pyver in $py2_ver $py3_ver; do
 		python${pyver} setup.py build --build-base=build-${pyver} \
 			install --prefix=/usr --root=${DESTDIR}
 	done
@@ -49,23 +45,28 @@ unicorn-devel_package() {
 	}
 }
 
-python-unicorn_package() {
-	depends="${sourcepkg}-devel>=${version}_${revision}"
+unicorn-python_package() {
+	replaces="python-unicorn>=0"
+	depends="${sourcepkg}-devel>=${version}_${revision} python-setuptools"
 	short_desc+=" - Python2 bindings"
-	pycompile_version="2.7"
 	pycompile_module="unicorn"
 	pkg_install() {
-		vmove usr/lib/python2.7
+		vmove ${py2_sitelib}
+	}
+}
+
+unicorn-python3_package() {
+	replaces="python3.4-unicorn>=0"
+	depends="${sourcepkg}-devel>=${version}_${revision} python3-setuptools"
+	short_desc+=" - Python3 bindings"
+	pycompile_module="unicorn"
+	pkg_install() {
+		vmove ${py3_sitelib}
 	}
 }
 
 python3.4-unicorn_package() {
-	depends="${sourcepkg}-devel>=${version}_${revision}"
-	short_desc+=" - Python3.4 bindings"
-	pycompile_version="3.4"
-	pycompile_module="unicorn"
-	pkg_install() {
-		vmove usr/lib/python3.4
-	}
+	build_style=meta
+	short_desc+=" - Python3.4 bindings (transitional dummy package)"
+	depends="unicorn-python3>=${version}_${revision}"
 }
-

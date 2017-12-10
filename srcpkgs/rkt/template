@@ -1,20 +1,25 @@
 # Template file for 'rkt'
 pkgname=rkt
-version=1.5.1
+version=1.29.0
 revision=1
 build_style=gnu-configure
 hostmakedepends="automake wget cpio squashfs-tools bc gnupg git go"
 makedepends="acl-devel zlib-devel libressl-devel"
 depends="virtual?rkt-stage1"
 short_desc="App Container runtime for Linux"
-maintainer="Andrea Brancaleoni <miwaxe@gmail.com>"
+maintainer="Andrea Brancaleoni <abc@pompel.me>"
 license="Apache-2.0"
 homepage="https://github.com/coreos/rkt"
 distfiles="$homepage/archive/v$version.tar.gz"
-checksum=2a9320b0fe41551e88e8477e4223ef9e2b7ebaf9947829235b5e936dbd61f5d4
+checksum=d2d89db86b4b3a586a8288ba7becdb87370d4fbe7e12aa37e9b1e30a9f9c9b20
 
+patch_args="-Np1"
+nopie=yes
+
+# KVM support broken
 configure_args="--enable-tpm=no
---with-stage1-flavors=fly,kvm,coreos
+--enable-sdjournal=no
+--with-stage1-flavors=fly,coreos,host
 --with-stage1-default-location=/usr/lib/rkt/stage1.aci"
 
 system_groups="rkt"
@@ -44,6 +49,7 @@ make_dirs="
 /var/lib/rkt/pods/garbage 2750 root rkt"
 
 pre_configure() {
+	rm stage1/usr_from_kvm/kernel/patches/0002-for-debian-gcc.patch
 	./autogen.sh
 }
 
@@ -52,36 +58,34 @@ do_install() {
 
 	vinstall ${FILESDIR}/rkt-gc 755 etc/cron.daily
 
-	vbin build-${pkgname}-${version}/bin/rkt
-	vbin build-${pkgname}-${version}/bin/actool
+	vbin build-${pkgname}-${version}/target/bin/rkt
+	vbin build-${pkgname}-${version}/tools/actool
 }
 
 rkt-stage1-fly_package() {
 	alternatives="rkt-stage1:/usr/lib/rkt/stage1.aci:/usr/lib/rkt/stage1-fly.aci"
-	depends="${sourcepkg}>=${version}_${revision}"
 	short_desc+=" - fly stage1"
 	provides="rkt-stage1-${version}_${revision}"
 	pkg_install() {
-		vinstall build-${sourcepkg}-${version}/bin/stage1-fly.aci 644 usr/lib/rkt
+		vinstall build-${sourcepkg}-${version}/target/bin/stage1-fly.aci 644 usr/lib/rkt
 	}
 }
 
-rkt-stage1-kvm_package() {
-	alternatives="rkt-stage1:/usr/lib/rkt/stage1.aci:/usr/lib/rkt/stage1-kvm.aci"
-	depends="${sourcepkg}>=${version}_${revision}"
-	short_desc+=" - kvm stage1"
-	provides="rkt-stage1-${version}_${revision}"
-	pkg_install() {
-		vinstall build-${sourcepkg}-${version}/bin/stage1-kvm.aci 644 usr/lib/rkt
-	}
-}
+#rkt-stage1-kvm_package() {
+#	alternatives="rkt-stage1:/usr/lib/rkt/stage1.aci:/usr/lib/rkt/stage1-kvm.aci"
+#	depends="${sourcepkg}>=${version}_${revision}"
+#	short_desc+=" - kvm stage1"
+#	provides="rkt-stage1-${version}_${revision}"
+#	pkg_install() {
+#		vinstall build-${sourcepkg}-${version}/target/bin/stage1-kvm.aci 644 usr/lib/rkt
+#	}
+#}
 
 rkt-stage1-coreos_package() {
 	alternatives="rkt-stage1:/usr/lib/rkt/stage1.aci:/usr/lib/rkt/stage1-coreos.aci"
-	depends="${sourcepkg}>=${version}_${revision}"
 	short_desc+=" - coreos stage1"
 	provides="rkt-stage1-${version}_${revision}"
 	pkg_install() {
-		vinstall build-${sourcepkg}-${version}/bin/stage1-coreos.aci 644 usr/lib/rkt
+		vinstall build-${sourcepkg}-${version}/target/bin/stage1-coreos.aci 644 usr/lib/rkt
 	}
 }

@@ -1,22 +1,18 @@
 # Template file for 'apk-tools'
 pkgname=apk-tools
-version=2.6.6
-revision=2
+version=2.8.1
+revision=1
 build_style=gnu-makefile
 make_build_args="LUAAPK="
 hostmakedepends="pkg-config"
-makedepends="libressl-devel zlib-devel libfetch-devel"
+makedepends="libressl-devel zlib-devel"
 short_desc="Alpine Package Keeper (Alpine package manager)"
-maintainer="Christian Neukirchen <chneukirchen@gmail.com>"
+maintainer="Leah Neukirchen <leah@vuxu.org>"
 license="GPL-2"
 homepage="http://git.alpinelinux.org/cgit/apk-tools"
 distfiles="http://git.alpinelinux.org/cgit/${pkgname}/snapshot/${pkgname}-${version}.tar.bz2"
-checksum=7e5e86c856ce236c7fd54605ee0b1dbf59920398d3b33f9f6ff0e5f98e6828af
+checksum=8ea7262802cc3cc8d7ff31244acb556593bc92b08ff592b8f193698eb369a273
 CFLAGS=-Wno-error
-
-post_extract() {
-	sed -i 's,/usr/lib/libfetch.a,-lfetch,g' src/Makefile
-}
 
 do_install() {
 	vbin src/apk

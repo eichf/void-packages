@@ -1,18 +1,24 @@
 # Template file for 'opencollada'
 pkgname=opencollada
-version=1.6.16
+version=1.6.61
 revision=1
 wrksrc="OpenCOLLADA-${version}"
 build_style=cmake
 configure_args="-DUSE_SHARED=TRUE"
-hostmakedepends="cmake pkg-config"
+hostmakedepends="pkg-config"
 makedepends="libxml2-devel pcre-devel"
 short_desc="Stream based reader and writer library for COLLADA files"
 maintainer="Jürgen Buchmüller <pullmoll@t-online.de>"
 license="GPL-3"
 homepage="https://github.com/KhronosGroup/OpenCOLLADA"
 distfiles="https://github.com/KhronosGroup/OpenCOLLADA/archive/v${version}.tar.gz>${pkgname}-${version}.tar.gz"
-checksum=caf4288e29fa83e696151d2e731eb521b19222a3040ec4f3dbc640d161b235e8
+checksum=c0b19d315bf7eaed5f29636ddd962ee7d3c2f7067039dba124bf9f0c94aa9e1e
+
+CXXFLAGS="-fno-delete-null-pointer-checks -fno-lifetime-dse -fno-schedule-insns2"
+if [ -n "$CROSS_BUILD" ]; then
+	# Needs to find build/lib/libbuffer.so when cross linking
+	LDFLAGS="-Wl,-rpath,lib"
+fi
 
 post_install() {
 	# Move libraries to /usr/lib to avoid adding to /etc/ld.so.conf.d

@@ -1,33 +1,42 @@
 # Template file for 'qalculate'
 pkgname=qalculate
-version=0.9.7
-wrksrc="lib${pkgname}-${version}"
+version=2.1.0
 revision=2
+wrksrc="lib${pkgname}-${version}"
 build_style=gnu-configure
-maintainer="Dominik Honnef <dominik@honnef.co>"
+maintainer="Orphaned <orphan@voidlinux.eu>"
 hostmakedepends="intltool pkg-config"
-makedepends="libxml2-devel glib-devel cln-devel readline-devel"
+makedepends="libxml2-devel cln-devel readline-devel libcurl-devel icu-devel
+ gmp-devel mpfr-devel"
+depends="gnuplot"
 license="GPL-2"
-homepage="http://qalculate.sourceforge.net/"
+homepage="https://qalculate.github.io/"
 short_desc="A multi-purpose desktop calculator"
-distfiles="${SOURCEFORGE_SITE}/qalculate/lib${pkgname}-${version}.tar.gz"
-checksum=9a6d97ce3339d104358294242c3ecd5e312446721e93499ff70acc1604607955
+distfiles="https://github.com/Qalculate/libqalculate/releases/download/v${version}/libqalculate-${version}.tar.gz"
+checksum=7668ed9ab32d46d3638297985a03bc995b6aedf8b8335685e1a43393ba236f12
 
+libqalculate-data_package() {
+	noarch=yes
+	short_desc+=" - data files"
+	pkg_install() {
+		vmove usr/share/qalculate
+	}
+}
 libqalculate_package() {
 	short_desc+=" - library files"
+	depends="libqalculate-data>=${version}_${revision}"
 	pkg_install() {
 		vmove usr/lib/libqalculate.so.*
 	}
 }
-
 libqalculate-devel_package() {
 	short_desc+=" - development files"
-	depends="libqalculate>=${version}_${revision} glib-devel libxml2-devel cln-devel"
+	depends="libqalculate>=${version}_${revision} libxml2-devel cln-devel gmp-devel mpfr-devel"
 	pkg_install() {
 		vmove usr/lib/*.so
 		vmove usr/lib/*.a
-		vmove usr/lib/pkgconfig/
-		vmove usr/include/
-		vmove usr/share/doc/libqalculate-0.9.7/
+		vmove usr/lib/pkgconfig
+		vmove usr/include
+		vmove usr/share/doc
 	}
 }

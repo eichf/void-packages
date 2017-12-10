@@ -1,33 +1,27 @@
-# Template file for 'lumina
+# Template file for 'lumina'.
 pkgname=lumina
-version=0.9.0
+version=1.4.0p1
 revision=1
-wrksrc=lumina-qt5-${version}
+wrksrc=lumina-qt5-${version%p*}
 build_style=qmake
-hostmakedepends="qt5-qmake qt5-tools"
+hostmakedepends="qt5-host-tools"
 makedepends="qt5-devel qt5-x11extras-devel qt5-multimedia-devel qt5-svg-devel
  qt5-declarative-devel libXrender-devel libXcomposite-devel libXdamage-devel
- xcb-util-devel xcb-util-wm-devel xcb-util-image-devel"
+ xcb-util-devel xcb-util-wm-devel xcb-util-image-devel pulseaudio-devel poppler-qt5-devel"
 depends="fluxbox numlockx xbacklight alsa-utils acpi xscreensaver oxygen-icons"
 short_desc="Lumina Desktop Environment"
-maintainer="Christian Neukirchen <chneukirchen@gmail.com>"
-license="BSD"
-homepage="https://github.com/pcbsd/lumina"
-distfiles="https://github.com/pcbsd/lumina/archive/qt5/${version}.tar.gz"
-checksum=2d5239c9ffac6e8ae2b170d9a48d686ce382006fe7cdc71ad7d20c6afd73413c
-disable_parallel_build=yes
+maintainer="hipperson0 <hipperson0@gmail.com>"
+license="3-clause-BSD"
+homepage="https://github.com/trueos/lumina"
+distfiles="https://github.com/trueos/lumina/archive/qt5/${version}.tar.gz"
+checksum=5a25aed682489d460a8333466b0b333c6633f380de72410cff71c5bbfca88034
 replaces="lumina-git>=0"
-configure_args="QT5LIBDIR=/usr/lib/qt5"
+configure_args="QT5LIBDIR=/usr/lib/qt5 L_ETCDIR=/etc"
+
+if [ -n "$CROSS_BUILD" ]; then
+	hostmakedepends+=" qt5-tools-devel qt5-x11extras-devel qt5-multimedia-devel qt5-svg-devel poppler-qt5-devel"
+fi
 
 post_install() {
 	vlicense LICENSE
-}
-
-lumina-devel_package() {
-	depends="${sourcepkg}>=${version}_${revision}"
-	short_desc+=" -- development files"
-	pkg_install() {
-		vmove usr/include
-		vmove "usr/lib/*.so"
-	}
 }

@@ -1,19 +1,20 @@
 # Template file for 'passwordwsafe'
 pkgname=passwordsafe
-version="0.98.1BETA"
-revision=1
+version="1.03BETA"
+revision=2
 wrksrc="pwsafe-${version}"
 build_style=cmake
 configure_args="-D wxWidgets_CONFIG_EXECUTABLE=/usr/bin/wx-config-3.0"
 # build process uses perl to generate core_st.cpp and zip to generate help files
 hostmakedepends="perl wxWidgets-devel zip pkg-config gettext"
-makedepends="wxWidgets-devel libXt-devel libXtst-devel libxerces-c-devel libuuid-devel libykpers-devel gtest-devel"
+makedepends="wxWidgets-devel libXt-devel libXtst-devel libxerces-c-devel libuuid-devel
+	libykpers-devel gtest-devel qrencode-devel"
 short_desc="Simple & Secure Password Management"
 maintainer="Rui Abreu Ferreira <raf-ep@gmx.com>"
 license="Artistic-2.0"
 homepage="http://pwsafe.org"
-distfiles="https://github.com/pwsafe/pwsafe/releases/download/${version}/pwsafe-${version}-src.tgz"
-checksum=d44bd032ac92503b118e59c19d6d8cccae85e4abe3561f72a4ae58bffd33e2a5
+distfiles="https://github.com/pwsafe/pwsafe/archive/${version}.tar.gz>pwsafe-${version}.tar.gz"
+checksum=36d64d748a63825cb17e247628f6a378f131d952d4c1715cc6304e4d07b3e0ed
 # wxWidgets is nocross
 nocross=yes
 
@@ -25,12 +26,9 @@ do_install() {
 	sed -i -e 's,^\(Exec\|Icon\)=.*,\1=passwordsafe,' ${DESTDIR}/usr/share/applications/passwordsafe.desktop
 
 	# Help files
-	# XXX 0.98BETA: localized help files are useless without locales (see below).
-	#                keep only english help file.
-	#for f in build/help/help*.zip; do
-	#	vinstall $f 644 usr/share/${pkgname}/help
-	#done
-	vinstall build/help/helpEN.zip 644 usr/share/passwordsafe/help
+	for f in build/help/help*.zip; do
+		vinstall $f 644 usr/share/${pkgname}/help
+	done
 
 	# XML files (format converters)
 	vcopy xml usr/share/${pkgname}
@@ -40,7 +38,7 @@ do_install() {
 	vman docs/pwsafe.1 passwordsafe.1
 
 	# locales
-	# XXX 0.98BETA: no locales: error messages on loading, can't revert easily.
-	#vmkdir usr/share/locale
-	#vcopy build/src/ui/wxWidgets/I18N/mos/* usr/share/locale
+	# NB: correspoding locales have to be enabled in /etc/default/libc-locales
+	vmkdir usr/share/locale
+	vcopy build/src/ui/wxWidgets/I18N/mos/* usr/share/locale
 }

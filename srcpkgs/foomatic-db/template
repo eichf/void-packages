@@ -1,12 +1,12 @@
 # Template file for 'foomatic-db'
 pkgname=foomatic-db
-version=20160419
+version=20171106
 revision=1
 noarch=yes
 build_style=gnu-configure
 short_desc="OpenPrinting printer support - database"
-homepage="http://www.linuxfoundation.org/collaborate/workgroups/openprinting/databasefoomatic"
+homepage="https://wiki.linuxfoundation.org/openprinting/database/foomatic"
 license="GPL-2, MIT"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 distfiles="https://www.openprinting.org/download/foomatic/$pkgname-4.0-$version.tar.gz"
-checksum=fd219eede2882f248652fab40717a989008f5ecdd0c74c3b86f0635273983f34
+checksum=69fd692457cd57d0a7fee3f0e925a5f9bc83d83cbaa9e9e8e1fc01c27d1eb036

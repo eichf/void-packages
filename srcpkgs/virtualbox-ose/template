@@ -1,27 +1,28 @@
 # Template file for 'virtualbox-ose'
 pkgname=virtualbox-ose
-version=5.0.20
-revision=1
-wrksrc="VirtualBox-${version}"
+version=5.2.2
+revision=2
+wrksrc="VirtualBox-${version%*a}"
 short_desc="General-purpose full virtualizer for x86 hardware"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://virtualbox.org"
-license="GPL-2, MPL-1.1, CDDL"
-distfiles="http://download.virtualbox.org/virtualbox/$version/VirtualBox-$version.tar.bz2"
-checksum=af9c0787aae22964a1192cefbf9aa91a40c1d41e5fea485adebf09ab922d4c2b
+license="GPL-2, CDDL"
+distfiles="http://download.virtualbox.org/virtualbox/${version%*a}/VirtualBox-$version.tar.bz2"
+checksum=35ab0c307feedbd9191c14ed4056b46a85bea1918b0c0c40616f0470991bc017
 
+nopie=yes
 lib32disabled=yes
 only_for_archs="i686 x86_64"
 
-hostmakedepends="perl pkg-config dev86 yasm acpica-utils"
+hostmakedepends="perl pkg-config dev86 yasm acpica-utils qt5-tools"
 makedepends="libressl-devel libcurl-devel libpng-devel libvpx-devel
- alsa-lib-devel pulseaudio-devel SDL-devel qt-devel libXcursor-devel
- libXinerama-devel libXcomposite-devel libIDL-devel libglib-devel
- pam-devel python-devel libxslt-devel libcap-devel xorg-server-devel
- device-mapper-devel docbook-xsl gsoap-devel"
+ alsa-lib-devel pulseaudio-devel SDL-devel qt5-devel qt5-x11extras-devel
+ libXcursor-devel libXinerama-devel libXcomposite-devel libIDL-devel
+ libglib-devel pam-devel python-devel libxslt-devel libcap-devel
+ xorg-server-devel device-mapper-devel docbook-xsl gsoap-devel"
 
 if [ "$XBPS_MACHINE" = "x86_64" ]; then
-	makedepends+=" gcc-c++-multilib"
+	makedepends+=" gcc-multilib"
 fi
 
 depends="virtualbox-ose-dkms-${version}_${revision} hicolor-icon-theme desktop-file-utils dbus"
@@ -35,6 +36,7 @@ pre_configure() {
 	cp ${FILESDIR}/LocalConfig.kmk .
 	ln -s /bin/echo makeself
 
+	echo 'VBOX_USE_SYSTEM_GL_HEADERS=true' >> LocalConfig.kmk
 	sed -i 's/^check_gcc$/#check_gcc/' configure
 }
 do_configure() {
@@ -46,7 +48,7 @@ do_build() {
 	sed -i -e "/webtest_LIBS/,/^webtest_/s/.*LIB_.*/\0 z/" \
 		-e "/vboxwebsrv_LIBS/,/^vboxwebsrv_/s/.*LIB_.*/\0 z/" src/VBox/Main/webservice/Makefile.kmk
 	source ./env.sh
-	kmk ${makejobs} all
+	kmk ${makejobs} KBUILD_VERBOSE=2 all
 }
 do_install() {
 	local f _osedir _guestdir
@@ -138,7 +140,7 @@ virtualbox-ose-dkms_package() {
 virtualbox-ose-guest_package() {
 	lib32disabled=yes
 	depends="virtualbox-ose-guest-dkms-${version}_${revision}"
-	conflicts="xserver-abi-video>20_1"
+	conflicts="xserver-abi-video>23_1"
 	short_desc+=" - guest utilities"
 
 	pkg_install() {
@@ -149,12 +151,12 @@ virtualbox-ose-guest_package() {
 
 		install -m755 VBoxClient VBoxControl VBoxService ${PKGDESTDIR}/usr/bin
 		install -m755 mount.vboxsf ${PKGDESTDIR}/usr/bin
+		install -Dm755 ${wrksrc}/src/VBox/Additions/x11/Installer/98vboxadd-xclient \
+			${PKGDESTDIR}/usr/bin/VBoxClient-all
 		install -Dm755 ${wrksrc}/src/VBox/Additions/x11/Installer/vboxclient.desktop \
 			${PKGDESTDIR}/etc/xdg/autostart/vboxclient.desktop
 
 		cd ${wrksrc}/out/linux.$BUILD_PLATFORM_ARCH/release/bin/additions
-		install -D vboxvideo_drv_system.so \
-			${PKGDESTDIR}/usr/lib/xorg/modules/drivers/vboxvideo.so
 		install -d ${PKGDESTDIR}/usr/lib/xorg/modules/drivers
 		install -m755 VBoxOGL*.so ${PKGDESTDIR}/usr/lib
 		ln -sf /usr/lib/VBoxOGL.so \

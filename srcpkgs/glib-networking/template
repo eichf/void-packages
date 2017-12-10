@@ -1,6 +1,6 @@
 # Template file for 'glib-networking'
 pkgname=glib-networking
-version=2.48.1
+version=2.54.1
 revision=1
 lib32disabled=yes
 build_style=gnu-configure
@@ -13,11 +13,11 @@ makedepends="libglib-devel libproxy-devel libgpg-error-devel
  gsettings-desktop-schemas-devel ca-certificates"
 depends="ca-certificates gsettings-desktop-schemas"
 short_desc="Network-related giomodules for glib"
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
-homepage="http://www.gnome.org"
+maintainer="Enno Boland <gottox@voidlinux.eu>"
+homepage="http://www.gnome.org/"
 license="LGPL-2.1"
 distfiles="${GNOME_SITE}/$pkgname/${version%.*}/$pkgname-$version.tar.xz"
-checksum=cf9923ab9860011c5af6d58b0aa1db693d353f2008014a3dcb07af1952bea44a
+checksum=eaa787b653015a0de31c928e9a17eb57b4ce23c8cf6f277afaec0d685335012f
 
 post_install() {
 	rm -rf ${DESTDIR}/usr/lib/systemd

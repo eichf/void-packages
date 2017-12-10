@@ -1,20 +1,19 @@
 # Template file for 'rpi-firmware'
-_githash="17c28b9d1d234893b73adeb95efc4959b617fc85"
+_githash="e022e802aab29f9f8af0d29d46536534d289fee3"
 _gitshort="${_githash:0:7}"
 
 pkgname=rpi-userland
-version=20160425
+version=20170427
 revision=1
 wrksrc="userland-${_githash}"
 build_style=cmake
-hostmakedepends="cmake"
 configure_args="-DCMAKE_INSTALL_RPATH=/opt/vc/lib"
 short_desc="Raspberry Pi GPU userland libraries and utilities (git ${_gitshort})"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="3-clause-BSD"
 homepage="https://github.com/raspberrypi/userland"
 distfiles="https://github.com/raspberrypi/userland/archive/${_githash}.tar.gz"
-checksum=83108789f946ab8957499dd58f1cacd099630979ec8fccb54be9240c4ff14210
+checksum=ae4fabb8b7bbde900fa5a03e075c0a7fb31e19ef38758baeeac88d915cc7f88a
 
 LDFLAGS="-Wl,--no-as-needed"
 only_for_archs="armv6l armv6l-musl armv7l armv7l-musl"

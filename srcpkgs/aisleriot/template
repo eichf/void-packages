@@ -1,7 +1,7 @@
 # Template file for 'aisleriot'
 pkgname=aisleriot
-version=3.20.1
-revision=2
+version=3.22.4
+revision=1
 _pysol_cardsets=PySolFC-Cardsets
 _pysol_ver=2.0
 build_style=gnu-configure
@@ -14,6 +14,6 @@ maintainer="Jürgen Buchmüller <pullmoll@t-online.de>"
 license="GPL-2"
 homepage="https://wiki.gnome.org/Apps/Aisleriot"
 distfiles="${GNOME_SITE}/${pkgname}/${version%.*}/${pkgname}-${version}.tar.xz
- ${SOURCEFORGE_SITE}/pysolfc/${_pysol_cardsets}/${_pysol_cardsets}-${_pysol_ver}/${_pysol_cardsets}-${_pysol_ver}.tar.bz2"
-checksum="fe9d7727e237e421bd6d253918b3caecd1f84dba9d7354610d484a33869f37da
+ http://distfiles.voidlinux.de/${_pysol_cardsets}-${_pysol_ver}/${_pysol_cardsets}-${_pysol_ver}.tar.bz2"
+checksum="fe8dee3ad771ab778d37740a26410778aa5c61e8eb75dd42b9a5e5719c6e34fb
  c388d6360191b3b7e463d84e5a64260c4e3ed36e791a85227d7e8923f3f47ca7"

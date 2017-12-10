@@ -1,0 +1,22 @@
+# Template file for 'slstatus'
+pkgname=slstatus
+version=2.0
+revision=1
+build_style=gnu-makefile
+short_desc="Suckless status monitor for dwm"
+maintainer="Dom H. <dom@hxy.io>"
+license="ISC"
+homepage="https://git.nulltime.net/slstatus"
+distfiles="${homepage}/snapshot/${pkgname}-${version}.tar.gz"
+makedepends="alsa-lib-devel libX11-devel"
+checksum=a7fd452940d4136376df3f9887e231fc183f4cbe8473c6c63a0687905406351f
+
+pre_build() {
+	cp ${FILESDIR}/config.h config.h
+	sed -i 's|^CFLAGS *=|override CFLAGS +=|g' config.mk
+	sed -i 's|^LDFLAGS *=|override LDFLAGS +=|g' config.mk
+}
+
+post_install() {
+	vlicense LICENSE
+}

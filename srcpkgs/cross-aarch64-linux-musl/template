@@ -1,41 +1,42 @@
 # Template build file for 'cross-aarch64-linux-musl'
 #
-_binutils_version=2.26
-_gcc_version=4.9.3
-_musl_version=1.1.14
-_linux_version=3.18.25
+_binutils_version=2.29
+_gcc_version=7.2.0
+_musl_version=1.1.18
+_linux_version=4.9.8
 
 _triplet=aarch64-linux-musl
 _archflags="-march=armv8-a"
 _sysroot="/usr/${_triplet}"
 
 pkgname=cross-${_triplet}
-version=0.21
-revision=3
+version=0.24
+revision=2
 short_desc="Cross toolchain for ARM64 LE target (musl)"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://www.voidlinux.eu"
 license="GPL-3, GPL-2, MIT"
 distfiles="
- http://ftp.gnu.org/pub/gnu/binutils/binutils-${_binutils_version}.tar.bz2
- http://ftp.gnu.org/pub/gnu/gcc/gcc-${_gcc_version}/gcc-${_gcc_version}.tar.bz2
- http://www.kernel.org/pub/linux/kernel/v3.x/linux-${_linux_version}.tar.xz
+ ${GNU_SITE}/binutils/binutils-${_binutils_version}.tar.bz2
+ ${GNU_SITE}/gcc/gcc-${_gcc_version}/gcc-${_gcc_version}.tar.xz
+ ${KERNEL_SITE}/kernel/v4.x/linux-${_linux_version}.tar.xz
  http://www.musl-libc.org/releases/musl-${_musl_version}.tar.gz"
 checksum="
- c2ace41809542f5237afc7e3b8f32bb92bc7bc53c6232a84463c423b0714ecd9
- 2332b2a5a321b57508b9031354a8503af6fdfb868b8c1748d33028d100a8b67e
- c649874e2856101df7cefe5fdad313ebb2282a939fc1e95cf02222327745ff92
- 35f6c00c84a6091bd5dab29eedde7508dae755ead92dcc0239f3677d1055b9b5"
+ 29a29549869039aad75fdf507ac30366da5ad0b974fbff4a8e7148dbf4f40ebf
+ 1cf7adf8ff4b5aa49041c8734bbcf1ad18cc4c94d0029aae0f4e48841088479a
+ 150bb7f2dd4849b5d21b8ccd8d05294a48229e1fcb93a22e7b806a79ec0b0e45
+ d017ee5d01aec0c522a1330fdff06b1e428cb409e1db819cc4935d5da4a5a118"
 
 lib32disabled=yes
 nocross=yes
+nopie=yes
 nodebug=yes
 create_wrksrc=yes
 
 only_for_archs="x86_64 x86_64-musl"
 hostmakedepends="perl flex"
-makedepends="zlib-devel gmp-devel mpfr-devel libmpc-devel"
-nostrip_files="libgcc.a libgcov.a libgcc_eh.a"
+makedepends="zlib-devel gmp-devel mpfr-devel libmpc-devel isl15-devel"
+nostrip_files="libcaf_single.a libgcc.a libgcov.a libgcc_eh.a"
 depends="${pkgname}-libc-${version}_${revision}"
 
 _apply_patch() {
@@ -48,6 +49,8 @@ _apply_patch() {
 }
 
 _binutils_build() {
+	local _args
+
 	[ -f ${wrksrc}/.binutils_build_done ] && return 0
 
 	cd ${wrksrc}
@@ -55,11 +58,16 @@ _binutils_build() {
 
 	[ ! -d binutils-build ] && mkdir binutils-build
 	cd binutils-build
+	_args="--prefix=/usr"
+	_args+=" --target=${_triplet}"
+	_args+=" --with-sysroot=${_sysroot}"
+	_args+=" --disable-nls"
+	_args+=" --disable-multilib"
+	_args+=" --disable-werror"
+	_args+=" --disable-shared"
+	_args+=" --with-system-zlib"
 
-	../binutils-${_binutils_version}/configure \
-		--prefix=/usr --target=${_triplet} --with-sysroot=${_sysroot} \
-		--disable-nls --disable-multilib --disable-werror \
-		--disable-shared
+	../binutils-${_binutils_version}/configure ${_args}
 
 	make configure-host && make ${makejobs}
 	make install
@@ -68,25 +76,37 @@ _binutils_build() {
 }
 
 _gcc_bootstrap() {
+	local _args
 	[ -f ${wrksrc}/.gcc_bootstrap_done ] && return 0
 
 	cd ${wrksrc}/gcc-${_gcc_version}
-	_apply_patch -p1 ${FILESDIR}/gcc-4.9.2-musl.diff
-	_apply_patch -p0 ${FILESDIR}/libcpp-source_date_epoch.patch
-	_apply_patch -p0 ${FILESDIR}/gcc-spec-env-r1.patch
+	_apply_patch -p0 ${FILESDIR}/fix-cxxflags-passing.patch
 
 	msg_normal "Building cross gcc bootstrap\n"
 
 	[ ! -d ../gcc-bootstrap ] && mkdir ../gcc-bootstrap
 	cd ../gcc-bootstrap
 
+	_args="--prefix=/usr"
+	_args+=" --target=${_triplet}"
+	_args+=" --with-sysroot=${_sysroot}"
+	_args+=" --with-newlib"
+	_args+=" --enable-languages=c"
+	_args+=" --with-newlib"
+	_args+=" --disable-libssp"
+	_args+=" --disable-nls"
+	_args+=" --disable-libquadmath"
+	_args+=" --disable-threads"
+	_args+=" --disable-decimal-float"
+	_args+=" --disable-shared"
+	_args+=" --disable-libmudflap"
+	_args+=" --disable-libgomp"
+	_args+=" --disable-libatomic"
+	_args+=" --disable-symvers"
+	_args+=" libat_cv_have_ifunc=no"
+
 	CFLAGS="-O0 -g0" CXXFLAGS="-O0 -g0" \
-		../gcc-${_gcc_version}/configure --prefix=/usr \
-		--target=${_triplet} --with-sysroot=${_sysroot} --with-newlib \
-		--enable-languages=c --with-newlib --disable-libssp --disable-nls \
-		--disable-libquadmath --disable-threads --disable-decimal-float \
-		--disable-shared --disable-libmudflap --disable-libgomp \
-		--disable-libatomic --disable-symvers libat_cv_have_ifunc=no
+		../gcc-${_gcc_version}/configure ${_args}
 
 	make ${makejobs}
 	make install
@@ -101,6 +121,10 @@ _linux_headers() {
 	msg_normal "Building Linux API headers\n"
 
 	cd linux-${_linux_version}
+
+	for f in ${XBPS_SRCPKGDIR}/kernel-libc-headers/patches/*.patch; do
+		_apply_patch -p0 $f
+	done
 
 	make ARCH=arm64 headers_check
 	make ARCH=arm64 INSTALL_HDR_PATH=${_sysroot}/usr headers_install
@@ -117,7 +141,7 @@ _musl_build() {
 	CC="${_triplet}-gcc" LD="${_triplet}-ld" AR="${_triplet}-ar" \
 		AS="${_triplet}-as" RANLIB="${_triplet}-ranlib" \
 		CFLAGS="-Os -pipe ${_archflags}" \
-		./configure --prefix=/usr \
+		./configure --prefix=/usr
 
 	make ${makejobs}
 	make DESTDIR=${_sysroot} install
@@ -126,6 +150,8 @@ _musl_build() {
 }
 
 _gcc_build() {
+	local _args
+
 	[ -f ${wrksrc}/.gcc_build_done ] && return 0
 
 	cd ${wrksrc}
@@ -134,13 +160,24 @@ _gcc_build() {
 	[ ! -d gcc-build ] && mkdir gcc-build
 	cd gcc-build
 
-	../gcc-${_gcc_version}/configure \
-		--target=${_triplet} --with-sysroot=${_sysroot} --prefix=/usr \
-		--libexecdir=/usr/lib --enable-languages=c,c++,lto \
-		--enable-lto --disable-libsanitizer \
-		--disable-multilib --disable-nls --disable-libquadmath \
-		--disable-libmudflap --enable-shared \
-		--disable-symvers libat_cv_have_ifunc=no
+	_args="--prefix=/usr"
+	_args+=" --libexecdir=/usr/lib"
+	_args+=" --target=${_triplet}"
+	_args+=" --with-sysroot=${_sysroot}"
+	_args+=" --enable-languages=c,c++,fortran,lto"
+	_args+=" --enable-lto"
+	_args+=" --enable-default-pie"
+	_args+=" --enable-default-ssp"
+	_args+=" --disable-libsanitizer"
+	_args+=" --disable-multilib"
+	_args+=" --disable-nls"
+	_args+=" --disable-libquadmath"
+	_args+=" --disable-libmudflap"
+	_args+=" --enable-shared"
+	_args+=" --disable-symvers"
+	_args+=" libat_cv_have_ifunc=no"
+
+	../gcc-${_gcc_version}/configure ${_args}
 
 	make ${makejobs}
 
@@ -170,7 +207,7 @@ do_build() {
 }
 
 do_install() {
-	for f in include lib libexec bin sbin; do
+	for f in include libexec bin sbin; do
 		if [ ! -d ${DESTDIR}/${_sysroot}/usr/${f} ]; then
 			mkdir -p ${DESTDIR}/${_sysroot}/usr/${f}
 		fi
@@ -179,6 +216,10 @@ do_install() {
 				${DESTDIR}/${_sysroot}/${f}
 		fi
 	done
+	mkdir -p ${DESTDIR}/${_sysroot}/usr/lib
+	ln -sf lib ${DESTDIR}/${_sysroot}/usr/lib64
+	ln -sf usr/lib ${DESTDIR}/${_sysroot}/lib64
+	ln -sf usr/lib ${DESTDIR}/${_sysroot}/lib
 
 	# install linux API headers
 	cd ${wrksrc}/linux-${_linux_version}
@@ -193,6 +234,9 @@ do_install() {
 	# install cross gcc
 	cd ${wrksrc}/gcc-build
 	make DESTDIR=${DESTDIR} install
+
+	# move libcc1.so* to the sysroot
+	mv ${DESTDIR}/usr/lib/libcc1.so* ${DESTDIR}/${_sysroot}/usr/lib
 
 	# install musl libc for target
 	cd ${wrksrc}/musl-${_musl_version}
@@ -212,7 +256,7 @@ do_install() {
 	rm -rf ${DESTDIR}/${_sysroot}/usr/{sbin,share,libexec}
 	rm -f ${DESTDIR}/${_sysroot}/libexec
 	rm -f ${DESTDIR}/${_sysroot}/lib/*.py
-	rm -f ${DESTDIR}/${_sysroot}/{sbin,lib}
+	rm -f ${DESTDIR}/${_sysroot}/sbin
 }
 
 cross-aarch64-linux-musl-libc_package() {

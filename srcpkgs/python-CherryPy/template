@@ -1,36 +1,41 @@
 # Template file for 'python-CherryPy'
 pkgname=python-CherryPy
-version=5.3.0
+version=13.0.0
 revision=1
 noarch=yes
 wrksrc="CherryPy-${version}"
 build_style=python-module
-python_versions="2.7 3.4"
-hostmakedepends="python-setuptools python3.4-setuptools"
-depends="python"
+hostmakedepends="python-setuptools python3-setuptools"
+depends="python-six python-Cheroot"
 pycompile_module="cherrypy"
 short_desc="Object-oriented HTTP framework (Python2)"
-maintainer="Andrea Brancaleoni <miwaxe@gmail.com>"
+maintainer="Andrea Brancaleoni <abc@pompel.me>"
 license="3-clause-BSD"
 homepage="http://www.cherrypy.org"
 distfiles="${PYPI_SITE}/C/CherryPy/CherryPy-${version}.tar.gz"
-checksum=f15a0b1a735b18a6bfad22de492fe135cfa229fa279b6520c423bd16cecb7f97
-alternatives="cherrypy:cherryd:/usr/bin/cherryd2.7"
+checksum=d44525d700fd11d40d052807d779bf6b0c574c272fafd6467090f08c96e538ea
+alternatives="cherrypy:cherryd:/usr/bin/cherryd2"
 
 post_install() {
-	vlicense cherrypy/LICENSE.txt
+	vlicense LICENSE.md
 }
 
+python3-CherryPy_package() {
+	noarch=yes
+	depends="python3-six python3-Cheroot"
+	pycompile_module="cherrypy"
+	replaces="python3.4-CherryPy>=0"
+	short_desc="${short_desc/Python2/Python3}"
+	alternatives="cherrypy:cherryd:/usr/bin/cherryd3"
+	pkg_install() {
+		vmove usr/bin/cherryd3
+		vmove usr/lib/python3*
+		vlicense LICENSE.md
+	}
+}
 python3.4-CherryPy_package() {
 	noarch=yes
-	depends="python3.4"
-	pycompile_version="3.4"
-	pycompile_module="cherrypy"
-	short_desc="${short_desc/Python2/Python3.4}"
-	alternatives="cherrypy:cherryd:/usr/bin/cherryd3.4"
-	pkg_install() {
-		vmove usr/bin/cherryd3.4
-		vmove usr/lib/python3.4
-		vlicense cherrypy/LICENSE.txt
-	}
+	build_style=meta
+	short_desc="${short_desc/Python2/Python3.4} (transitional dummy package)"
+	depends="python3-CherryPy>=${version}_${revision}"
 }

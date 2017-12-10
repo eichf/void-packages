@@ -1,0 +1,18 @@
+# Template file for 'direnv'
+pkgname=direnv
+version=2.13.3
+revision=1
+build_style=go
+go_import_path="github.com/direnv/direnv"
+short_desc="An environment switcher for the shell"
+maintainer="Diogo Leal <diogo@diogoleal.com>"
+license="MIT"
+homepage="http://direnv.net/"
+distfiles="https://github.com/direnv/direnv/archive/v${version}.tar.gz"
+checksum=2d5569ef08a919e02d8b229b8f71ca01a0f3920e7e14f0b10c0df76bb4ea57a1
+
+post_install() {
+	vlicense LICENSE.md
+	vman man/direnv-stdlib.1
+	vman man/direnv.1
+}

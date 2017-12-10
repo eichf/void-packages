@@ -1,6 +1,6 @@
 # Template file for 'perl-Module-Build'
 pkgname=perl-Module-Build
-version=0.4218
+version=0.4224
 revision=1
 noarch=yes
 wrksrc="${pkgname/perl-/}-${version}"
@@ -9,8 +9,12 @@ hostmakedepends="perl"
 makedepends="${hostmakedepends}"
 depends="${makedepends}"
 short_desc="Module::Build - Build and install Perl modules"
-maintainer="Christian Neukirchen <chneukirchen@gmail.com>"
+maintainer="Leah Neukirchen <leah@vuxu.org>"
 homepage="http://search.cpan.org/dist/Module-Build/"
 license="Artistic, GPL-1"
 distfiles="${CPAN_SITE}/Module/${pkgname/perl-/}-${version}.tar.gz"
-checksum=1ef0aa529a3f296f894a5e79240a77d71be60dd595e8cad3a0d04c7ea187c0d0
+checksum=a6ca15d78244a7b50fdbf27f85c85f4035aa799ce7dd018a0d98b358ef7bc782
+
+pre_configure() {
+	unset XBPS_CROSS_BASE
+}

@@ -1,30 +1,27 @@
 # Template file for 'audacity'
 pkgname=audacity
-version=2.1.2
+version=2.2.1
 revision=1
 wrksrc="${pkgname}-Audacity-${version}"
 build_style=gnu-configure
-configure_args="--with-libsamplerate"
+configure_args="--with-libsoxr"
 hostmakedepends="pkg-config cmake libtool m4"
-makedepends="jack-devel wxWidgets-devel gtk+-devel expat-devel
- libsndfile-devel libmad-devel libsamplerate-devel soundtouch-devel
+makedepends="jack-devel wxWidgets-devel gtk+-devel
+ libmad-devel soundtouch-devel
  vamp-plugin-sdk-devel lame-devel libid3tag-devel"
 depends="desktop-file-utils hicolor-icon-theme"
 short_desc="Graphical cross-platform audio editor"
-maintainer="Christian Neukirchen <chneukirchen@gmail.com>"
+maintainer="Leah Neukirchen <leah@vuxu.org>"
 license="GPL-2"
-homepage="http://audacityteam.org/"
+homepage="https://www.audacityteam.org"
 distfiles="https://github.com/${pkgname}/${pkgname}/archive/Audacity-${version}.tar.gz"
-checksum=90007b50cdc3885607b1afef2f158777a61c1658e869a88ec4d98c59c133f9bd
+checksum=ff346e7a68a57a05089813efd78a81439f5419d211f80bb472c9d94c16ca05d8
 
 case "$XBPS_TARGET_MACHINE" in
 	i686*|x86_64*) ;;
 	*) configure_args+=" --disable-sse" ;;
 esac
 
-pre_configure() {
-	sed -i 's/^OBJCXXLD =/& --tag=CXX/' lib-src/FileDialog/Makefile.in
-}
 post_install() {
 	rm ${DESTDIR}/usr/share/doc/${pkgname}/LICENSE.txt
 	vlicense LICENSE.txt LICENSE

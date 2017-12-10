@@ -1,0 +1,38 @@
+# Template file for 'lib-skk'
+pkgname=libskk
+version=1.0.3
+revision=1
+short_desc="Japanese SKK input method library"
+maintainer="Satoshi Amemiya <amemiya@protonmail.com>"
+homepage="https://github.com/ueno/${pkgname}"
+license="GPL-3"
+hostmakedepends="libgee08-devel pkg-config intltool gnome-common gobject-introspection vala gettext-devel"
+makedepends="libgee08-devel json-glib-devel"
+build_style=gnu-configure
+distfiles="https://github.com/ueno/${pkgname}/archive/${version}.tar.gz"
+checksum=9c1fe5f426608cf81dc6db11741c7e07d3cc6264b225455aff361ed408df3887
+
+build_options="gir"
+if [ "$CROSS_BUILD" ]; then
+	configure_args="--host=${XBPS_CROSS_TRIPLET}"
+else
+	build_options_default="gir"
+fi
+
+pre_configure() {
+	NOCONFIGURE=1 ./autogen.sh
+}
+
+libskk-devel_package() {
+	short_desc+=" - development files"
+	depends="${sourcepkg}>=${version}_${revision}"
+	pkg_install() {
+		vmove usr/include
+		vmove usr/lib/*.so
+		vmove usr/lib/pkgconfig
+		if [ "$build_option_gir" ]; then
+			vmove usr/share/gir-1.0
+		fi
+		vmove usr/share/vala
+	}
+}

@@ -1,20 +1,20 @@
 # Template file for 'gstreamer1'.
 pkgname=gstreamer1
-reverts="1:1.4.5_1"
-version=1.8.1
+version=1.12.3
 revision=1
-wrksrc="gstreamer-${version#*:}"
+wrksrc="gstreamer-${version}"
 build_style=gnu-configure
 configure_args="--disable-valgrind --enable-docbook
  --with-package-origin=http://www.voidlinux.eu $(vopt_enable gir introspection)"
-hostmakedepends="automake gettext-devel libtool pkg-config flex python docbook-xsl glib-devel $(vopt_if gir gobject-introspection)"
+hostmakedepends="automake gettext-devel libtool pkg-config flex python
+ docbook-xsl glib-devel $(vopt_if gir gobject-introspection)"
 makedepends="libxml2-devel libglib-devel"
 short_desc="Core GStreamer libraries and elements (1.x)"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
-homepage="http://gstreamer.freedesktop.org/"
+homepage="https://gstreamer.freedesktop.org"
 license="LGPL-2.1"
-distfiles="http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-${version#*:}.tar.xz"
-checksum=5a3722fb9302dd977c17ced4240293dc777cb716dc98c8cca63d75c27e5e3107
+distfiles="${homepage}/src/gstreamer/gstreamer-${version}.tar.xz"
+checksum=d388f492440897f02b01eebb033ca2d41078a3d85c0eddc030cdea5a337a216e
 
 # Package build options
 build_options="gir"
@@ -24,6 +24,12 @@ if [ -z "$CROSS_BUILD" ]; then
 fi
 
 pre_configure() {
+	# Remove a non-existing include path from the gstreamer.pc.in file,
+	# or otherwise building pkgs which enable -Werror fail to build with
+	# gcc-6.2.1 which issues a warning for non existing -I/some/path args.
+	# There is no ./usr/lib/gstreamer-1.0/include path in this pkg.
+	sed -i pkgconfig/gstreamer.pc.in \
+		-e 's; -I${libdir}/gstreamer-@GST_API_VERSION@/include;;'
 	NOCONFIGURE=1 ./autogen.sh
 }
 

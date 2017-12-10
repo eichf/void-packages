@@ -1,12 +1,11 @@
 # Template file for 'python-polib'
 pkgname=python-polib
-version=1.0.7
+version=1.1.0
 revision=1
 noarch=yes
 wrksrc="polib-${version}"
 build_style=python-module
-python_versions="2.7 3.4"
-hostmakedepends="python-setuptools python3.4-setuptools"
+hostmakedepends="python-setuptools python3-setuptools"
 depends="python"
 pycompile_module="polib.py"
 short_desc="Python2 library to manipulate gettext files"
@@ -14,14 +13,30 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://bitbucket.org/izi/polib/"
 license="MIT"
 distfiles="${PYPI_SITE}/p/polib/polib-${version}.tar.gz"
-checksum=43ce60d05ffa442ba9d3c5722193aadb93c38174b9fb471c8ea7ccbf8349bbca
+checksum=fad87d13696127ffb27ea0882d6182f1a9cf8a5e2b37a587751166c51e5a332a
 
-python3.4-polib_package() {
-	depends="python3.4"
-	pycompile_version="3.4"
+do_check() {
+	./runtests.sh
+}
+
+post_install() {
+	vlicense LICENSE
+}
+
+python3-polib_package() {
+	noarch=yes
+	depends="python3"
 	pycompile_module="polib.py"
-	short_desc="${short_desc/Python2/Python3.4}"
+	replaces="python3.4-polib>=0"
+	short_desc="${short_desc/Python2/Python3}"
 	pkg_install() {
-		vmove usr/lib/python3.4
+		vmove usr/lib/python3*
+		vlicense LICENSE
 	}
+}
+python3.4-polib_package() {
+	noarch=yes
+	build_style=meta
+	short_desc="${short_desc/Python2/Python3.4} (transitional dummy package)"
+	depends="python3-polib>=${version}_${revision}"
 }

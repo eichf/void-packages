@@ -1,7 +1,7 @@
 # Template file for 'pen'
 pkgname=pen
-version=0.33.1
-revision=1
+version=0.34.0
+revision=2
 build_style=gnu-configure
 makedepends="geoip-devel libressl-devel"
 configure_args="--with-docdir=/usr/share/doc/pen"
@@ -10,4 +10,4 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="GPL-2"
 homepage="http://siag.nu/pen"
 distfiles="${SOURCEFORGE_SITE}/penloadbalancer/pen-$version.tar.gz"
-checksum=f35089c871be18565f5a51a0141eef5ee3a0b4abd2a6e5eb2409961986735b0d
+checksum=a3306bfb02619b103ff431002bb91079048bf2dd24f739bf38e373860558cd27

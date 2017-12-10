@@ -1,6 +1,6 @@
 # Template file for 'boinc'
 pkgname=boinc
-version=7.6.31
+version=7.8.4
 revision=1
 wrksrc=boinc-client_release-${version%.*}-${version}
 build_style=gnu-configure
@@ -17,7 +17,7 @@ maintainer="Jürgen Buchmüller <pullmoll@t-online.de>"
 license="LGPL-3.0"
 homepage="https://boinc.berkeley.edu/"
 distfiles="https://github.com/BOINC/boinc/archive/client_release/${version%.*}/${version}.tar.gz>boinc-${version}.tar.gz"
-checksum=133490409d4a8513024253dd22ccf6ab26f210226db97f2021fd75eb79a27f08
+checksum=0038044916749687455d0f5ca33e79f14e2d1d5451ddfd04b33446b2d9d467ab
 conflicts="boinc-nox>=0"
 
 CXXFLAGS="-Wno-redundant-decls"
@@ -32,7 +32,7 @@ do_configure() {
 	mkdir nox
 	cp -ar x11/* nox
 	cd ${wrksrc}/x11
-	LDFLAGS="-lX11" ./configure \
+	LDFLAGS="${LDFLAGS} -lX11" ./configure \
 		${configure_args} \
 		--enable-libraries \
 		--enable-unicode \

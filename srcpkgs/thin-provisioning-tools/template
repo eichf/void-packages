@@ -1,20 +1,20 @@
 # Template file for 'thin-provisioning-tools'
 pkgname=thin-provisioning-tools
-version=0.6.1
+version=0.7.5
 revision=1
 build_style=gnu-configure
 hostmakedepends="automake libtool pkg-config"
 makedepends="boost-devel expat-devel libaio-devel"
-short_desc="A suite of tools for manipulating the metadata of the dm-thin device-mapper target"
+short_desc="Tools for manipulating the metadata of dm-thin device-mapper targets"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="GPL-3"
-homepage="https://github.com/jthornber/${pkgname}"
+homepage="https://github.com/jthornber/thin-provisioning-tools"
 distfiles="${homepage}/archive/v${version}.tar.gz"
-checksum=7d3ef47ef6af5c8323920c86c22494df59384ef47b8510bec9b21689aacedeaa
+checksum=bcb8b8a8be6fdbce54bd22aca00b6c8dc869e3b0cb125e0ac9a582d002e87f65
 
 pre_configure() {
 	autoreconf -fi
 }
 do_install() {
-	make DESTDIR=${DESTDIR} BINDIR=${DESTDIR}/usr/bin MANDIR=/usr/share/man install 
+	make DESTDIR=${DESTDIR} BINDIR=${DESTDIR}/usr/bin MANDIR=/usr/share/man install
 }

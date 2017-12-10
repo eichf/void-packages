@@ -1,16 +1,15 @@
 # Template file for 'obconf-qt'
 pkgname=obconf-qt
-version=0.1.0
-revision=2
-create_wrksrc=yes
+version=0.12.0
+revision=1
 build_style=cmake
-configure_args="-DUSE_QT5=1"
-hostmakedepends="cmake pkg-config"
-makedepends="qt5-x11extras-devel qt5-tools-devel libSM-devel openbox-devel"
-depends="desktop-file-utils"
-short_desc="LXQT Openbox configuration UI"
+configure_args="-DPULL_TRANSLATIONS=0"
+hostmakedepends="pkg-config qt5-host-tools qt5-devel qt5-tools-devel"
+makedepends="lxqt-build-tools qt5-x11extras-devel qt5-tools-devel liblxqt-devel openbox-devel"
+depends="desktop-file-utils hicolor-icon-theme qt5-x11extras gtk-update-icon-cache"
+short_desc="LXQt Openbox configuration tool"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
-license="LGPL-2.1"
+license="GPL-2"
 homepage="http://lxqt.org/"
-distfiles="http://downloads.lxqt.org/${pkgname}/${version}/${pkgname}-${version}.tar.xz"
-checksum=4831bfc06eff0529697a51196c1d7866cb12e3b19a0724e8201dbdfd2bca082b
+distfiles="https://github.com/lxde/obconf-qt/releases/download/${version}/obconf-qt-${version}.tar.xz"
+checksum=040105d8129c21ad058b762036de46ddacbee4ab7beb60db5af530fc0a37b964

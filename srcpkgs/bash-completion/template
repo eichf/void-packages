@@ -1,27 +1,20 @@
 # Template file for 'bash-completion'
 pkgname=bash-completion
-version=2.1
-revision=7
-noarch="yes"
+version=2.7
+revision=2
+noarch=yes
 build_style=gnu-configure
+make_install_args="profiledir=/etc/bash/bashrc.d"
 makedepends="bash"
 depends="${makedepends}"
 short_desc="Programmable completion for the GNU Bash shell"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="GPL-2"
-homepage="http://bash-completion.alioth.debian.org/"
-distfiles="http://${pkgname}.alioth.debian.org/files/${pkgname}-${version}.tar.bz2"
-checksum=2b606804a7d5f823380a882e0f7b6c8a37b0e768e72c3d4107c51fbe8a46ae4f
+homepage="https://github.com/scop/bash-completion"
+distfiles="${homepage}/releases/download/${version}/bash-completion-${version}.tar.xz"
+checksum=41ba892d3f427d4a686de32673f35401bc947a7801f684127120cdb13641441e
 
 post_install() {
 	# remove completions provided by util-linux.
-	for f in su dmesg ionice rtcwake look hexdump chsh renice hwclock \
-		cal eject newgrp; do
-		rm -f ${DESTDIR}/usr/share/bash-completion/completions/${f}
-	done
-	# remove nmcli provided by NetworkManager.
-	rm -f ${DESTDIR}/usr/share/bash-completion/completions/nmcli
-	# move to bashrc.d to work after su
-	vmkdir /etc/bash/bashrc.d/
-	mv ${DESTDIR}/etc/profile.d/bash_completion.sh ${DESTDIR}/etc/bash/bashrc.d/bash_completion.sh
+	rm -f ${DESTDIR}/usr/share/bash-completion/completions/{{u,}mount*,rfkill}
 }

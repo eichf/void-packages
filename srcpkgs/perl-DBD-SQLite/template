@@ -1,7 +1,7 @@
 # Template build file for 'perl-DBD-SQLite'.
 pkgname=perl-DBD-SQLite
-version=1.50
-revision=1
+version=1.54
+revision=2
 wrksrc="DBD-SQLite-${version}"
 build_style=perl-module
 configure_args="SQLITE_LOCATION=${XBPS_CROSS_BASE}/usr"
@@ -13,7 +13,7 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://search.cpan.org/dist/DBD-SQLite"
 license="Artistic, GPL-1"
 distfiles="${CPAN_SITE}/DBD/DBD-SQLite-$version.tar.gz"
-checksum=3ac513ab73944fd7d4b672e1fe885dc522b6369d38f46a68e67e0045bf159ce1
+checksum=3929a6dbd8d71630f0cb57f85dcef9588cd7ac4c9fa12db79df77b9d3a4d7269
 
 post_extract() {
 	# Unlock system sqlite support

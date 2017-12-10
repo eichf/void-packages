@@ -1,0 +1,31 @@
+# Template file for 'fio'
+pkgname=fio
+version=3.2
+revision=1
+wrksrc="${pkgname}-${pkgname}-${version}"
+build_style=configure
+make_install_args="mandir=/usr/share/man"
+makedepends="zlib-devel libaio-devel"
+depends="python"
+short_desc="Flexible I/O tester"
+maintainer="Leah Neukirchen <leah@vuxu.org>"
+license="GPL-2"
+homepage="https://github.com/axboe/fio"
+distfiles="https://github.com/axboe/${pkgname}/archive/${pkgname}-${version}.tar.gz"
+checksum=5f54652d00858fe933902b0dfd0cdbc7bd4278e5de5e84bb8df43f15b33a146a
+
+case "$XBPS_TARGET_MACHINE" in
+	i686*|x86_64*) makedepends+=" libnuma-devel"
+esac
+
+do_configure() {
+	./configure --prefix=/usr --extra-cflags="$CFLAGS"
+}
+
+post_install() {
+	vlicense MORAL-LICENSE
+	vdoc HOWTO
+	for f in examples/*; do
+		vsconf "$f"
+	done
+}

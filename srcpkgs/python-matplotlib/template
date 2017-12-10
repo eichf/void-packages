@@ -1,29 +1,30 @@
 # Template file for 'python-matplotlib'
 pkgname=python-matplotlib
-version=1.5.1
-revision=3
+version=2.0.2
+revision=2
 wrksrc="matplotlib-${version}"
 build_style=python-module
-python_versions="2.7 3.4"
-hostmakedepends="pkg-config python-setuptools python3.4-setuptools"
+hostmakedepends="pkg-config python-setuptools python3-setuptools"
 # XXX: use internal copy of agg, highly patched
 makedepends="
- python-devel python3.4-devel python-numpy python3.4-numpy
- python-cycler python3.4-cycler python-dateutil python3.4-dateutil python-pytz
- python3.4-pytz python-tornado python3.4-tornado python-parsing
- python3.4-parsing python-PyQt4-devel python-PyQt5-devel python-pyside
- python3.4-pyside python-cairocffi python3.4-cairocffi python-gobject-devel
- pygtk-devel gtk+3-devel tk-devel python-tkinter python3.4-tkinter wxPython-devel
- freetype-devel libpng-devel libqhull-devel"
-depends="python-matplotlib-data>=${version}_${revision} python-numpy python-cycler
- python-dateutil python-parsing python-pytz"
+ python-devel python3-devel python-numpy python3-numpy
+ python-six python3-six python-dateutil python3-dateutil
+ python-functools32 python-subprocess32 python-pytz python3-pytz
+ python-cycler python3-cycler python-tornado python3-tornado
+ python-parsing python3-parsing python-PyQt5-devel python-PyQt4-devel
+ python-pyside python3-pyside python-cairocffi python3-cairocffi
+ python-gobject-devel pygtk-devel gtk+3-devel tk-devel python-tkinter
+ python3-tkinter wxPython-devel freetype-devel libpng-devel libqhull-devel"
+depends="python-matplotlib-data>=${version}_${revision} python-numpy
+ python-six python-dateutil python-functools32 python-subprocess32
+ python-pytz python-cycler python-parsing"
 pycompile_module="matplotlib mpl_toolkits pylab.py"
 short_desc="Python2 2D/3D plotting library"
 maintainer="Alessio Sergi <al3hex@gmail.com>"
 homepage="http://matplotlib.org/"
 license="matplotlib, BSD, MIT"
 distfiles="${PYPI_SITE}/m/matplotlib/matplotlib-${version}.tar.gz"
-checksum=3ab8d968eac602145642d0db63dd8d67c85e9a5444ce0e2ecb2a8fedc7224d40
+checksum=0ffbc44faa34a8b1704bc108c451ecf87988f900ef7ce757b8e2e84383121ff1
 
 export XDG_RUNTIME_DIR=/tmp
 
@@ -35,14 +36,12 @@ pre_build() {
 		[rc_options]
 		backend = Agg
 	EOF
-	# remove shebangs
-	find . -type f -name '*.py' -exec sed -i "s,^#!.*python$,," {} +
 	# adjust path
 	sed -i 's,\(site-packages/matplotlib/mpl-data\),/etc,' matplotlibrc.template
 }
 post_install() {
 	# remove data files
-	rm -rf ${DESTDIR}/usr/lib/python*/site-packages/matplotlib/{mpl-data,backends/Matplotlib.nib}
+	rm -rf ${DESTDIR}/usr/lib/python*/site-packages/matplotlib/mpl-data
 }
 
 python-matplotlib-data_package() {
@@ -52,19 +51,23 @@ python-matplotlib-data_package() {
 	pkg_install() {
 		vmkdir usr/share/matplotlib
 		vcopy ${wrksrc}/lib/matplotlib/mpl-data usr/share/matplotlib
-		vcopy ${wrksrc}/lib/matplotlib/backends/Matplotlib.nib usr/share/matplotlib
 		vsconf ${wrksrc}/matplotlibrc.template
 		vconf ${PKGDESTDIR}/usr/share/matplotlib/mpl-data/matplotlibrc
 		rm -f ${PKGDESTDIR}/usr/share/matplotlib/mpl-data/matplotlibrc
 	}
 }
-python3.4-matplotlib_package() {
-	depends="python-matplotlib-data>=${version}_${revision} python3.4-numpy
-	 python3.4-cycler python3.4-dateutil python3.4-parsing python3.4-pytz"
-	short_desc="${short_desc/Python2/Python3.4}"
-	pycompile_version="3.4"
+python3-matplotlib_package() {
+	replaces="python3.4-matplotlib>=0"
+	depends="python-matplotlib-data>=${version}_${revision} python3-numpy
+	 python3-six python3-dateutil python3-pytz python3-cycler python3-parsing"
+	short_desc="${short_desc/Python2/Python3}"
 	pycompile_module="matplotlib mpl_toolkits pylab.py"
 	pkg_install() {
-		vmove usr/lib/python3.4
+		vmove usr/lib/python3*
 	}
+}
+python3.4-matplotlib_package() {
+	build_style=meta
+	short_desc="${short_desc/Python2/Python3.4} (transitional dummy package)"
+	depends="python3-matplotlib>=${version}_${revision}"
 }

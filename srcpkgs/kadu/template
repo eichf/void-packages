@@ -1,11 +1,11 @@
 # Template file for 'kadu'
 pkgname=kadu
-version=3.0
-revision=3
+version=4.3
+revision=1
 build_style=cmake
 configure_args="-DCMAKE_PREFIX_PATH=${XBPS_CROSS_BASE}/usr
  -DQCA2_INCLUDE_DIR=${XBPS_CROSS_BASE}/usr/include/QtCrypto
- -DQCA2_LIBRARIES=qca -Wno-dev"
+ -DQCA2_LIBRARIES=qca -DENABLE_TESTS=OFF -Wno-dev"
 hostmakedepends="pkg-config qt5-plugin-mysql qt5-plugin-odbc
  qt5-plugin-pgsql qt5-plugin-sqlite qt5-plugin-tds"
 makedepends="libao-devel libsndfile-devel libarchive-devel
@@ -13,7 +13,7 @@ makedepends="libao-devel libsndfile-devel libarchive-devel
  qt5-devel qt5-xmlpatterns-devel qt5-declarative-devel qt5-multimedia-devel
  qt5-script-devel qt5-svg-devel qt5-tools-devel qt5-webkit-devel qt5-x11extras-devel
  libmpdclient-devel qca-qt5-devel qxmpp-devel phonon-qt5-devel libXScrnSaver-devel"
-depends="${pkgname}-data-${version}_${revision} hicolor-icon-theme qca-qt5-ossl 
+depends="${pkgname}-data-${version}_${revision} hicolor-icon-theme qca-qt5-ossl
  $(vopt_if mysql qt5-plugin-mysql) $(vopt_if odbc qt5-plugin-odbc)
  $(vopt_if pgsql qt5-plugin-pgsql) $(vopt_if sqlite qt5-plugin-sqlite)
  $(vopt_if tds qt5-plugin-tds)"
@@ -22,7 +22,7 @@ maintainer="Jürgen Buchmüller <pullmoll@t-online.de>"
 license="GPL-2"
 homepage="http://www.kadu.im/"
 distfiles="http://download.kadu.im/stable/${pkgname}-${version}.tar.bz2"
-checksum=3f5c0a66a33d1244acd981aef5c268d94185956754ca62e0c4295f7b50700366
+checksum=ad5d1cbb908c3cd07f2955d343d44b993cd5639427a48a2912441955cfd2bd6e
 
 build_options="mysql odbc pgsql sqlite tds"
 build_options_default="sqlite"
@@ -31,6 +31,14 @@ desc_option_odbc="Use ODBC database plugin"
 desc_option_pgsql="Use PostgreSQL database plugin"
 desc_option_sqlite="Use SQlite database plugin"
 desc_option_tds="Use Tabular Data Stream database plugin"
+
+if [ -n "$CROSS_BUILD" ]; then
+	hostmakedepends+=" qt5-host-tools
+ qt5-devel qt5-xmlpatterns-devel qt5-declarative-devel qt5-multimedia-devel
+ qt5-script-devel qt5-svg-devel qt5-tools-devel qt5-webkit-devel qt5-x11extras-devel"
+	makedepends+=" qt5-plugin-mysql qt5-plugin-odbc
+ qt5-plugin-pgsql qt5-plugin-sqlite qt5-plugin-tds"
+fi
 
 pre_configure() {
 	# Disable plugins which require pkgs Void does not ship (yet)
@@ -41,9 +49,6 @@ pre_configure() {
 		-e "s;unity_integration$;;" \
 		-e "s;indicator_docking$;;" \
 		-e "s;word_fix$;;"
-	# Using the __useconds_t type is wrong here, see man usleep(3)
-	sed -i ${wrksrc}/plugins/pcspeaker/pcspeaker.cpp \
-		-e "s;__useconds_t;useconds_t;g"
 }
 
 kadu-data_package() {

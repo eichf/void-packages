@@ -1,24 +1,27 @@
 # Template file for 'ldns'
 pkgname=ldns
-version=1.6.17
-revision=9
+version=1.7.0
+revision=4
 build_style=gnu-configure
-configure_args="--with-drill --with-examples
+configure_args="--with-drill --with-examples --disable-dane-ta-usage
  --with-trust-anchor=/etc/dns/root.key
  --with-ssl=${XBPS_CROSS_BASE}/usr"
 hostmakedepends="perl"
 makedepends="libpcap-devel libressl-devel dnssec-anchors"
 short_desc="Modern DNS/DNSSEC library -- utils"
-maintainer="Christian Neukirchen <chneukirchen@gmail.com>"
+maintainer="Leah Neukirchen <leah@vuxu.org>"
 license="BSD"
 homepage="http://www.nlnetlabs.nl/projects/ldns/"
 distfiles="http://www.nlnetlabs.nl/downloads/${pkgname}/${pkgname}-${version}.tar.gz"
-checksum=8b88e059452118e8949a2752a55ce59bc71fa5bc414103e17f5b6b06f9bcc8cd
+checksum=c19f5b1b4fb374cfe34f4845ea11b1e0551ddc67803bd6ddd5d2a20f0997a6cc
 
 post_extract() {
 	sed -i 's/defined(@\$also)/@$also/' doc/doxyparse.pl
 }
-
+post_install() {
+	sed -i -e "s|\(-specs=.*hardened-ld\)||g" -e "s|\(-specs=.*hardened-cc1\)||g" ${DESTDIR}/usr/bin/ldns-config
+	vlicense LICENSE
+}
 libldns_package() {
 	depends="dnssec-anchors"
 	short_desc="Modern DNS/DNSSEC library"
@@ -26,7 +29,6 @@ libldns_package() {
 		vmove "usr/lib/*.so.*"
 	}
 }
-
 libldns-devel_package() {
 	depends="libldns>=${version}_${revision}"
 	short_desc="Modern DNS/DNSSEC library -- development files"

@@ -1,7 +1,7 @@
 # Template file for 'tesseract'
 pkgname=tesseract
 version=1
-revision=3
+revision=4
 wrksrc="$pkgname"
 hostmakedepends="pkg-config ImageMagick"
 makedepends="SDL2_image-devel SDL2_mixer-devel MesaLib-devel libpng-devel zlib-devel"
@@ -17,6 +17,11 @@ pre_build() {
 	for dim in 16 32 48 64 128 256 512; do
 		convert -resize "${dim}x${dim}" media/interface/cube.png "${pkgname}${dim}.png"
 	done
+	sed -i src/Makefile \
+		-e"s;-o tess_client;${LDFLAGS} &;" \
+		-e"s;-o tess_server;${LDFLAGS} &;"
+	sed -i src/enet/Makefile \
+		-e"s;^\(CFLAGS=\).*;\1${CFLAGS};"
 }
 do_build() {
 	make ${makejobs} -C src CXXFLAGS="${CXXFLAGS} -fomit-frame-pointer -ffast-math"
@@ -27,10 +32,10 @@ do_install() {
 	vmkdir usr/share/${pkgname}
 	vcopy media usr/share/${pkgname}
 	vcopy config usr/share/${pkgname}
-	vinstall bin_unix/native_client 755 usr/bin ${pkgname}-client
-	vinstall bin_unix/native_server 755 usr/bin ${pkgname}-server
-	vinstall src/readme_${pkgname}.txt 644 usr/share/licenses/${pkgname} LICENSE
-	vinstall ${FILESDIR}/${pkgname}.sh 755 usr/bin ${pkgname}
+	vbin bin_unix/native_client ${pkgname}-client
+	vbin bin_unix/native_server ${pkgname}-server
+	vlicense src/readme_${pkgname}.txt LICENSE
+	vbin ${FILESDIR}/${pkgname}.sh ${pkgname}
 	vinstall ${FILESDIR}/${pkgname}.desktop 644 usr/share/applications
 
 	for dim in 16 32 48 64 128 256 512; do

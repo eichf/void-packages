@@ -1,26 +1,27 @@
 # Template file for 'rr'
 pkgname=rr
-version=4.0.1
+version=5.0.0
 revision=1
 build_style=cmake
+configure_args="-DCMAKE_SYSTEM_PROCESSOR=${XBPS_TARGET_MACHINE} -DBUILD_TESTS=OFF"
 only_for_archs="i686 x86_64"
-hostmakedepends="cmake pkg-config"
-if [ "$XBPS_MACHINE" = "x86_64" ]; then
-	hostmakedepends+=" gcc-multilib"
-fi
-makedepends="python-pexpect zlib-devel"
+hostmakedepends="pkg-config python"
+makedepends="python-pexpect zlib-devel capnproto-devel"
 short_desc="Nondeterministic debugger"
 maintainer="Spencer Hill <spencernh77@gmail.com>"
 license="MIT, BSD"
 homepage="http://rr-project.org/"
 distfiles="https://github.com/mozilla/${pkgname}/archive/${version}.tar.gz"
-checksum=694fdbb5eb20d05436f6234a1fa4e9b3d16a5431de483b657fcce069029fedc6
+checksum=95ab26671f39ffe58ed00a1bd3e211781804b010d73339d6ce7a4b1d0a6815ca
+nopie=yes
 
-do_configure() {
-	mkdir -p build
-	cd build
-	unset CFLAGS CXXFLAGS LDFLAGS
-	cmake .. -DCMAKE_INSTALL_PREFIX=/usr
+case "$XBPS_MACHINE" in
+	x86_64*) hostmakedepends+=" gcc-multilib" ;;
+esac
+
+pre_configure() {
+	export CFLAGS="${CFLAGS/-D_FORTIFY_SOURCE=2/}"
+	export CXXFLAGS="${CXXFLAGS/-D_FORTIFY_SOURCE=2/}"
 }
 
 post_install() {

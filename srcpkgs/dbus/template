@@ -1,19 +1,19 @@
 # Template file for 'dbus'
 pkgname=dbus
-version=1.10.8
-revision=2
+version=1.12.2
+revision=1
 build_style=gnu-configure
 configure_args="--disable-selinux --enable-inotify --with-dbus-user=dbus
  --enable-xml-docs --disable-static --disable-tests --enable-epoll --disable-asserts
  --disable-systemd --with-system-socket=/run/dbus/system_bus_socket --disable-doxygen-docs
  --with-system-pid-file=/run/dbus/pid --with-console-auth-dir=/run/console
- --enable-abstract-sockets --disable-user-session ac_cv_have_abstract_sockets=yes"
+ --disable-user-session"
 short_desc="Message bus system"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="GPL-2"
-homepage="http://dbus.freedesktop.org/"
-distfiles="${homepage}/releases/dbus/dbus-${version}.tar.gz"
-checksum=baf3d22baa26d3bdd9edc587736cd5562196ce67996d65b82103bedbe1f0c014
+homepage="https://dbus.freedesktop.org/"
+distfiles="https://dbus.freedesktop.org/releases/dbus/dbus-${version}.tar.gz"
+checksum=272bb5091770b047c8188b926d5e6038fa4fe6745488b2add96b23e2d9a83d88
 
 hostmakedepends="pkg-config intltool gperf xmlto"
 makedepends="expat-devel libX11-devel libcap-devel"

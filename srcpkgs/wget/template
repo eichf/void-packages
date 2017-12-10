@@ -1,20 +1,21 @@
 # Template file for 'wget'
 pkgname=wget
-version=1.17.1
-revision=2
+version=1.19.2
+revision=1
 build_style=gnu-configure
 configure_args="$(vopt_if ssl '--with-ssl=openssl') $(vopt_if gnutls '--with-ssl=gnutls')"
 hostmakedepends="perl pkg-config"
 makedepends="$(vopt_if ssl libressl-devel) $(vopt_if gnutls gnutls-devel)
  libidn-devel libuuid-devel pcre-devel"
+checkdepends="perl-HTTP-Daemon perl-IO-Socket-SSL"
 depends="ca-certificates"
 conf_files="/etc/wgetrc"
 short_desc="The GNU wget download utility"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://www.gnu.org/software/wget/wget.html"
 license="GPL-3"
-distfiles="${GNU_SITE}/$pkgname/$pkgname-$version.tar.xz"
-checksum=fe559b61eb9cc01635ac6206a14e02cb51591838c35fa83c7a4aacae0bdd97c9
+distfiles="${GNU_SITE}/wget/wget-$version.tar.gz"
+checksum=4f4a673b6d466efa50fbfba796bd84a46ae24e370fa562ede5b21ab53c11a920
 
 build_options="gnutls ssl"
 build_options_default="ssl"

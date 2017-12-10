@@ -1,20 +1,20 @@
 # template for 'zpaq'
 pkgname=zpaq
-version=7.11
+version=7.15
 revision=1
 license="GPL-3"
 short_desc="Incremental Journaling Backup Utility and Archiver"
 build_style=gnu-makefile
 hostmakedepends="unzip perl"
-maintainer="necrophcodr <necrophcodr@necrophcodr.me>"
+maintainer="Leah Neukirchen <leah@vuxu.org>"
 homepage="http://mattmahoney.net/dc/zpaq.html"
 distfiles="http://mattmahoney.net/dc/zpaq${version//\./}.zip"
 create_wrksrc=yes
-checksum=4e7725a5b64464f89d40cd2b320877a0049fd8e8d90fbcd6eda2c23c6c4f6a4f
+checksum=e85ec2529eb0ba22ceaeabd461e55357ef099b80f61c14f377b429ea3d49d418
 
 do_build() {
-	$CXX $CFLAGS -Dunix zpaq.cpp libzpaq.cpp -pthread -o zpaq
-	pod2man zpaq.pod > zpaq.1
+	${CXX} ${CFLAGS} zpaq.cpp libzpaq.cpp -pthread -o zpaq ${LDFLAGS}
+	pod2man zpaq.pod >zpaq.1
 }
 do_install() {
 	vbin zpaq

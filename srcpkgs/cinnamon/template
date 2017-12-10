@@ -1,29 +1,30 @@
 # Template file for 'cinnamon'
 pkgname=cinnamon
-version=2.8.7
+version=3.2.8
 revision=1
 wrksrc="Cinnamon-${version}"
 short_desc="GNOME3 fork of Linux Mint with GNOME2 aspect"
 build_style=gnu-configure
 configure_args="--disable-static --disable-schemas-compile
- --enable-compile-warnings=no LDFLAGS="
+ --enable-compile-warnings=no"
 hostmakedepends="automake libtool gnome-common pkg-config gobject-introspection
- gettext-devel glib-devel intltool xmlto docbook-xml gtk-doc git"
+ gettext-devel glib-devel intltool xmlto docbook-xml gtk-doc autoconf-archive"
 makedepends="cjs-devel clutter-gtk-devel cinnamon-menus-devel gstreamer1-devel
  muffin-devel webkitgtk-devel libgnomekbd-devel polkit-devel libcanberra-devel
  startup-notification-devel pulseaudio-devel dbus-glib-devel GConf-devel
- libgnome-keyring-devel NetworkManager-devel libcroco-devel gtk+3-devel"
+ libgnome-keyring-devel NetworkManager-devel libcroco-devel gtk+3-devel
+ cinnamon-desktop-devel"
 depends="
  accountsservice caribou cinnamon-settings-daemon>=${version%.*} cinnamon-session>=${version%.*} muffin>=${version%.*}
  cinnamon-control-center>=${version%.*} cinnamon-screensaver>=${version%.*} cinnamon-translations>=${version%.*} nemo>=${version%.*}
  gnome-themes-standard gnome-themes-standard-metacity gnome-backgrounds network-manager-applet
  python-cairo python-dbus python-pam python-pexpect python-inotify python-lxml python-Pillow
- polkit-gnome upower0"
+ polkit-gnome upower0 libkeybinder3"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="GPL-3"
 homepage="http://cinnamon.linuxmint.com/"
 distfiles="https://github.com/linuxmint/${pkgname}/archive/${version}.tar.gz"
-checksum=25d4ee63a5c32eef4d1e9fad2c54ab71ebd9f46fbd4cbc6f04b74154ae796aff
+checksum=b67ef52f239026930ba351f327e8298361dabf881a0af6c299530e83c62fac9a
 
 pycompile_dirs="
  /usr/share/cinnamon/cinnamon-slideshow
@@ -55,6 +56,9 @@ pre_configure() {
 	# Fix selected background color in Cinnamon Settings for Adwaita theme
 	sed -i 's/@selected_bg_color;/@theme_selected_bg_color;/' \
 		files/usr/share/cinnamon/cinnamon-settings/cinnamon-settings.py
+
+	# Remove broken symlink
+	rm -f files/etc/xdg/menus/cinnamon-applications-merged
 
 	NOCONFIGURE=1 ./autogen.sh
 }

@@ -1,18 +1,16 @@
 # Template file for 'mate-media'
 pkgname=mate-media
-version=1.14.0
+version=1.18.2
 revision=1
 build_style=gnu-configure
-configure_args="--with-gtk=3.0 --disable-static --enable-pulseaudio
- --disable-gstmix --disable-gst-mixer-applet"
+configure_args="--disable-static"
 hostmakedepends="pkg-config intltool itstool glib-devel"
-makedepends="gtk+3-devel pulseaudio-devel libcanberra-devel libunique-devel
- mate-desktop-devel libmarco-devel libmate-panel-devel mate-settings-daemon-devel
- libxml2-devel sound-theme-freedesktop libmatemixer-devel"
+makedepends="libcanberra-devel mate-desktop-devel libmate-panel-devel
+ libxml2-devel libmatemixer-devel"
 depends="sound-theme-freedesktop"
-short_desc="MATE Media Tools (pulseaudio)"
+short_desc="MATE Media Tools"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
-license="LGPL-3"
-homepage="http://mate-desktop.org"
-distfiles="http://pub.mate-desktop.org/releases/${version%.*}/${pkgname}-${version}.tar.xz"
-checksum=4e3e1f5d0d0df0b8707fc85719e8aeb5403db2fdbe86725a67be5a85ac444a36
+license="GPL-2"
+homepage="https://mate-desktop.org"
+distfiles="https://pub.mate-desktop.org/releases/${version%.*}/${pkgname}-${version}.tar.xz"
+checksum=6101df5a694251e7032ef69f164cb197bd123c8fbf65ad28cca5229ab73c631f

@@ -1,17 +1,17 @@
 # Template file for 'spl'
 pkgname=spl
-version=0.6.5.6
+version=0.7.3
 revision=1
 wrksrc="${pkgname}-${pkgname}-${version/r/-}"
 build_style=gnu-configure
 configure_args="--with-config=user"
 hostmakedepends="automake libtool"
 short_desc="Solaris Porting Layer -- userland and kernel modules (using DKMS)"
-maintainer="Toyam Cox <Vaelatern@gmail.com>"
+maintainer="Toyam Cox <Vaelatern@voidlinux.eu>"
 license="GPL-2"
 homepage="http://zfsonlinux.org/"
 distfiles="https://github.com/zfsonlinux/${pkgname}/archive/${pkgname}-${version/r/-}.tar.gz"
-checksum=bf690af96ed3b851a092f0b5c6f244a65924abc309a11bf253b0695eb3b2b207
+checksum=0c15747027c7b90f1c683d045f247d5e9f2479a3e1b2f0094b2f571e2f39610f
 
 triggers="dkms"
 dkms_modules="spl ${version/r/-}"

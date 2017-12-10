@@ -1,10 +1,10 @@
 # Template file for 'perl-Data-UUID'
 pkgname=perl-Data-UUID
 version=1.221
-revision=1
+revision=3
 wrksrc="Data-UUID-$version"
 build_style=perl-module
-maintainer="Dominik Honnef <dominik@honnef.co>"
+maintainer="Orphaned <orphan@voidlinux.eu>"
 hostmakedepends=perl
 makedepends=perl
 depends=perl

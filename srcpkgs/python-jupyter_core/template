@@ -1,12 +1,11 @@
 # Template file for 'python-jupyter_core'
 pkgname=python-jupyter_core
-version=4.1.0
+version=4.4.0
 revision=1
 noarch=yes
 wrksrc="jupyter_core-${version}"
 build_style=python-module
-python_versions="2.7 3.4"
-hostmakedepends="python-setuptools python3.4-setuptools"
+hostmakedepends="python-setuptools python3-setuptools"
 depends="python-traitlets"
 pycompile_module="jupyter_core jupyter.py"
 short_desc="Jupyter core package (Python2)"
@@ -14,25 +13,35 @@ maintainer="Alessio Sergi <al3hex@gmail.com>"
 homepage="https://github.com/jupyter/jupyter_core"
 license="3-clause-BSD"
 distfiles="${PYPI_SITE}/j/jupyter_core/jupyter_core-${version}.tar.gz"
-checksum=146af0679c33c56db4b85b785f3dacd933ffaca97e7d2d56ff577a5485c2bd13
+checksum=ba70754aa680300306c699790128f6fbd8c306ee5927976cbe48adacf240c0b7
+
+alternatives="
+ jupyter-core:jupyter:/usr/bin/jupyter2
+ jupyter-core:jupyter-migrate:/usr/bin/jupyter-migrate2"
 
 post_install() {
-	for f in jupyter jupyter-migrate; do
-		vbin build-3.4/scripts-3.4/${f} ${f}3.4
-	done
 	vlicense COPYING.md LICENSE
 }
 
-python3.4-jupyter_core_package() {
+python3-jupyter_core_package() {
+	alternatives="
+	 jupyter-core:jupyter:/usr/bin/jupyter3
+	 jupyter-core:jupyter-migrate:/usr/bin/jupyter-migrate3"
 	noarch=yes
-	depends="python3.4-traitlets"
-	pycompile_version="3.4"
+	depends="python3-traitlets"
 	pycompile_module="jupyter_core jupyter.py"
-	short_desc="${short_desc/Python2/Python3.4}"
+	replaces="python3.4-jupyter_core>=0"
+	short_desc="${short_desc/Python2/Python3}"
 	pkg_install() {
-		vmove usr/bin/jupyter3.4
-		vmove usr/bin/jupyter-migrate3.4
-		vmove usr/lib/python3.4
+		vmove usr/bin/jupyter3
+		vmove usr/bin/jupyter-migrate3
+		vmove usr/lib/python3*
 		vlicense COPYING.md LICENSE
 	}
+}
+python3.4-jupyter_core_package() {
+	noarch=yes
+	build_style=meta
+	short_desc="${short_desc/Python2/Python3.4} (transitional dummy package)"
+	depends="python3-jupyter_core>=${version}_${revision}"
 }

@@ -1,18 +1,19 @@
 # Template file for 'lpsolve'
 pkgname=lpsolve
-version=5.5.2.0
-revision=3
+version=5.5.2.5
+revision=1
 wrksrc=lp_solve_${version%.*.*}
 short_desc="Mixed Integer Linear Programming (MILP) solver"
 maintainer="Enno Boland <gottox@voidlinux.eu>"
 license="GPL"
 homepage="http://sourceforge.net/projects/lpsolve"
 distfiles="${SOURCEFORGE_SITE}/$pkgname/lp_solve_${version}_source.tar.gz"
-checksum=5827a30b143105283f398a09419ea608719a2d7699ecea165a66d521803bcc9c
+checksum=201a7c62b8b3360c884ee2a73ed7667e5716fc1e809755053b398c2f5b0cf28a
 
 do_configure() {
 	sed -i \
 		-e 's/^c=cc/c="$CC"/' \
+		-e 's/dl=-ldl/dl="-ldl $LDFLAGS"/' \
 		-e 's/^opts=.*/opts="$CFLAGS"/' \
 		-e 's/^PLATFORM=.*/PLATFORM=/' \
 		-e 's/-DNOISNAN//' \
@@ -32,7 +33,7 @@ do_install() {
 	vmkdir usr/lib
 	vmkdir usr/include/lpsolve
 
-	vinstall lp_solve/bin/lp_solve 755 usr/bin/
+	vbin lp_solve/bin/lp_solve
 	vinstall lpsolve55/bin/liblpsolve55.so 755 usr/lib/
 	vcopy lp*.h usr/include/lpsolve/
 }

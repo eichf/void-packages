@@ -1,9 +1,10 @@
 # Template file for 'lighttpd'
 pkgname=lighttpd
-version=1.4.39
-revision=4
-makedepends="libmysqlclient-devel lua-devel libxml2-devel sqlite-devel gdbm-devel pcre-devel libressl-devel fcgi-devel"
-hostmakedepends="automake pkg-config pcre-devel libtool"
+version=1.4.48
+revision=1
+makedepends="libuuid-devel libmysqlclient-devel lua-devel libxml2-devel
+ sqlite-devel gdbm-devel pcre-devel libressl-devel fcgi-devel libldap-devel attr-devel"
+hostmakedepends="automake pkg-config libtool"
 conf_files="/etc/lighttpd/lighttpd.conf"
 system_accounts="_${pkgname}"
 _lighttpd_homedir="/srv/www/${pkgname}"
@@ -11,8 +12,9 @@ short_desc="A secure, fast, compliant and very flexible web-server"
 maintainer="Enno Boland <gottox@voidlinux.eu>"
 license="2-clause-BSD"
 homepage="http://lighttpd.net"
-distfiles="http://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-${version}.tar.xz"
-checksum=7eb9a1853c3d6dd5851682b0733a729ba4158d6bdff80974d5ef5f1f6887365b
+#distfiles="http://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-${version}.tar.xz"
+distfiles="https://sources.voidlinux.eu/lighttpd-1.4.48/lighttpd-1.4.48.tar.xz"
+checksum=0f8ad5aac7529d7b948b9d7e8cd0b4a9e177309d85d6bf6516e28e6e40d74f36
 build_style=gnu-configure
 configure_args="
 	--sbindir=/usr/bin \

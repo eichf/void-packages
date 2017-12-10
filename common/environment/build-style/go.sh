@@ -6,6 +6,7 @@ nostrip=yes
 nopie=yes
 
 case "$XBPS_TARGET_MACHINE" in
+	aarch64*) export GOARCH=arm64;;
 	armv6*) export GOARCH=arm; export GOARM=6;;
 	armv7*) export GOARCH=arm; export GOARM=7;;
 	i686*) export GOARCH=386;;
@@ -13,6 +14,7 @@ case "$XBPS_TARGET_MACHINE" in
 esac
 
 export GOPATH="${wrksrc}/_build-${pkgname}-xbps"
+GOSRCPATH="${GOPATH}/src/${go_import_path}"
 export CGO_CFLAGS="$CFLAGS"
 export CGO_CPPFLAGS="$CPPFLAGS"
 export CGO_CXXFLAGS="$CXXFLAGS"

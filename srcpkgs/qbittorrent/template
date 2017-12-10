@@ -1,26 +1,43 @@
 # Template file for 'qbittorrent'
 pkgname=qbittorrent
-version=3.3.4
+version=4.0.2
 revision=1
 build_style=qmake
-hostmakedepends="automake libtool pkg-config qt5-tools"
-makedepends="boost-devel libtorrent-rasterbar-devel
- qt5-declarative-devel qt5-devel qt5-qmake"
+hostmakedepends="automake libtool pkg-config qt5-host-tools qt5-tools"
+makedepends="libtorrent-rasterbar-devel qt5-declarative-devel qt5-svg-devel"
 short_desc="Free software alternative to µtorrent"
 maintainer="Jürgen Buchmüller <pullmoll@t-online.de>"
 license="GPL-2"
 homepage="http://www.qbittorrent.org/"
 distfiles="${SOURCEFORGE_SITE}/${pkgname}/${pkgname}-${version}.tar.xz"
-checksum=c0d0d4b72c240f113b59a061146803bc1b7926d3d7f39b06b50a4d26f5ad91b8
+checksum=09240274036be42328131602cd69e12bac909031b0b827c1168ae305d67bbac3
+
+if [ -n "$CROSS_BUILD" ]; then
+	hostmakedepends+=" qt5-declarative-devel qt5-svg-devel"
+fi
+
 build_options="gui webui"
 desc_option_gui="Enable the graphical user interface"
 desc_option_webui="Enable the web user interface"
 build_options_default="gui"
 
 pre_configure() {
-	./configure --prefix=/usr \
-		--disable-systemd \
-		--with-qt5 \
-		$(vopt_enable gui) \
-		$(vopt_enable webui)
+	local conf="--prefix=/usr"
+	conf+=" --with-qt4=no"
+	conf+=" --disable-systemd"
+	conf+=" --with-boost=${XBPS_CROSS_BASE}/usr"
+	conf+=" --with-boost-libdir=${XBPS_CROSS_BASE}/usr/lib"
+	if [ -n "$CROSS_BUILD" ]; then
+		conf+=" --host=${XBPS_CROSS_TRIPLET}"
+	fi
+	./bootstrap.sh
+	./configure ${conf} $(vopt_enable gui) $(vopt_enable webui)
+}
+
+post_configure() {
+	sed -i src/Makefile \
+		-e "s;^\(CC\\s*=\) .*;\1 $CC;" \
+		-e "s;^\(CXX\\s*=\) .*;\1 $CXX;" \
+		-e "s;^\(LINK\\s*=\) .*;\1 $CXX;" \
+		-e "s;@g++ ;@$CXX ;"
 }

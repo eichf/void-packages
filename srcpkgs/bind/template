@@ -1,13 +1,16 @@
 # Template file for 'bind'
 pkgname=bind
-version=9.10.4
+_distver=9.10.6
+version="${_distver}"
 revision=1
+_fullver="${_distver}${_patchver:+-${_patchver}}"
+wrksrc="${pkgname}-${_fullver}"
 short_desc="Berkeley Internet Name Domain server"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="ISC"
-homepage="http://www.isc.org/software/bind/"
-distfiles="http://ftp.isc.org/isc/bind9/${version}/bind-${version}.tar.gz"
-checksum=f8d412b38d5ac390275b943bde69f4608f67862a45487ec854b30e4448fcb056
+homepage="https://www.isc.org/software/bind/"
+distfiles="https://ftp.isc.org/isc/bind9/${_fullver}/bind-${_fullver}.tar.gz"
+checksum=17bbcd2bd7b1d32f5ba4b30d5dbe8a39bce200079048073d1e0d050fdf47e69d
 
 build_options="geoip seccomp"
 build_options_default="geoip"
@@ -38,7 +41,6 @@ pre_configure() {
 	# disable bin tests for now.
 	sed -e "s,tests,,g" -i bin/Makefile.in
 }
-
 post_install() {
 	vsv named
 	vinstall ${FILESDIR}/named.logrotate 600 etc/logrotate.d named

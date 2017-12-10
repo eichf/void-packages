@@ -1,16 +1,17 @@
 # Template file for 'perl-Net-SFTP-Foreign'
 pkgname=perl-Net-SFTP-Foreign
-version=1.81
+version=1.87
 revision=1
 noarch=yes
 wrksrc="${pkgname/perl-/}-${version}"
 build_style=perl-module
 hostmakedepends="perl"
 makedepends="${hostmakedepends}"
+checkdepends="openssh"
 depends="${makedepends}"
 short_desc="Net::SFTP::Foreign - SSH File Transfer Protocol client"
-maintainer="Christian Neukirchen <chneukirchen@gmail.com>"
+maintainer="Leah Neukirchen <leah@vuxu.org>"
 homepage="http://search.cpan.org/dist/Net-SFTP-Foreign"
 license="Artistic, GPL-1"
 distfiles="${CPAN_SITE}/Net/Net-SFTP-Foreign-${version}.tar.gz"
-checksum=d1918f272f2d5b5d3f4d81bb9027788fddaa0e6507ebaf82938a0466accc1ed4
+checksum=cd175f8dee7efcadf17675b7d4ae8d8ad59d329862171f458d88bf6fc4f5c5ec

@@ -1,6 +1,6 @@
 # Template file for 'shellcheck'
 pkgname=shellcheck
-version=0.4.3
+version=0.4.6
 revision=1
 hostmakedepends="cabal-install"
 short_desc="A static analysis tool for shell scripts"
@@ -8,8 +8,9 @@ maintainer="Diogo Leal <diogo@diogoleal.com>"
 license="GPL-3"
 homepage="http://www.shellcheck.net/"
 distfiles="https://github.com/koalaman/shellcheck/archive/v${version}.tar.gz"
-checksum=229a3bd5e38c4da2ce7ddf43c06ca388454e0406f3dbfc44865208b6b334109e
+checksum=1c3cd8995ebebf6c8e5475910809762b91bebf0a3827ad87a0c392c168326de2
 nocross=yes
+nopie=yes
 
 do_build() {
 	cabal sandbox init

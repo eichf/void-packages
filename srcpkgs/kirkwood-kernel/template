@@ -1,9 +1,9 @@
 # Template file for 'kirkwood-kernel'
 pkgname=kirkwood-kernel
-version=4.1.23
+version=4.1.36
 revision=1
 wrksrc="linux-${version}"
-maintainer="Andrea Brancaleoni <miwaxe@gmail.com>"
+maintainer="Orphaned <orphan@voidlinux.eu>"
 homepage="http://www.kernel.org/"
 license="GPL-2"
 short_desc="The Linux kernel and modules for kirkwood"
@@ -14,8 +14,8 @@ https://raw.githubusercontent.com/archlinuxarm/PKGBUILDs/${_commit}/core/linux-k
 https://raw.githubusercontent.com/archlinuxarm/PKGBUILDs/${_commit}/core/linux-kirkwood/config"
 skip_extraction="mach-types archlinuxarm.patch config"
 checksum="
-15b13213052596f9af040dc25e01a88e950a0901cec38fabb8f38b6a661e8c74
-ccd04baddb35debd8f3e8377f2002d1eee437b0b37633189ce7fefe79ee32070
+e1526ddf1222a89399f0d0b0921c46fe727812571dd3a7f42be9f03472f11590
+c15df9ace627319a856b31cef4458ccccbd373d19a427fa9f0ad474291943904
 53259fb05cb3903c5215da33426a654e3f212756cce155363decf8dc5ed7751e
 1a6825cf6467604138e25c806cd9ff5b964894dbafc1f6a97fe8386c45f644bd"
 

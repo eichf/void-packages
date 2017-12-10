@@ -1,6 +1,6 @@
 # Template file for 'lfe'
 pkgname=lfe
-version=1.0.2
+version=1.2.1
 revision=1
 noarch=yes
 hostmakedepends="erlang"
@@ -10,7 +10,7 @@ maintainer="Michael Gehring <mg@ebfe.org>"
 license="Apache-2.0"
 homepage="http://lfe.io/"
 distfiles="https://github.com/rvirding/lfe/archive/v${version}.tar.gz"
-checksum=a722b0fca85de8928d9c56da1946a94d892f582471347711296ae898652bb4d1
+checksum=a8b0f797d2595153e77dc2309f38f0ed468c3c31ee8e11d4c65cea0910ebe788
 
 do_build() {
 	make

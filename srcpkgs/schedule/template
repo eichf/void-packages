@@ -1,29 +1,29 @@
 # Template file for 'schedule'
 pkgname=schedule
-version=7.2.2
+version=7.5.4
 revision=1
 noarch=yes
 hostmakedepends="perl"
 depends="perl"
 short_desc="Framework to schedule jobs in a multiuser multitasking environment"
-maintainer="Christian Neukirchen <chneukirchen@gmail.com>"
+maintainer="Leah Neukirchen <leah@vuxu.org>"
 license="BSD"
 homepage="https://github.com/vaeth/schedule/"
 distfiles="https://github.com/vaeth/schedule/archive/v${version}.tar.gz"
-checksum=2c8fefdced0bc554713024cfb6c692ac0e208b19e9c647f7597372a543de42d9
+checksum=7db23284a7085dc7753badc7491ecd622b7bfca6dc91fa6dfdc90cdbc9cdd569
 
 do_install() {
 	for bin in bin/*; do
 		vbin $bin
 	done
 	vdoc README
-	pod2man -n schedule lib/Schedule/Client/Scheduleman.pm >schedule.1
-	pod2man -n schedule-server lib/Schedule/Server/Serverman.pm >schedule-server.1
-	pod2man -n schedule-tmux lib/Schedule/Client/Tmuxman.pm >schedule-tmux.1
+	pod2man -n schedule share/schedule/Schedule/Client/Scheduleman.pm >schedule.1
+	pod2man -n schedule-server share/schedule/Schedule/Server/Serverman.pm >schedule-server.1
+	pod2man -n schedule-tmux share/schedule/Schedule/Client/Tmuxman.pm >schedule-tmux.1
 	vman schedule.1
 	vman schedule-server.1
 	vman schedule-tmux.1
 	vmkdir usr/share/${pkgname}
-	vcopy "lib/*" usr/share/${pkgname}
+	vcopy "share/schedule/*" usr/share/${pkgname}
 	vinstall zsh/_schedule 0644 usr/share/zsh/site-functions
 }

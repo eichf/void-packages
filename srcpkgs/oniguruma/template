@@ -1,14 +1,14 @@
 # Template build file for 'oniguruma'
 pkgname=oniguruma
-version=5.9.6
-revision=5
+version=6.6.1
+revision=1
 build_style=gnu-configure
 short_desc="A multi-charset regular expressions library"
 maintainer="John Regan <john@jrjrtech.com>"
-license="BSD"
-homepage="http://www.geocities.jp/kosako3/oniguruma/"
+license="2-clause-BSD"
+homepage="https://github.com/kkos/oniguruma"
 distfiles="https://github.com/kkos/oniguruma/releases/download/v${version}/onig-${version}.tar.gz"
-checksum="d5642010336a6f68b7f2e34b1f1cb14be333e4d95c2ac02b38c162caf44e47a7"
+checksum=8f9731f9e48666236a1678e2b4ead69be682eefba3983a714b6b57cf5ee14372
 wrksrc="onig-${version}"
 
 post_install() {
@@ -29,8 +29,8 @@ oniguruma-doc_package() {
 	noarch=yes
 	short_desc+=" - documentation"
 	pkg_install() {
-		vmkdir usr/share/doc/$sourcepkg
-		vcopy doc/* usr/share/doc/$sourcepkg
+		vmkdir usr/share/doc/${sourcepkg}
+		vcopy doc/* usr/share/doc/${sourcepkg}
 	}
 }
 

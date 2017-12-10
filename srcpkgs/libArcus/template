@@ -1,0 +1,34 @@
+# Template file for 'libArcus'
+pkgname=libArcus
+version=3.0.3
+revision=1
+build_style=cmake
+python_version=3
+configure_args="-DBUILD_EXAMPLES=OFF"
+hostmakedepends="protobuf python3 python3-sip-devel"
+makedepends="protobuf-devel python3-devel"
+depends="python3-sip"
+short_desc="Communication library for Ultimaker software components"
+maintainer="Karl Nilsson <karl.robert.nilsson@gmail.com>"
+license="LGPL-3"
+homepage="https://github.com/Ultimaker/libArcus"
+distfiles="https://github.com/Ultimaker/libArcus/archive/${version}.tar.gz"
+checksum=278a0f7f5b445e6e396f28488055488be1cf56fa325b1766ca94fe9737ffa189
+CXXFLAGS=" -D_GLIBCXX_USE_C99_STDIO=1"
+
+libArcus-devel_package() {
+	depends="${sourcepkg}-${version}_${revision}"
+	short_desc+=" - development files"
+	pkg_install() {
+		vmove usr/include
+		vmove usr/lib/cmake
+		vmove usr/lib/*.so
+	}
+}
+
+libArcus-python3_package() {
+	short_desc+=" - Python3 bindings"
+	pkg_install() {
+		vmove usr/lib/python3*
+	}
+}

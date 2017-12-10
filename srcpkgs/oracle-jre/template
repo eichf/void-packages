@@ -1,10 +1,11 @@
 # Template file for 'oracle-jre'
 pkgname=oracle-jre
-version=8u91
+version=8u152
 revision=1
 
 _longVersion=1.${version%u*}.0_${version#*u}
-_build=14
+_build=16
+_tag=aa0333dd3019491ca4f6ddbe78cdb6d0
 
 short_desc="Java Runtime Environment (JRE)"
 maintainer="Enno Boland <gottox@voidlinux.eu>"
@@ -21,12 +22,12 @@ case "${XBPS_TARGET_MACHINE}" in
 x86_64)
 	_arch=amd64
 	_filename=jre-${version}-linux-x64.tar.gz
-	checksum="66d8971b240bbd03d114308958fff0fb8068d0589122885d9591727e5472137f"
+	checksum=ed04ffbf8050a69b15f02c51a2cae8e0de9362e7f6fe8995b1c39c613fc20ede
 	;;
 i686)
 	_arch=i386
 	_filename=jre-${version}-linux-i586.tar.gz
-	checksum="02071642f1628136516c88c11e46664a8cc363e685e9f066123b41d741567f43"
+	checksum=1d0c9202fbed3136d46674547b92d467e28b6256dce5d1793c55c284c285a14d
 	;;
 esac
 
@@ -48,7 +49,7 @@ alternatives="
  java-plugin:/usr/lib/mozilla/plugins/libnpjp2.so:/usr/lib/jvm/jre${_longVersion}/lib/$_arch/libnpjp2.so
 "
 
-distfiles="http://download.oracle.com/otn-pub/java/jdk/${version}-b${_build}/${_filename}"
+distfiles="http://download.oracle.com/otn-pub/java/jdk/${version}-b${_build}/$_tag/${_filename}"
 wrksrc="jre$_longVersion"
 
 do_fetch() {
@@ -76,10 +77,9 @@ do_build() {
 }
 
 do_install() {
-	vmkdir "usr/share/licenses/${pkgname}"
 	vinstall oracle-jre-vars.sh 644 "usr/lib/jvm/"
 
-	vinstall LICENSE 644 "usr/share/licenses/${pkgname}"
+	vlicense LICENSE
 	vinstall $FILESDIR/java-policy-settings.desktop 644 usr/share/applications
 	ln -s jre${_longVersion} ${DESTDIR}/usr/lib/jvm/oracle-jre
 

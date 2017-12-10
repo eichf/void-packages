@@ -1,16 +1,16 @@
 # Template file for 'bmon'
 pkgname=bmon
-version=3.8
-revision=2
+version=4.0
+revision=3
 build_style=gnu-configure
 hostmakedepends="automake pkg-config"
 makedepends="ncurses-devel libnl3-devel confuse-devel"
 short_desc="Bandwidth monitor and rate estimator"
 maintainer="Christian Neukirchen <chneukirchen@gmail.com>"
-license="BSD,MIT"
+license="BSD, MIT"
 homepage="http://github.com/tgraf/bmon/"
 distfiles="http://github.com/tgraf/${pkgname}/archive/v${version}.tar.gz"
-checksum=6bb2bbdd619f279132e54f1fa83fc98c0f75003766f82d6b7cd36c8a46900453
+checksum=d5e503ff6b116c681ebf4d10e238604dde836dceb9c0008eb92416a96c87ca40
 
 pre_configure() {
 	./autogen.sh
@@ -19,4 +19,6 @@ pre_configure() {
 post_install() {
 	rm ${DESTDIR}/usr/share/doc/bmon/examples/bmon.conf
 	vsconf examples/bmon.conf
+	vlicense LICENSE.BSD
+	vlicense LICENSE.MIT
 }

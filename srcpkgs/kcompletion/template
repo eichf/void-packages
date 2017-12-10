@@ -1,0 +1,28 @@
+# Template file for 'kcompletion'
+pkgname=kcompletion
+version=5.40.0
+revision=1
+build_style=cmake
+hostmakedepends="extra-cmake-modules"
+makedepends="kconfig-devel kwidgetsaddons-devel"
+short_desc="KDE Powerful completion framework"
+maintainer="Denis Revin <denis.revin@gmail.com>"
+license="LGPL-2"
+homepage="https://projects.kde.org/projects/frameworks/kcompletion"
+distfiles="http://download.kde.org/stable/frameworks/${version%.*}/${pkgname}-${version}.tar.xz"
+checksum=842a26485d381581bdbe7fe3b6d91d404928a47fb589e9a26ebdf5520c55bf9d
+
+if [ -n "CROSS_BUILD" ]; then
+	hostmakedepends+=" qt5-host-tools qt5-qmake qt5-tools-devel"
+fi
+
+kcompletion-devel_package() {
+	short_desc+=" - development"
+	depends="${makedepends} ${sourcepkg}>=${version}_${revision}"
+	pkg_install() {
+		vmove usr/include
+		vmove usr/lib/qt5/mkspecs
+		vmove usr/lib/cmake
+		vmove usr/lib/*.so
+	}
+}

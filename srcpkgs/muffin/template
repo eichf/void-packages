@@ -1,7 +1,7 @@
 # Template file for 'muffin'
 pkgname=muffin
-version=2.8.5
-revision=3
+version=3.2.2
+revision=1
 short_desc="Cinnamon window manager based on Mutter"
 build_style=gnu-configure
 configure_args="--disable-static --disable-schemas-compile --disable-gtk-doc
@@ -16,7 +16,7 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="GPL-3"
 homepage="http://cinnamon.linuxmint.com/"
 distfiles="https://github.com/linuxmint/${pkgname}/archive/${version}.tar.gz"
-checksum=0ae19de74111f222b44f7bf8d159437a83c6ae2e7ce70b327c0296365d69aba4
+checksum=0f6805f21fcc35c130d3c9c75de17f000537e73bf6b37672ed9065d28e577f04
 
 pre_configure() {
 	NOCONFIGURE=1 ./autogen.sh

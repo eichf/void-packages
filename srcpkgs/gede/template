@@ -1,0 +1,25 @@
+# Template file for 'gede'
+pkgname=gede
+version=2.2.1
+revision=1
+build_style=qmake
+build_wrksrc="src"
+hostmakedepends="python qt-qmake"
+makedepends="qt-devel"
+depends="gdb ctags"
+short_desc="Graphical frontend (GUI) to GDB written in Qt"
+maintainer="Andrea Brancaleoni <abc@pompel.me>"
+license="BSD"
+homepage="http://acidron.com/gede"
+distfiles="http://gede.acidron.com/uploads/source/${pkgname}-${version}.tar.xz"
+checksum=03296b9f6c2b92184d66e8d9b0819b3d796a71d04b4a186efc0e14d577b9d7cd
+
+if [ -n "$CROSS_BUILD" ]; then
+	hostmakedepends+=" qt-host-tools qt-devel"
+fi
+
+do_install() {
+	cd $wrksrc
+	python2 build.py install --prefix="${PKGDESTDIR}/usr" install
+	vlicense LICENSE
+}

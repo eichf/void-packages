@@ -1,0 +1,32 @@
+# Template file for 'cgal'
+
+pkgname="cgal"
+version="4.10"
+revision=2
+build_style=cmake
+short_desc="Computational Geometry Algorithms Library"
+maintainer="Pierre Allegraud <pierre.allegraud@crans.org>"
+license="GPL-3, LGPL-3"
+homepage="http://www.cgal.org"
+distfiles="https://github.com/CGAL/cgal/archive/releases/CGAL-${version}.tar.gz"
+checksum=cff3081453a4b4e738ca90d3ce70ddd888b8a23e8acb735a4917653ad51b3045
+wrksrc="cgal-releases-CGAL-${version}"
+nocross=yes
+
+makedepends="boost-devel eigen gmp-devel mpfr-devel"
+
+post_install() {
+	vbin ./Scripts/scripts/cgal_create_cmake_script
+}
+
+cgal-devel_package() {
+	short_desc+=" - development files"
+	depends="${makedepends} ${sourcepkg}>=${version}_${revision}"
+	pkg_install() {
+		vmove usr/bin/cgal_create_cmake_script
+		vmove usr/share/man/man1/cgal_create_cmake_script.1
+		vmove usr/include
+		vmove usr/lib/*.so
+		vmove usr/lib/CGAL
+	}
+}

@@ -1,7 +1,7 @@
 # Template file for 'augeas'
 pkgname=augeas
-version=1.4.0
-revision=2
+version=1.9.0
+revision=1
 build_style=gnu-configure
 hostmakedepends="pkg-config"
 makedepends="readline-devel libxml2-devel"
@@ -10,10 +10,10 @@ maintainer="allan <mail@may.mooo.com>"
 license="LGPL-2.1"
 homepage="http://augeas.net"
 distfiles="http://download.augeas.net/augeas-${version}.tar.gz"
-checksum=659fae7ac229029e60a869a3b88c616cfd51cf2fba286cdfe3af3a052cb35b30
+checksum=2b463d398cabc9b42747aa61d3e83ed6a93ce03d9074cf8e7a7bd3107a668343
 
 augeas-devel_package() {
-	depends="${sourcepkg}>=${version}_${revision}"
+	depends="libxml2-devel ${sourcepkg}>=${version}_${revision}"
 	short_desc+=" - development files"
 	pkg_install() {
 		vmove usr/include

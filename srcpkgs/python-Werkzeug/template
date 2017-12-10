@@ -1,32 +1,38 @@
 # Template file for 'python-Werkzeug'
 pkgname=python-Werkzeug
-version=0.11.9
-revision=1
+version=0.12.2
+revision=2
 noarch=yes
 wrksrc="${pkgname#*-}-${version}"
 build_style=python-module
-python_versions="2.7 3.4"
 pycompile_module="werkzeug"
-hostmakedepends="python-setuptools python3.4-setuptools"
+hostmakedepends="python-setuptools python3-setuptools"
 depends="python"
 short_desc="The Swiss Army knife of Python web development (Python2)"
 maintainer="Markus Berger <pulux@pf4sh.de>"
 homepage="http://werkzeug.pocoo.org"
 license="3-clause-BSD"
 distfiles="${PYPI_SITE}/W/Werkzeug/Werkzeug-${version}.tar.gz"
-checksum=837b71338794634c24713a79c3b9c287301433f2d18cd0adefcbcf885e60c8a1
+checksum=903a7b87b74635244548b30d30db4c8947fe64c5198f58899ddcd3a13c23bb26
 
 post_install() {
 	vlicense LICENSE
 }
 
+python3-Werkzeug_package() {
+	noarch=yes
+	depends="python3"
+	pycompile_module="werkzeug"
+	replaces="python3.4-Werkzeug>=0"
+	short_desc="${short_desc/Python2/Python3}"
+	pkg_install() {
+		vmove usr/lib/python3*
+		vlicense LICENSE
+	}
+}
 python3.4-Werkzeug_package() {
 	noarch=yes
-	depends="python3.4"
-	pycompile_version="3.4"
-	pycompile_module="werkzeug"
-	short_desc="${short_desc/Python2/Python3.4}"
-	pkg_install() {
-		vmove usr/lib/python3.4
-	}
+	build_style=meta
+	short_desc="${short_desc/Python2/Python3.4} (transitional dummy package)"
+	depends="python3-Werkzeug>=${version}_${revision}"
 }

@@ -1,0 +1,34 @@
+# Template file for 'ccextractor'
+pkgname=ccextractor
+version=0.84
+revision=1
+wrksrc=${pkgname}
+hostmakedepends="unzip"
+makedepends="leptonica-devel tesseract-ocr-devel"
+short_desc="Extract subtitles from video"
+maintainer="Styrsven <sven.a.jonsson@bahnhof.se>"
+license="GPL-2"
+homepage="http://www.ccextractor.org/doku.php"
+distfiles="${SOURCEFORGE_SITE}/${pkgname}/${pkgname}.src.${version}.zip"
+checksum=8825849021fd8bfaa99ea63fc3c7e3f442b54450a1e50e93bf8b51627ebe60a7
+
+post_extract() {
+	sed -i -e 's/\(^LDFLAGS \)=\(.*$\)/\1+=\2/' \
+	       -e 's/\(^CFLAGS \)=\(.*$\)/\1+=\2/' linux/Makefile
+}
+
+do_build() {
+	pushd linux
+	make CC=${CC}
+	popd
+}
+do_install() {
+	vbin linux/ccextractor
+	for i in docs/*; do
+	    if [ $i = "docs/gpl-2.0.txt" ]; then
+	       vlicense $i
+	    else
+		vdoc $i
+	    fi
+	done
+}

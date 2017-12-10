@@ -1,6 +1,6 @@
 # Template file for 'rygel'
 pkgname=rygel
-version=0.28.3
+version=0.36.0
 revision=1
 build_style=gnu-configure
 configure_args="--enable-gst-launch-plugin"
@@ -8,15 +8,15 @@ hostmakedepends="automake libtool pkg-config intltool gettext-devel
  glib-devel vala-devel gobject-introspection"
 makedepends="sqlite-devel gtk+3-devel
  libsoup-devel libgee08-devel gupnp-av-devel
- gupnp-dlna-devel tracker-devel libmediaart2-devel"
+ gupnp-dlna-devel tracker-devel libmediaart-devel"
 depends="hicolor-icon-theme desktop-file-utils"
 conf_files="/etc/rygel.conf"
 short_desc="GNOME home media solution"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
-homepage="http://www.gnome.org"
+homepage="https://wiki.gnome.org/Projects/Rygel"
 license="GPL-2"
 distfiles="${GNOME_SITE}/${pkgname}/${version%.*}/${pkgname}-${version}.tar.xz"
-checksum=bedb76ecb1f36b721914b5c65934f8cd01f281f9ab40c22c583902c22f169c77
+checksum=31e8ade78b4ea59978d1b59056fa5cd8aef6b9c1457d3dd06de4d2e75a01813f
 
 build_options="gir"
 if [ -z "$CROSS_BUILD" ]; then

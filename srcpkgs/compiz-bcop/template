@@ -1,0 +1,19 @@
+# Template file for 'compiz-bcop' of Compiz Reloaded
+pkgname=compiz-bcop
+version=0.8.14
+revision=1
+build_style=gnu-configure
+hostmakedepends="automake intltool libtool pkg-config libxslt"
+makedepends="libxslt-devel"
+depends="libxslt"
+
+short_desc="Compiz Reloaded bcop module"
+maintainer="CoolOhm <micvlas@gmail.com>"
+homepage="https://github.com/compiz-reloaded"
+license="GPL-2"
+distfiles="https://github.com/compiz-reloaded/compiz-bcop/archive/v${version}.tar.gz>${pkgname}-${version}.tar.gz"
+checksum=b1a2a472d20f4ae1cc15611faf1dc302862a53e0dfe1bafdb2a521fc3a9e8f47
+
+pre_configure() {
+	NOCONFIGURE=1 ./autogen.sh
+}

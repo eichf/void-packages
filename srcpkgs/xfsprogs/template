@@ -1,18 +1,17 @@
 # Template file for 'xfsprogs'
 pkgname=xfsprogs
-version=4.5.0
+version=4.14.0
 revision=1
 build_style=gnu-configure
 configure_args="--enable-readline=yes --enable-lib64=no"
-CFLAGS=-D_DIRENT_HAVE_D_RECLEN
 hostmakedepends="libuuid-devel"
 makedepends="libuuid-devel libblkid-devel readline-devel"
 short_desc="Utilities for managing the XFS filesystem"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="LGPL-2.1"
 homepage="http://xfs.org/"
-distfiles="ftp://oss.sgi.com/projects/xfs/cmd_tars/${pkgname}-${version}.tar.gz"
-checksum=e49beb314984efbd0d758abb5c6137db3bb60a88e59e1e94c00defb536cf89f8
+distfiles="${KERNEL_SITE}/utils/fs/xfs/xfsprogs/xfsprogs-${version}.tar.xz"
+checksum=b1b710b268bc95d6f45eca06e1262c29eb38865a19cd4404e48ba446e043b7ec
 
 do_install() {
 	make install install-dev DIST_ROOT=${DESTDIR} \

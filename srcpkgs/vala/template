@@ -1,22 +1,26 @@
 # Template file for 'vala'
 pkgname=vala
-version=0.30.1
+version=0.38.3
 revision=1
 build_style=gnu-configure
-configure_args="--enable-vapigen"
-hostmakedepends="pkg-config flex libxslt"
-makedepends="libglib-devel libfl-devel"
+hostmakedepends="pkg-config flex libxslt automake libtool"
+makedepends="libglib-devel libfl-devel graphviz-devel"
+checkdepends="dbus gir-freedesktop libgirepository-devel"
 short_desc="Compiler for the GObject type system"
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
+maintainer="Enno Boland <gottox@voidlinux.eu>"
 homepage="http://live.gnome.org/Vala"
 license="LGPL-2.1"
 distfiles="${GNOME_SITE}/vala/${version%.*}/vala-${version}.tar.xz"
-checksum=23add78e5c6a5e6df019d4a885c9c79814c9e0b957519ec8a4f4d826c4e5df2c
+checksum=4addaff4625b203763c454e81b928219d41e152f9982c836c72094d3315d6854
+
+pre_configure() {
+	autoreconf -fi
+}
 
 libvala_package() {
 	short_desc+=" - shared library"
 	pkg_install() {
-		vmove "usr/lib/*.so.*"
+		vmove usr/lib/*.so.*
 	}
 }
 vala-devel_package() {
@@ -25,7 +29,7 @@ vala-devel_package() {
 	pkg_install() {
 		vmove usr/include
 		vmove usr/lib/pkgconfig
-		vmove "usr/lib/*.so"
+		vmove usr/lib/*.so
 		vmove usr/share/aclocal
 		vmove usr/share/devhelp
 	}

@@ -1,14 +1,17 @@
 # Template file for 'eigen'
 pkgname=eigen
-version=3.2.8
+version=3.3.4
 revision=1
 noarch=yes
-wrksrc="eigen-eigen-07105f7124f9"
+wrksrc="eigen-eigen-5a0156e40feb"
 build_style=cmake
-hostmakedepends="cmake"
 short_desc="C++ template library for linear algebra (version 3.x)"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="MPL-2.0, GPL-3, LGPL-2.1"
 homepage="http://eigen.tuxfamily.org/"
-distfiles="http://bitbucket.org/eigen/eigen/get/${version}.tar.bz2"
-checksum=722a63d672b70f39c271c5e2a4a43ba14d12015674331790414fcb167c357e55
+distfiles="https://bitbucket.org/eigen/eigen/get/${version}.tar.bz2"
+checksum=dd254beb0bafc695d0f62ae1a222ff85b52dbaa3a16f76e781dce22d0d20a4a6
+
+post_extract() {
+	sed -i '/add_subdirectory(unsupported)/d' CMakeLists.txt
+}

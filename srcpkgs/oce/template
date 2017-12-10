@@ -1,0 +1,32 @@
+# Template file for 'oce'
+pkgname=oce
+_majorver=0.18
+version=${_majorver}.2
+revision=2
+wrksrc="${pkgname}-OCE-${version}"
+build_style=cmake
+configure_args="-DOCE_INSTALL_PREFIX=/usr -DOCE_WITH_FREEIMAGE=ON
+ -DOCE_WITH_GL2PS=ON -DOCE_MULTITHREAD_LIBRARY=TBB -DOCE_DRAW=ON"
+makedepends="freetype-devel glu-devel freeimage-devel gl2ps-devel tbb-devel tcl-devel tk-devel"
+short_desc="OpenCASCADE Community Edition"
+maintainer="yopito <pierre.bourgin@free.fr>"
+license="LGPL-2.1, OCCT"
+homepage="https://github.com/tpaviot/oce"
+distfiles="https://github.com/tpaviot/oce/archive/OCE-${version}.tar.gz"
+checksum=dc21ddea678a500ad87c773e9a502ed7a71768cf83d9af0bd4c43294186a7fef
+
+post_install() {
+	vlicense OCCT_LGPL_EXCEPTION.txt
+}
+
+oce-devel_package() {
+	short_desc+=" - development files"
+	depends="${makedepends} ${sourcepkg}>=${version}_${revision}"
+	pkg_install() {
+		vmove usr/include
+		vmove "usr/lib/*.so"
+		vmove "usr/lib/oce-${_majorver}/*.cmake"
+		mkdir -p ${PKGDESTDIR}/usr/share/${pkgname}
+		vcopy samples usr/share/${pkgname}
+	}
+}

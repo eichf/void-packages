@@ -1,13 +1,13 @@
 # Template file for 'winetricks'
 pkgname=winetricks
-version=20160425
+version=20171018
 revision=1
 noarch=yes
 build_style=gnu-makefile
 depends="cabextract unzip xmessage" # actually it depends on wine
 short_desc="Script to install various redistributable runtime libraries in Wine"
-maintainer="Andrea Brancaleoni <miwaxe@gmail.com>"
+maintainer="Andrea Brancaleoni <abc@pompel.me>"
 license="LGPL-3"
 homepage="http://wiki.winehq.org/$pkgname"
 distfiles="https://github.com/Winetricks/$pkgname/archive/$version.tar.gz"
-checksum=0ddd2d896ab3803057f0eeec3afd6fd2f1b8ebb21e4ec0647c66e3cad0da1d0e
+checksum=ad60a2ffbffbe62c47e4f85767436814e67c5a42b838ba30b40a4fa36e5ab0cc

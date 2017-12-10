@@ -1,27 +1,66 @@
 # Template file for 'atom'
 pkgname=atom
-version=1.7.3
-revision=1
+version=1.22.0
+revision=2
 nocross=yes
 nostrip=yes
-hostmakedepends="git pkg-config python-devel nodejs git-perl"
-makedepends="python-devel GConf-devel libgnome-keyring-devel"
+hostmakedepends="git pkg-config python-devel nodejs curl gtk+ libXtst libXScrnSaver nss python alsa-lib"
+makedepends="python-devel GConf-devel libgnome-keyring-devel libX11-devel libxkbfile-devel libsecret-devel"
 short_desc="Chrome-based text editor from Github"
-maintainer="Andrea Brancaleoni <miwaxe@gmail.com>"
+maintainer="Orphaned <orphan@voidlinux.eu>"
 license="MIT"
 homepage="https://atom.io"
 distfiles="https://github.com/$pkgname/$pkgname/archive/v$version.tar.gz"
-checksum=5074b59ddaca5525eb48098dee6fe63013799cbc77749add314b9e1bc894b8f4
+checksum=28f2db2c92e2ee12fedbcf8e21f91df7a8308f05babc7b93f196f61f0b975103
 
 only_for_archs="i686 x86_64"
 
+#broken="https://build.voidlinux.eu/builders/x86_64_builder/builds/4126/steps/shell_3/logs/stdio"
+
+pre_build() {
+	local NVM_VERSION=0.33.6
+	local NODE_VERSION=6.9.5
+	curl -o- https://raw.githubusercontent.com/creationix/nvm/v$NVM_VERSION/install.sh | bash
+	source $HOME/.nvm/nvm.sh
+	nvm install $NODE_VERSION
+	nvm use $NODE_VERSION
+
+	sed -e "s/<%= description %>/$pkgdesc/" \
+		-e "s|<%= appName %>|Atom|"\
+		-e "s|<%= installDir %>/share/<%= appFileName %>|/usr/bin|"\
+		-e "s|<%= iconPath %>|atom|"\
+		resources/linux/atom.desktop.in > resources/linux/Atom.desktop
+}
 do_build() {
+	if [ -e ./apm/package-lock.json ]; then
+		rm ./apm/package-lock.json
+	fi
+	script/build
+	if [ -e ./apm/package-lock.json ]; then
+		rm ./apm/package-lock.json
+	fi
 	script/build
 }
+
 do_install() {
-	script/grunt install --install-dir ${DESTDIR}/usr
-	sed -i "s|${DESTDIR}||g" ${DESTDIR}/usr/share/applications/atom.desktop
+	vbin atom.sh atom
+	vinstall resources/linux/Atom.desktop 644 usr/share/applications atom.desktop
+	vinstall resources/app-icons/stable/png/1024.png 644 usr/share/pixmaps atom.png
+
+	case "$XBPS_TARGET_MACHINE" in
+		i686*) targetarch=i386;;
+		x86_64*) targetarch=amd64;;
+		*) targetarch=$hostarch;;
+	esac
+
+
+	vmkdir usr/share/atom
+	ls -lah
+	vcopy out/atom-$version-$targetarch/* usr/share/atom
 	vlicense LICENSE.md
+
+	ln -s /usr/share/atom/resources/app/apm/node_modules/.bin/apm "$DESTDIR/usr/bin/apm"
+
 	# remove useless static libs
 	find ${DESTDIR} -type f -name \*.a -delete
 }

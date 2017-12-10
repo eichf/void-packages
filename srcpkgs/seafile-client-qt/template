@@ -1,15 +1,12 @@
 # Template file for 'seafile-client-qt'
 pkgname=seafile-client-qt
-version=5.1.1
+version=6.1.3
 revision=1
 _sourcename="seafile-client"
 wrksrc="${_sourcename}-${version}"
 build_style=cmake
-configure_args="-D CMAKE_BUILD_TYPE=Release -D USE_QT5=ON ."
-
-# nocross since qt unavailable for arm* architecture
-nocross=yes
-hostmakedepends="pkg-config cmake"
+configure_args="-DUSE_QT5=ON"
+hostmakedepends="pkg-config"
 makedepends="sqlite-devel jansson-devel ccnet-devel libsearpc-devel
 	libressl-devel seafile-libclient-devel libevent-devel libuuid-devel
 	qt5-devel qt5-tools-devel desktop-file-utils"
@@ -19,7 +16,28 @@ maintainer="yopito <pierre.bourgin@free.fr>"
 license="ASL-2"
 homepage="https://github.com/haiwen/${_sourcename}"
 distfiles="https://github.com/haiwen/${_sourcename}/archive/v${version}.tar.gz>${pkgname}-${version}.tar.gz"
-checksum=0148cbdb97dcd58e6ebec738c8f6bc476192f0b9156f0783199f1213c4d0322f
+checksum=63a124d7e27881bb30304c7a66dab87fddf8634462dc5741102a561dd4c38689
+
+case "$XBPS_TARGET_MACHINE" in
+	*-musl)	# Add musl-fts implementation
+		makedepends+=" musl-fts-devel"
+		;;
+esac
+
+if [ -n "$CROSS_BUILD" ]; then
+	hostmakedepends+=" qt5-qmake qt5-host-tools qt5-tools"
+fi
+
+pre_configure() {
+	case "$XBPS_TARGET_MACHINE" in
+		*-musl)
+			# append '-ltfs' argument on link via cmake (macro TARGET_LINK_LIBRARIES)
+			# "LDFLAGS=-lfts" does not work, its prepends it (useless)
+			# XXX prefer patch on CMakeLists.txt ?
+			sed -i -e 's,\(\${EXTRA_LIBS}\)$,\1 -lfts,' ${wrksrc}/CMakeLists.txt
+			;;
+	esac
+}
 
 post_install() {
 	vdoc "README.md"

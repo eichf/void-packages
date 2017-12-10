@@ -1,20 +1,22 @@
 # Template file for 'darcs'
 pkgname=darcs
-version=2.12.0
+version=2.12.5
 revision=1
 nocross=yes
 build_style=haskell-stack
-stackage="lts-5.14"
-hostmakedepends="ghc stack"
+stackage="lts-7.16"
 makedepends="zlib-devel libcurl-devel ncurses-devel"
 short_desc="Change-focused cross-platform version control system"
-maintainer="Christian Neukirchen <chneukirchen@gmail.com>"
+maintainer="Leah Neukirchen <leah@vuxu.org>"
 license="GPL-2"
 homepage="http://darcs.net/"
 distfiles="http://hackage.haskell.org/package/${pkgname}-${version}/${pkgname}-${version}.tar.gz"
-checksum=17318d1b49ca4b1aa00a4bffc2ab30a448e7440ce1945eed9bf382d77582308d
+checksum=355b04c85c27bca43c8c380212988d9c1e9a984b0b593ceb2884de4295063553
 nopie=yes
 
 post_install() {
 	vinstall contrib/darcs_completion 644 etc/bash_completion.d
+
+	cd .stack-work/dist/*/*/build/darcs
+	vman darcs.1
 }

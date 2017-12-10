@@ -1,9 +1,10 @@
 # Template file for 'fakeroot'
 pkgname=fakeroot
-version=1.20.2
-revision=3
+version=1.22
+revision=1
 lib32disabled=yes
 build_style=gnu-configure
+hostmakedepends="automake libtool"
 makedepends="acl-devel libcap-devel"
 configure_args="--disable-static"
 short_desc="Gives a fake root environment"
@@ -11,11 +12,15 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://packages.debian.org/fakeroot"
 license="GPL-3"
 distfiles="${DEBIAN_SITE}/main/f/fakeroot/${pkgname}_${version}.orig.tar.bz2"
-checksum=7c0a164d19db3efa9e802e0fc7cdfeff70ec6d26cdbdc4338c9c2823c5ea230c
+checksum=bd806a4a1e641203eb3d4571a10089e8a038c10ec7e492fa1e061b03ae3ec6fe
 case "$XBPS_TARGET_MACHINE" in
 	*-musl) CFLAGS="-D_STAT_VER=0" ;;
 esac
 
+pre_configure() {
+	sed -i /SUBDIRS/d doc/Makefile.am
+	sh ./bootstrap
+}
 post_install() {
 	# Use /bin/sh shebang.
 	sed -i -e "s|^#!/bin/bash$|#!/bin/sh|" ${DESTDIR}/usr/bin/fakeroot

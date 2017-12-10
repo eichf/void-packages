@@ -1,19 +1,26 @@
 # Template file for 'diffutils'
 pkgname=diffutils
-version=3.3
-revision=8
+version=3.6
+revision=3
 bootstrap=yes
 build_style=gnu-configure
+configure_args="gl_cv_func_gettimeofday_clobber=no gl_cv_func_tzset_clobber=no"
 short_desc="The GNU diff utilities"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://www.gnu.org/software/diffutils"
 license="GPL-3"
 distfiles="${GNU_SITE}/$pkgname/$pkgname-$version.tar.xz"
-checksum=a25e89a8ab65fded1731e4186be1bb25cda967834b6df973599cdcd5abdfc19c
+checksum=d621e8bdd4b573918c8145f7ae61817d1be9deb4c8d2328a65cea8e11d783bd6
 
-post_configure() {
-	# Since autoreconf is not run, @mkdir_p@ remains undefined
-	# in po/Makefile. Patch it.
-	sed -e "s;mkdir_p = @mkdir_p@;mkdir_p = \${MKDIR_P};" \
-		-i ${wrksrc}/po/Makefile
+if [ -n "$CROSS_BUILD" ]; then
+	# Tell configure we have GNU getopt
+	configure_args+=" gl_cv_func_getopt_gnu=yes"
+fi
+
+pre_check() {
+	case "$XBPS_TARGET_MACHINE" in
+		*-musl* )
+			# Disable locale tests that fail on musl
+			sed -i '/test-mbrtowc5.sh/d' gnulib-tests/Makefile ;;
+	esac
 }

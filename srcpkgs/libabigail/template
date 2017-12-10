@@ -1,17 +1,26 @@
 # Template file for 'libabigail'
 pkgname=libabigail
-version=1.0.rc4
+version=1.0
 revision=1
 build_style=gnu-configure
-hostmakedepends="dpkg pkg-config python-Sphinx rpmextract"
+hostmakedepends="automake cpio dpkg libtool pkg-config python-Sphinx rpmextract"
 makedepends="elfutils-devel libxml2-devel"
+configure_args="--enable-cxx11=yes"
 short_desc="ABI Generic Analysis and Instrumentation Library"
-maintainer="Christian Neukirchen <chneukirchen@gmail.com>"
+maintainer="Leah Neukirchen <leah@vuxu.org>"
 license="LGPL-3"
 homepage="https://www.sourceware.org/libabigail/"
 distfiles="http://mirrors.kernel.org/sourceware/${pkgname}/${pkgname}-${version}.tar.gz"
-checksum=ccd495e10b251ed9c4668d3c1c9e6127c4c8ee6eae3a5ebee9586bdac6f13643
+checksum=b0562a53d803a75cf9131b6c49d5db65d1ffd83ae80cdcdbdf989d5e1efb06bf
 
+case "$XBPS_TARGET_MACHINE" in
+	*-musl) makedepends+=" musl-fts-devel"; LDFLAGS="-lfts" ;;
+esac
+
+pre_configure() {
+	libtoolize -f
+	autoreconf -fi
+}
 post_build() {
 	make -C doc/manuals man info
 }

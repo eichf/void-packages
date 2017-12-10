@@ -1,0 +1,31 @@
+# Template file for 'borg'
+pkgname=borg
+version=1.1.3
+revision=1
+wrksrc="borgbackup-${version}"
+build_style=python3-module
+hostmakedepends="python3-setuptools python3-devel libressl-devel python3-Sphinx"
+makedepends="${hostmakedepends/python3-setuptools/} acl-devel lz4-devel"
+depends="python3-llfuse python3-msgpack python3-setuptools"
+pycompile_module="borg"
+short_desc="Deduplicating backup program with compression and encryption"
+maintainer="Leah Neukirchen <leah@vuxu.org>"
+license="3-clause-BSD"
+homepage="https://borgbackup.github.io/"
+_changelog="https://borgbackup.readthedocs.io/en/stable/changes.html#changelog"
+distfiles="${PYPI_SITE}/b/borgbackup/borgbackup-${version}.tar.gz"
+checksum=cc2a329956dc42e7e461d2f506a28e398c4cc6dc53a67cc2c8a17dcacc4276e7
+
+export BORG_LZ4_PREFIX="${XBPS_CROSS_BASE}/usr"
+export BORG_OPENSSL_PREFIX="${XBPS_CROSS_BASE}/usr"
+
+pre_build() {
+	sed -i '/guzzle/d' docs/conf.py
+}
+post_build() {
+	PYTHONPATH=.. make -C docs man SPHINXBUILD=sphinx-build3
+}
+post_install() {
+	vlicense LICENSE
+	vman docs/_build/man/borg.1
+}

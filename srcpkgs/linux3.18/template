@@ -1,14 +1,15 @@
 # Template file for 'linux3.18'
 pkgname=linux3.18
-version=3.18.32
+version=3.18.86
 revision=1
+patch_args="-Np1"
 wrksrc="linux-${version}"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
-homepage="http://www.kernel.org"
+homepage="https://www.kernel.org"
 license="GPL-2"
 short_desc="The Linux kernel and modules (${version%.*} series)"
 distfiles="${KERNEL_SITE}/kernel/v3.x/linux-${version}.tar.xz"
-checksum=2835be90cd01f928c833b0462fd106429164f9ae33d8ae36b795b74973503391
+checksum=1ffd3276563d46e27bd08d0108697b72b26c2c0978aa4f9d5e96c41ba70ef6e2
 
 _kernver="${version}_${revision}"
 
@@ -31,6 +32,8 @@ mutable_files="
  /usr/lib/modules/${_kernver}/modules.alias
  /usr/lib/modules/${_kernver}/modules.alias.bin
  /usr/lib/modules/${_kernver}/modules.devname"
+
+export CCACHE_DISABLE=1
 
 do_configure() {
 	# If there's a file called <arch>-dotconfig, use it to
@@ -224,7 +227,6 @@ linux3.18-dbg_package() {
 	nostrip=yes
 	noverifyrdeps=yes
 	noshlibprovides=yes
-	nodebug=yes
 	repository=debug
 	short_desc+=" - debugging symbols"
 	pkg_install() {

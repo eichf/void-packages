@@ -1,6 +1,6 @@
 # Template file for 'abcde'
 pkgname=abcde
-version=2.7.2
+version=2.8.1
 revision=1
 noarch=yes
 conf_files="/etc/${pkgname}.conf"
@@ -8,9 +8,9 @@ depends="cd-discid vorbis-tools perl"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 short_desc="A Better CD Encoder"
 license="GPL-2"
-homepage="http://abcde.einval.com/"
-distfiles="http://abcde.einval.com/download/abcde-${version}.tar.gz"
-checksum=aa39881682ac46eb9fc199d1343b97bc56a322b41a5c57013acda31948bc53dd
+homepage="http://abcde.einval.com"
+distfiles="${homepage}/download/abcde-${version}.tar.gz"
+checksum=e49c71d7ddcd312dcc819c3be203abd3d09d286500ee777cde434c7881962b39
 
 do_install() {
 	make prefix=${DESTDIR}/usr sysconfdir=${DESTDIR}/etc install

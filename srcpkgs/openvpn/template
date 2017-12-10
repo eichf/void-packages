@@ -1,7 +1,7 @@
 # Template file for 'openvpn'
 pkgname=openvpn
-version=2.3.10
-revision=2
+version=2.4.4
+revision=1
 build_style=gnu-configure
 configure_args="--enable-iproute2 --disable-systemd"
 hostmakedepends="iproute2"
@@ -10,9 +10,9 @@ depends="iproute2"
 short_desc="An easy-to-use, robust, and highly configurable VPN"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="GPL-2"
-homepage="http://www.openvpn.net"
-distfiles="http://swupdate.openvpn.org/community/releases/${pkgname}-${version}.tar.gz"
-checksum=f8b0b5b92e35bbca1db1a7e6b49e04639e45634e9accd460459b40b2c99ec8f6
+homepage="https://www.openvpn.net"
+distfiles="http://build.openvpn.net/downloads/releases/${pkgname}-${version}.tar.xz"
+checksum=96cd1b8fe1e8cb2920f07c3fd3985faea756e16fdeebd11d3e146d5bd2b04a80
 
 post_install() {
 	vmkdir usr/share/examples/${pkgname}

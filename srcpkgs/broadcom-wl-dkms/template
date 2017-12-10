@@ -2,7 +2,7 @@
 
 pkgname=broadcom-wl-dkms
 version=6.30.223.271
-revision=2
+revision=6
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="Proprietary Broadcom license"
 homepage="http://broadcom.com"
@@ -18,11 +18,11 @@ depends="dkms"
 
 case "$XBPS_TARGET_MACHINE" in
 i686*)
-	distfiles="http://www.broadcom.com/docs/linux_sta/hybrid-v35-nodebug-pcoem-${version//./_}.tar.gz"
+	distfiles="http://www.broadcom.com/docs-and-downloads/docs/linux_sta/hybrid-v35-nodebug-pcoem-${version//./_}.tar.gz"
 	checksum=4f8b70b293ac8cc5c70e571ad5d1878d0f29d133a46fe7869868d9c19b5058cd
 	;;
 x86_64*)
-	distfiles="http://www.broadcom.com/docs/linux_sta/hybrid-v35_64-nodebug-pcoem-${version//./_}.tar.gz"
+	distfiles="http://www.broadcom.com/docs-and-downloads/docs/linux_sta/hybrid-v35_64-nodebug-pcoem-${version//./_}.tar.gz"
 	checksum=5f79774d5beec8f7636b59c0fb07a03108eef1e3fd3245638b20858c714144be
 	;;
 esac
@@ -47,14 +47,10 @@ do_install() {
 
 	# Blacklist OSS broadcom modules.
 	vmkdir usr/lib/modprobe.d
-	echo "blacklist b43" > ${DESTDIR}/usr/lib/modprobe.d/wl.conf
-	echo "blacklist b43legacy" >> ${DESTDIR}/usr/lib/modprobe.d/wl.conf
-	echo "blacklist ssb" >> ${DESTDIR}/usr/lib/modprobe.d/wl.conf
-	echo "blacklist bcm43xx" >> ${DESTDIR}/usr/lib/modprobe.d/wl.conf
-	echo "blacklist brcm80211" >> ${DESTDIR}/usr/lib/modprobe.d/wl.conf
-	echo "blacklist brcmfmac" >> ${DESTDIR}/usr/lib/modprobe.d/wl.conf
-	echo "blacklist brcmsmac" >> ${DESTDIR}/usr/lib/modprobe.d/wl.conf
-	echo "blacklist bcma" >> ${DESTDIR}/usr/lib/modprobe.d/wl.conf
+	printf '' > ${DESTDIR}/usr/lib/modprobe.d/wl.conf
+	for module in b43{,legacy} ssb bcm{43xx,a} brcm{80211,fmac,smac}; do
+		echo "blacklist $module" >> ${DESTDIR}/usr/lib/modprobe.d/wl.conf
+	done
 
 	chmod 644 ${DESTDIR}/usr/lib/modprobe.d/wl.conf
 }

@@ -1,10 +1,11 @@
 # Template file for 'oracle-jdk'
 pkgname=oracle-jdk
-version=8u91
+version=8u152
 revision=1
 
-_build=14
+_build=16
 _longVersion=1.${version%u*}.0_${version#*u}
+_tag=aa0333dd3019491ca4f6ddbe78cdb6d0
 
 short_desc="Java Development Kit (JDK)"
 maintainer="Enno Boland <gottox@voidlinux.eu>"
@@ -22,22 +23,22 @@ case "${XBPS_TARGET_MACHINE}" in
 x86_64)
 	_arch=amd64
 	_filename=jdk-${version}-linux-x64.tar.gz
-	checksum="6f9b516addfc22907787896517e400a62f35e0de4a7b4d864b26b61dbe1b7552"
+	checksum=218b3b340c3f6d05d940b817d0270dfe0cfd657a636bad074dcabe0c111961bf
 	;;
 i686)
 	_arch=i386
 	_filename=jdk-${version}-linux-i586.tar.gz
-	checksum="5ecd05b5e566cbe688fc1e3159f04004ccad14d4faa3f50d15ffba1d50b4cd52"
+	checksum=fc60b121d4b194fa70084fd0ca0d69e8b78e5db01a071efe200e90eed83c4c3e
 	;;
 arm*)
 	_arch=arm
 	_filename=jdk-${version}-linux-arm32-vfp-hflt.tar.gz
-	checksum="79dda1dec6ccd7130b5204e75d1a8300e5b02c18f70888697f51764a777e5339"
+	checksum=35ab532355c72310c4c7add2b7c7f9d1eb0e045cf59d3fd69ee08fa6a9e610f0
 	;;
 aarch64)
 	_arch=aarch64
 	_filename=jdk-${version}-linux-arm64-vfp-hflt.tar.gz
-	checksum="3dededc2e31bfda0a129b1df394e37078f339aa99e82e56d35cabff28ccfeb3b"
+	checksum=732609dd090a7d20e09b48b90f8f447497879bb6da1b786a9dd1ea6e91ea178f
 	;;
 esac
 
@@ -95,8 +96,7 @@ alternatives="
 
  java-plugin:/usr/lib/mozilla/plugins/libnpjp2.so:/usr/lib/jvm/jdk${_longVersion}/jre/lib/$_arch/libnpjp2.so
 "
-
-distfiles="http://download.oracle.com/otn-pub/java/jdk/${version}-b${_build}/${_filename}"
+distfiles="http://download.oracle.com/otn-pub/java/jdk/${version}-b${_build}/$_tag/${_filename}"
 wrksrc="jdk$_longVersion"
 
 do_fetch() {
@@ -124,10 +124,9 @@ do_build() {
 }
 
 do_install() {
-	vmkdir "usr/share/licenses/${pkgname}"
 	vinstall oracle-jdk-vars.sh 644 "usr/lib/jvm/"
 
-	vinstall LICENSE 644 "usr/share/licenses/${pkgname}"
+	vlicense LICENSE
 	vinstall $FILESDIR/java-policy-settings.desktop 644 usr/share/applications
 	ln -s jdk${_longVersion} ${DESTDIR}/usr/lib/jvm/oracle-jdk
 

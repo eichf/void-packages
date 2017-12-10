@@ -1,33 +1,47 @@
 # Template file for 'python-Jinja2'
 pkgname=python-Jinja2
-version=2.8
+version=2.10
 revision=1
 noarch=yes
 wrksrc="Jinja2-${version}"
 build_style=python-module
-python_versions="2.7 3.4"
 pycompile_module="jinja2"
-hostmakedepends="python-setuptools python3.4-setuptools"
+hostmakedepends="python-setuptools python3-setuptools"
+checkdepends="python-MarkupSafe python3-MarkupSafe python-pytest python3-pytest"
 depends="python-MarkupSafe"
-short_desc="A full featured template engine for Python2"
+short_desc="Full featured template engine (Python2)"
 maintainer="Alessio Sergi <al3hex@gmail.com>"
 homepage="http://jinja.pocoo.org/"
-license="BSD"
+license="3-clause-BSD"
 distfiles="${PYPI_SITE}/J/Jinja2/Jinja2-${version}.tar.gz"
-checksum=bc1ff2ff88dbfacefde4ddde471d1417d3b304e8df103a7a9437d47269201bf4
+checksum=f84be1bb0040caca4cea721fcbbbbd61f9be9464ca236387158b0feea01914a4
+
+do_check() {
+	python2 -m pytest tests/
+	python3 -m pytest tests/
+}
 
 post_install() {
 	vlicense LICENSE
+	# these files are valid only on Python 3.6+
+	rm -f ${DESTDIR}/${py2_sitelib}/jinja2/asyncsupport.py
+	rm -f ${DESTDIR}/${py2_sitelib}/jinja2/asyncfilters.py
 }
 
-python3.4-Jinja2_package() {
+python3-Jinja2_package() {
 	noarch=yes
-	depends="python3.4-MarkupSafe"
-	pycompile_version="3.4"
+	depends="python3-MarkupSafe"
+	replaces="python3.4-Jinja2>=0"
 	pycompile_module="jinja2"
-	short_desc="${short_desc/Python2/Python3.4}"
+	short_desc="${short_desc/Python2/Python3}"
 	pkg_install() {
-		vmove usr/lib/python3.4
+		vmove usr/lib/python3*
 		vlicense LICENSE
 	}
+}
+python3.4-Jinja2_package() {
+	noarch=yes
+	build_style=meta
+	short_desc="${short_desc/Python2/Python3.4} (transitional dummy package)"
+	depends="python3-Jinja2>=${version}_${revision}"
 }

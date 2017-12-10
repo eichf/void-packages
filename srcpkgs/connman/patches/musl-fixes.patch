@@ -38,36 +38,6 @@ index e111150..ee4dc43 100644
  static const DHCPOption client_options[] = {
  	{ OPTION_IP,			0x01 }, /* subnet-mask */
  	{ OPTION_IP | OPTION_LIST,	0x03 }, /* routers */
-diff --git a/src/log.c b/src/log.c
-index a693bd0..9054462 100644
---- src/log.c
-+++ src/log.c
-@@ -30,7 +30,9 @@
- #include <stdlib.h>
- #include <string.h>
- #include <syslog.h>
-+#ifdef HAVE_EXECINFO_H
- #include <execinfo.h>
-+#endif
- #include <dlfcn.h>
- 
- #include "connman.h"
-@@ -112,6 +114,7 @@ void connman_debug(const char *format, ...)
- 
- static void print_backtrace(unsigned int offset)
- {
-+#ifdef HAVE_EXECINFO_H
- 	void *frames[99];
- 	size_t n_ptrs;
- 	unsigned int i;
-@@ -210,6 +213,7 @@ static void print_backtrace(unsigned int offset)
- 
- 	close(outfd[1]);
- 	close(infd[0]);
-+#endif /* HAVE_EXECINFO_H */
- }
- 
- static void signal_handler(int signo)
 diff --git a/tools/dhcp-test.c b/tools/dhcp-test.c
 index c34e10a..eae66fc 100644
 --- tools/dhcp-test.c
@@ -194,3 +164,25 @@ index c34e10a..eae66fc 100644
  struct in6_pktinfo {
  	struct in6_addr ipi6_addr;  /* src/dst IPv6 address */
  	unsigned int ipi6_ifindex;  /* send/recv interface index */
+--- src/inet.c	2016-04-18 09:04:30.000000000 +0200
++++ src/inet.c	2017-07-10 16:25:33.100118139 +0200
+@@ -21,6 +21,11 @@
+  *
+  */
+ 
++#if !defined(__GLIBC__)
++/* Prevent inclusion of /usr/include/netinet/if_ether.h */
++#define _NETINET_IF_ETHER_H
++#endif
++
+ #ifdef HAVE_CONFIG_H
+ #include <config.h>
+ #endif
+@@ -34,6 +39,7 @@
+ #include <sys/stat.h>
+ #include <sys/ioctl.h>
+ #include <sys/socket.h>
++#include <linux/if_ether.h>
+ #include <linux/sockios.h>
+ #include <netdb.h>
+ #include <arpa/inet.h>

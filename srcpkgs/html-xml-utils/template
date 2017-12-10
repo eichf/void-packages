@@ -1,14 +1,14 @@
 # Template file for 'html-xml-utils'
 pkgname=html-xml-utils
-version=7.0
+version=7.4
 revision=1
 build_style=gnu-configure
 short_desc="A number of simple utilities for manipulating HTML and XML files"
-maintainer="Michael Gehring <mg@ebfe.org>"
+maintainer="Orphaned <orphan@voidlinux.eu>"
 license="custom"
 homepage="https://www.w3.org/Tools/HTML-XML-utils/README"
 distfiles="https://www.w3.org/Tools/HTML-XML-utils/${pkgname}-${version}.tar.gz"
-checksum=e7d30de4fb4731f3ecd4622ac30db9fb82e1aa0ab190ae13e457360eea9460b0
+checksum=2541c3e1f22f0bb2e66e846f8e4fd3afb95b80ce71d37853fb962ba7a1caef12
 
 post_install() {
 	rm ${DESTDIR}/usr/share/doc/html-xml-utils/COPYING

@@ -1,7 +1,7 @@
 # Template file for 'hub'
 pkgname=hub
-version=2.2.3
-revision=2
+version=2.2.9
+revision=7
 build_style=go
 go_import_path="github.com/github/hub"
 hostmakedepends="git"
@@ -10,11 +10,7 @@ distfiles="https://github.com/github/hub/archive/v${version}.tar.gz"
 short_desc="Command line tool for Github"
 maintainer="Enno Boland <gottox@voidlinux.eu>"
 license="MIT"
-checksum=f8a43df60b2efd95c70054324e73f27c3b253ec1c4969de8ea6c514669c688ed
-
-pre_build() {
-	export GO15VENDOREXPERIMENT=1
-}
+checksum=b3f949c4500288a18ed68c38755962c9571c9e10063fb77583a19d0fcca5ecdf
 
 post_install() {
 	vman man/${pkgname}.1

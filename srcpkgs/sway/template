@@ -1,18 +1,18 @@
 # Template file for 'sway'
 pkgname=sway
-version=0.6
+version=0.15.0
 revision=1
 build_style=cmake
 configure_args="-DCMAKE_INSTALL_SYSCONFDIR=/etc"
 hostmakedepends="asciidoc pkg-config wayland-devel"
-makedepends="wlc-devel gdk-pixbuf-devel json-c-devel pango-devel pam-devel"
+makedepends="libcap-devel wlc-devel gdk-pixbuf-devel json-c-devel pango-devel pam-devel"
 conf_files="/etc/sway/config /etc/pam.d/swaylock"
-short_desc="i3 compatible window manager for Wayland"
+short_desc="An i3-compatible window manager for Wayland"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="MIT"
 homepage="http://swaywm.org"
 distfiles="https://github.com/SirCmpwn/sway/archive/${version}.tar.gz"
-checksum=a9159033ca3e976383cc9485bcb10fe89485711c4577d8c7414d8f23c56e54ea
+checksum=4fe62708feb9c3bfc53d5a8133a992078f8a5216581b5e4a519fbef620f9762c
 
 post_install() {
 	vlicense LICENSE

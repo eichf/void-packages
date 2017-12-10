@@ -1,12 +1,11 @@
 # Template file for 'python-decorator'
 pkgname=python-decorator
-version=4.0.9
-revision=1
+version=4.1.2
+revision=2
 noarch=yes
 wrksrc="decorator-${version}"
 build_style=python-module
-python_versions="2.7 3.4"
-hostmakedepends="python-setuptools python3.4-setuptools"
+hostmakedepends="python-setuptools python3-setuptools"
 depends="python"
 pycompile_module="decorator.py"
 short_desc="Python2 decorator module"
@@ -14,20 +13,26 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="https://github.com/micheles/decorator"
 license="2-clause-BSD"
 distfiles="${PYPI_SITE}/d/decorator/decorator-${version}.tar.gz"
-checksum=90022e83316363788a55352fe39cfbed357aa3a71d90e5f2803a35471de4bba8
+checksum=7cb64d38cb8002971710c8899fbdfb859a23a364b7c99dab19d1f719c2ba16b5
 
 post_install() {
 	vlicense LICENSE.txt LICENSE
 }
 
-python3.4-decorator_package() {
+python3-decorator_package() {
 	noarch=yes
-	depends="python3.4"
-	pycompile_version="3.4"
+	depends="python3"
 	pycompile_module="decorator.py"
-	short_desc="${short_desc/Python2/Python3.4}"
+	replaces="python3.4-decorator>=0"
+	short_desc="${short_desc/Python2/Python3}"
 	pkg_install() {
-		vmove usr/lib/python3.4
+		vmove usr/lib/python3*
 		vlicense LICENSE.txt LICENSE
 	}
+}
+python3.4-decorator_package() {
+	noarch=yes
+	build_style=meta
+	short_desc="${short_desc/Python2/Python3.4} (transitional dummy package)"
+	depends="python3-decorator>=${version}_${revision}"
 }

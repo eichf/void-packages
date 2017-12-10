@@ -1,0 +1,13 @@
+# Template file for 'kapow'
+pkgname=kapow
+version=1.5.4
+revision=1
+build_style=qmake
+hostmakedepends="pkg-config qt5-qmake qt5-tools-devel"
+makedepends="qt5-devel"
+short_desc="Simple punch-clock style time tracker"
+maintainer="Jakub Skrzypnik <jakub.skrzypnik@interia.pl>"
+license="GPL-3"
+homepage="https://gottcode.org/kapow/"
+distfiles="https://gottcode.org/${pkgname}/${pkgname}-${version}-src.tar.bz2"
+checksum=c2dc66cf90c6397d6fd23f16e51c4bbdea3bbfe9d4ecbde6605f651f2853060b

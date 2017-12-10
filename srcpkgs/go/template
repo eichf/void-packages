@@ -1,22 +1,26 @@
 # Template file for 'go'
 pkgname=go
 _bootstrap_version=1.4.2
-version=1.6.2
+version=1.9.2
 revision=1
 wrksrc=go
 hostmakedepends="git ca-certificates"
 short_desc="The Go Programming Language"
-maintainer="Dominik Honnef <dominik@honnef.co>"
+maintainer="Orphaned <orphan@voidlinux.eu>"
 homepage="http://golang.org/"
 license="BSD"
-distfiles="http://golang.org/dl/go${_bootstrap_version}.src.tar.gz
- http://golang.org/dl/go${version}.src.tar.gz"
+distfiles="https://golang.org/dl/go${_bootstrap_version}.src.tar.gz
+ https://golang.org/dl/go${version}.src.tar.gz"
 checksum="299a6fd8f8adfdce15bc06bde926e7b252ae8e24dd5b16b7d8791ed79e7b5e9b
- 787b0b750d037016a30c6ed05a8a70a91b2e9db4bd9b1a2453aa502a63f1bccc"
+ 665f184bf8ac89986cfd5a4460736976f60b57df6b320ad71ad4cef53bb143dc"
 
 nostrip=yes
 noverifyrdeps=yes
 nopie=yes
+
+# https://github.com/voidlinux/xbps/issues/258
+hostmakedepends+=" wget"
+XBPS_FETCH_CMD=wget
 
 _go_targetarch() {
 	local hostarch targetarch
@@ -27,6 +31,7 @@ _go_targetarch() {
 		x86_64*) export hostarch=amd64;;
 	esac
 	case "$XBPS_TARGET_MACHINE" in
+		aarch64*) targetarch=arm64;;
 		arm*) targetarch=arm;;
 		i686*) targetarch=386;;
 		x86_64*) targetarch=amd64;;
@@ -42,6 +47,18 @@ do_extract() {
 
 	tar -xf "${XBPS_SRCDISTDIR}/${pkgname}-${version}/go${version}.src.tar.gz" \
 		-C "${XBPS_BUILDDIR}/go" --strip-components=1
+
+	# Fix gcc6 warnings regarding signed shift left
+	sed -i ${XBPS_BUILDDIR}/go_bootstrap/src/cmd/6c/txt.c \
+		-e's;f->vconst |= (vlong)~0 << 32;f->vconst = (vlong)(~0ull << 32);'
+	sed -i ${XBPS_BUILDDIR}/go_bootstrap/src/cmd/8g/ggen.c \
+		-e's;-1LL<<(t->width\*8-1);~0ULL<<(t->width*8-1);'
+
+	# Disable gcc7 fallthrough warnings
+	sed -i ${XBPS_BUILDDIR}/go_bootstrap/src/make.bash \
+		-e's;-Werror;-Werror -Wimplicit-fallthrough=0;'
+	sed -i ${XBPS_BUILDDIR}/go_bootstrap/src/cmd/dist/build.c \
+		-e's;"-Werror",;"-Werror", "-Wimplicit-fallthrough=0",;'
 }
 
 do_build() {
@@ -67,6 +84,9 @@ do_build() {
 	GOOS=linux
 	GOARCH=arm
 	bash make.bash --no-clean
+	GOOS=linux
+	GOARCH=arm64
+	bash make.bash --no-clean
 	for os in darwin freebsd linux windows; do
 		for arch in 386 amd64; do
 			GOARCH=$arch
@@ -79,12 +99,10 @@ do_build() {
 	GOARCH=$targetarch
 
 	git clone https://go.googlesource.com/tools \
-		-b release-branch.go$(echo "$version" | cut -d "." -f "1-2") \
+		-b release-branch.go$(echo "${version}" | cut -d "." -f "1-2") \
 		$GOPATH/src/golang.org/x/tools
 
-	for tool in godoc cover; do
-		$GOROOT/bin/go install golang.org/x/tools/cmd/${tool}
-	done
+	$GOROOT/bin/go install golang.org/x/tools/cmd/godoc
 }
 
 do_install() {
@@ -92,6 +110,7 @@ do_install() {
 
 	if [ "$CROSS_BUILD" ]; then
 		case "$XBPS_TARGET_MACHINE" in
+			aarch64*) bindir=bin/linux_arm64;;
 			arm*) bindir=bin/linux_arm;;
 			i686*) bindir=bin/linux_386;;
 			x86_64*) bindir=bin/linux_amd64;;
@@ -118,7 +137,12 @@ do_install() {
 	#
 	ln -sf /usr/bin ${DESTDIR}/usr/lib/go/bin
 
+	# <dominikh> sigh. well, someone fix the template and add
+	# a symlink, usr/lib/go/misc -> /usr/share/go/misc
+	ln -sfr ${DESTDIR}/usr/share/go/misc ${DESTDIR}/usr/lib/go/misc
+
 	# For godoc
+	vbin ${XBPS_BUILDDIR}/go_gopath/${bindir}/godoc
 	vinstall favicon.ico 644 usr/lib/go
 
 	rm -f ${DESTDIR}/usr/share/go/doc/articles/wiki/get.bin

@@ -1,38 +1,41 @@
 # Template file for 'flightgear'
 pkgname=flightgear
-version=3.4.0
-revision=3
+version=2017.3.1
+revision=2
 build_style=cmake
-configure_args="-DFG_DATA_DIR:STRING=/usr/share/flightgear/fgdata"
-hostmakedepends="cmake fltk pkg-config"
-makedepends="MesaLib-devel boost-devel freealut-devel glu-devel libfreeglut-devel fltk-devel
- libopenal-devel libgsm-devel speex-devel sqlite-devel osg-devel plib-devel simgear
- $(vopt_if qt qt5-devel)"
+configure_args="-DFG_DATA_DIR:STRING=/usr/share/flightgear/fgdata -DSYSTEM_SQLITE=1"
+hostmakedepends="fltk pkg-config"
+makedepends="MesaLib-devel boost-devel freealut-devel libfreeglut-devel fltk-devel
+ libgsm-devel glew-devel speex-devel sqlite-devel osg-devel plib-devel libcurl-devel
+ simgear $(vopt_if qt 'qt5-devel qt5-declarative-devel')"
 depends="flightgear-data>=${version}"
-short_desc="Sophisticated flight wimulator"
+short_desc="Sophisticated flight simulator"
 maintainer="Jürgen Buchmüller <pullmoll@t-online.de>"
 license="GPL-3"
 homepage="http://www.flightgear.org/"
+#_mirror=http://mirror.netcologne.de/gentoo/distfiles
 distfiles="
- http://ftp.igh.cnrs.fr/pub/flightgear/ftp/Source/flightgear-${version}.tar.bz2
- http://ftp.igh.cnrs.fr/pub/flightgear/ftp/Shared/FlightGear-data-${version}.tar.bz2"
+ $SOURCEFORGE_SITE/project/flightgear/release-${version%.*}/${pkgname}-${version}.tar.bz2
+ $SOURCEFORGE_SITE/project/flightgear/release-${version%.*}/FlightGear-${version}-data.tar.bz2"
 checksum="
- b5645d05b50728a89f091292bc557f440d8f8719dd9cebf7f5bf3fa8ea795780
- 8cefa7c323d974d8e51fd23c97ae79dc731e65b81e1729cb1bc9bc1f99df128b"
+ 6f2e1d992e2f202b8f9c918c9fb19124ef06824ea0e767e2f4dff6ba43728ccd
+ df08b06e88a29a9f80f29186afd54d278636a663281a1b68e8f484bbb403d898"
+
+nocross=https://build.voidlinux.eu/builders/armv7l-musl_builder/builds/4773/steps/shell_3/logs/stdio
 
 build_options="qt"
+build_options_default="qt"
 if [ "$CROSS_BUILD" ]; then
-	configure_args+=" -DSIMGEAR_COMPILE_TEST_EXITCODE=0"
-else
-	build_options_default="qt"
+	hostmakedepends+=" qt5-host-tools $(vopt_if qt 'qt5-devel qt5-declarative-devel')"
 fi
+# Suppress warnings regarding auto_ptr
+CXXFLAGS="-Wno-deprecated-declarations"
 
 post_install() {
-	vinstall package/flightgear.desktop 644 usr/share/applications
+	vinstall package/org.flightgear.FlightGear.desktop 644 usr/share/applications
 	vinstall package/flightgear.ico 644 usr/share/icons
 	vinstall ${FILESDIR}/flightgear.png 644 usr/share/pixmaps
-	vinstall scripts/completion/fg-completion.bash 644 usr/share/bash-completion/completions/fgfs
-	sed -i ${DESTDIR}/usr/share/applications/flightgear.desktop \
+	sed -i ${DESTDIR}/usr/share/applications/*.desktop \
 		-e "s;Exec=.*;Exec=fgfs --fg-root=/usr/share/flightgear/fgdata;"
 }
 

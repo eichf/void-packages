@@ -1,16 +1,17 @@
 # Template file for 'apache-ant'
 pkgname="apache-ant"
-version=1.9.7
+version=1.10.1
 revision=1
 short_desc="Java library and command-line tool that help building software"
 maintainer="Enno Boland <gottox@voidlinux.eu>"
 license="Apache License"
 homepage="http://ant.apache.org"
 distfiles="http://mirror.dkd.de/apache/ant/source/apache-ant-${version}-src.tar.bz2"
-checksum=9e5c36759b81e0b16f2f1747631e81dc86fe904e45b413a6ca15d10b3282ab0b
+checksum=d5e3d87f0b4b42e0505b44215b4c4bbfaf6f49655c0a530136adfe4e724363b4
 hostmakedepends="openjdk"
 depends="virtual?java-runtime"
 noarch="yes"
+nocross=yes
 _prefix=usr/share/apache-ant
 
 do_configure() {

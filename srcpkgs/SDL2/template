@@ -1,19 +1,19 @@
 # Template file for 'SDL2'
 pkgname=SDL2
-version=2.0.4
-revision=1
+version=2.0.7
+revision=2
 build_style=gnu-configure
 configure_args="--enable-alsa --disable-esd --disable-rpath --enable-libudev
  --enable-clock_gettime --disable-nas --disable-arts --disable-x11-shared
  --disable-alsa-shared --disable-pulseaudio-shared --enable-dbus"
 hostmakedepends="pkg-config nasm"
-makedepends="alsa-lib-devel dbus-devel eudev-libudev-devel libusb-compat-devel"
+makedepends="alsa-lib-devel dbus-devel eudev-libudev-devel libusb-compat-devel libsamplerate-devel"
 short_desc="Simple DirectMedia Layer (version 2)"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://www.libsdl.org/"
 license="zlib"
 distfiles="http://www.libsdl.org/release/${pkgname}-${version}.tar.gz"
-checksum=da55e540bf6331824153805d58b590a29c39d2d506c6d02fa409aedeab21174b
+checksum=ee35c74c4313e2eda104b14b1b86f7db84a04eeab9430d56e001cea268bf4d5e
 
 # Package build options
 build_options="gles opengl pulseaudio sndio wayland x11"
@@ -35,11 +35,11 @@ if [ "$build_option_gles" ]; then
 		# RaspberryPi, use Videocore IV
 		makedepends+=" rpi-userland-devel"
 		CFLAGS="-I${XBPS_CROSS_BASE}/opt/vc/include -I${XBPS_CROSS_BASE}/opt/vc/include/interface/vcos/pthreads"
-		LDFLAGS="-L${XBPS_CROSS_BASE}/opt/vc/lib"
+		LDFLAGS="-L${XBPS_CROSS_BASE}/opt/vc/lib -Wl,-rpath=/opt/vc/lib"
 		;;
 	*)
-		# libGLESv2.so.1 is dynamically loaded with dlopen.
-		shlib_requires="libGLESv2.so.1"
+		# libGLESv2.so.2 is dynamically loaded with dlopen.
+		shlib_requires="libGLESv2.so.2"
 		makedepends+=" glu-devel"
 		depends="libGLES"
 		;;
@@ -98,6 +98,7 @@ SDL2-devel_package() {
 	pkg_install() {
 		vmove usr/bin
 		vmove usr/include
+		vmove usr/lib/cmake
 		vmove usr/lib/pkgconfig
 		vmove "usr/lib/*.a"
 		vmove "usr/lib/*.so"

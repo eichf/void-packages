@@ -1,19 +1,22 @@
-# Template file for 'numix-themes'
 pkgname=numix-themes
-version=2.5.1
-revision=4
+version=2.6.7
+revision=1
+wrksrc="numix-gtk-theme-${version}"
 noarch=yes
-short_desc="A modern flat GTK3/Metacity/Xfwm theme"
-build_style=fetch
+build_style=gnu-makefile
+short_desc="A modern flat theme with a combination of light and dark elements"
 maintainer="Jakub Skrzypnik <jot.skrzyp@gmail.com>"
 license="GPL-3"
 depends="gtk+3 gtk-engine-murrine"
+hostmakedepends="glib-devel gdk-pixbuf-devel ruby-devel"
 homepage="https://github.com/numixproject/numix-gtk-theme"
-distfiles="${homepage}/archive/v${version}.tar.gz"
-checksum=f3202f016605d499b530d7ddb946b1275801e8498dc7fd607f5e272b7227cc78
+distfiles="${homepage}/archive/${version}.tar.gz"
+checksum=2b997ad3eee0b802d0dd49dd772127fd3c337cca32d8863efd4897928e38879a
 
-do_install() {
-	tar xzf v${version}.tar.gz
-	vmkdir usr/share/themes
-	vcopy numix-gtk-theme-${version} usr/share/themes/numix-gtk-theme
+pre_build() {
+	gem install sass
+}
+
+post_install() {
+	vlicense LICENSE
 }

@@ -1,0 +1,26 @@
+# Template file for 'telegraf'
+pkgname=telegraf
+version=1.4.3
+revision=2
+build_style="go"
+go_import_path="github.com/influxdata/telegraf"
+go_package="${go_import_path}/cmd/telegraf"
+go_ldflags="-X main.version=${version}"
+hostmakedepends="go-gdm git"
+system_accounts="_telegraf"
+short_desc="The plugin-driven server agent for collecting & reporting metrics"
+maintainer="Michael Aldridge <maldridge@VoidLinux.eu>"
+license="MIT"
+homepage="https://www.influxdata.com/time-series-platform/telegraf/"
+distfiles="https://github.com/influxdata/${pkgname}/archive/${version}.tar.gz"
+checksum=5c4833a2dbaddf3fa55b90a971b804934934f097c9c7d502615044853e472617
+
+pre_build() {
+	cd $GOSRCPATH
+	gdm restore
+}
+
+post_install() {
+	vlicense LICENSE
+	vsv ${pkgname}
+}

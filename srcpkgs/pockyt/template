@@ -1,19 +1,15 @@
 # Template file for 'pockyt'
 pkgname=pockyt
-version=0.9
+version=1.1
 revision=1
 noarch=yes
-build_style=python-module
+build_style=python2-module
 hostmakedepends="python-setuptools"
-depends="python-setuptools python-requests python-parse"
+depends="python-setuptools python-parse"
 pycompile_module="${pkgname}"
 short_desc="Automate and manage your pocket collection"
 maintainer="Eivind Uggedal <eivind@uggedal.com>"
 license="GPL-3"
 homepage="https://github.com/arvindch/pockyt"
 distfiles="${homepage}/archive/${version}.tar.gz"
-checksum=6448feb84e71f53b2bfde50f9d6e0673a58112b3e8e6e2744b9bd86923175c1e
-
-pre_build() {
-	sed -i 's/unicode_literals,//' setup.py
-}
+checksum=866d62499a92c6dcba26a0957766ef981556555bb09d548dbc103056815f159b

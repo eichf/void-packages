@@ -1,7 +1,7 @@
 # Template file for 'libmill'
 pkgname=libmill
-version=1.10
-revision=1
+version=1.18
+revision=2
 build_style=gnu-configure
 hostmakedepends="automake libtool"
 short_desc="Go-style concurrency in C"
@@ -9,17 +9,12 @@ maintainer="Duncaen <duncaen@voidlinux.eu>"
 license="MIT"
 homepage="http://libmill.org/"
 distfiles="https://github.com/sustrik/libmill/archive/${version}.tar.gz"
-checksum=1915b06eb175ae2c193cd376d800e11e72b02f21227ff45ee2b885416676a0d7
+checksum=ff6903cd05f45c4cc050921d03201a93d2723ab59c480eb924f8f1ca8c6f0614
 
 pre_configure() {
+	export CFLAGS="${CFLAGS/-D_FORTIFY_SOURCE=?/}"
 	autoreconf -fi
 }
-
-do_configure() {
-	export CFLAGS="${CFLAGS/-D_FORTIFY_SOURCE=?/}"
-	${configure_script} ${configure_args}
-}
-
 post_install() {
 	vlicense COPYING
 }

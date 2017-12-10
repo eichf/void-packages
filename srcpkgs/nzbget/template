@@ -1,6 +1,6 @@
 # Template file for 'nzbget'
 pkgname=nzbget
-version=16.4
+version=19.1
 revision=1
 build_style=gnu-configure
 configure_args="--with-tlslib=OpenSSL
@@ -11,11 +11,11 @@ configure_args="--with-tlslib=OpenSSL
 hostmakedepends="pkg-config"
 makedepends="libxml2-devel ncurses-devel libressl-devel"
 short_desc="Download from Usenet using .nzb files"
-maintainer="Christian Neukirchen <chneukirchen@gmail.com>"
+maintainer="Leah Neukirchen <leah@vuxu.org>"
 license="GPL-2"
 homepage="http://nzbget.net/"
 distfiles="https://github.com/${pkgname}/${pkgname}/releases/download/v${version}/${pkgname}-${version}-src.tar.gz"
-checksum=8e9e3ee75d2d08a8e438b2809f504a627a9334ed239579a540b75fa97bff4d0f
+checksum=06df42356ac2d63bbc9f7861abe9c3216df56fa06802e09e8a50b05f4ad95ce6
 
 post_extract() {
 	sed -i '1i#include <stdint.h>' daemon/remote/MessageBase.h

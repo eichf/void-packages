@@ -1,7 +1,7 @@
 # Template file for 'libu2f-host'
 pkgname=libu2f-host
-version=1.1.1
-revision=2
+version=1.1.4
+revision=1
 wrksrc="${pkgname}-${pkgname}-${version}"
 build_style=gnu-configure
 configure_args="--with-openssl=yes --with-udevrulesdir=/usr/lib/udev/rules.d"
@@ -12,10 +12,14 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="LGPL-2.1"
 homepage="https://developers.yubico.com/libu2f-host/"
 distfiles="https://github.com/Yubico/libu2f-host/archive/libu2f-host-${version}.tar.gz"
-checksum=3ba3cfe599a2c2a15b501b57467f8bb23fce959ca84b86c2be6dade2f899e72c
+checksum=b12026fd9ea5dc9d20e700ef599bdb0396e59a7fd2d632fb36f54da7c5276b15
 
 pre_configure() {
 	autoreconf -fi
+}
+
+post_install() {
+	sed -i 's:TAG+="uaccess":MODE="0660", GROUP="plugdev":' ${DESTDIR}/usr/lib/udev/rules.d/70-u2f.rules
 }
 
 libu2f-host-devel_package() {

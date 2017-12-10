@@ -1,7 +1,7 @@
-# Template build file for 'xorg-server'.
+# Template file for 'xorg-server'
 pkgname=xorg-server
-version=1.18.3
-revision=1
+version=1.19.5
+revision=3
 build_style=gnu-configure
 configure_args="--enable-ipv6 --enable-record --enable-xorg
  --enable-xnest --enable-xephyr --enable-composite --enable-xvfb
@@ -9,17 +9,17 @@ configure_args="--enable-ipv6 --enable-record --enable-xorg
  --enable-config-udev --enable-config-udev-kms
  --with-xkb-path=/usr/share/X11/xkb --with-xkb-output=/var/lib/xkb
  --with-fontrootdir=/usr/share/fonts/X11 --with-sha1=libcrypto
- --disable-dmx --disable-xfree86-utils --enable-kdrive-mouse
+ --enable-dmx --enable-kdrive-mouse
  --enable-kdrive --enable-kdrive-evdev --enable-kdrive-kbd
- --disable-linux-acpi --disable-linux-apm --enable-xwayland
+ --disable-linux-acpi --disable-linux-apm
  --enable-suid-wrapper --with-shared-memory-dir=/dev/shm
- --without-systemd-daemon"
+ --without-systemd-daemon --enable-xcsecurity"
 short_desc="The X11 server from X.org"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://xorg.freedesktop.org"
 license="MIT, BSD"
 distfiles="${XORG_SITE}/xserver/${pkgname}-${version}.tar.bz2"
-checksum=ea739c22517cdbe2b5f7c0a5fd05fe8a10ac0629003e71c0c7862f4bb60142cd
+checksum=18fffa8eb93d06d2800d06321fc0df4d357684d8d714315a66d8dfa7df251447
 
 lib32disabled=yes
 
@@ -33,23 +33,26 @@ makedepends="
  libXfont-devel libXmu-devel libXrender-devel libXfixes-devel libXi-devel
  libXaw-devel libdrm-devel libXtst-devel libXres-devel libxkbui-devel
  libxkbfile-devel libXxf86dga-devel libXv-devel pixman-devel libxshmfence-devel
- wayland-devel libepoxy-devel xcb-util-renderutil-devel"
+ wayland-devel wayland-protocols libepoxy-devel xcb-util-renderutil-devel
+ libXfont2-devel"
 # See hw/xfree86/common/xf86Module.h. Only care for the major version.
 depends="xkeyboard-config"
-provides="xserver-abi-extension-9_1 xserver-abi-input-22_1 xserver-abi-video-20_1 xf86-video-modesetting-1_1"
+provides="xserver-abi-extension-10_1 xserver-abi-input-24_1 xserver-abi-video-23_1 xf86-video-modesetting-1_1"
 replaces="xf86-video-modesetting>=0"
+subpackages="xorg-server-devel xorg-server-xdmx xorg-server-xephyr xorg-server-xnest xorg-server-xvfb xorg-server"
 
 case "$XBPS_TARGET_MACHINE" in
 i686*|x86_64*)
-	# Enable glamor/dri/opengl by default on x86.
-	configure_args+=" --enable-glamor --enable-dri2 --enable-dri3 --enable-glx"
+	# Enable glamor/dri/opengl/xwayland by default on x86.
+	configure_args+=" --enable-glamor --enable-dri2 --enable-dri3 --enable-glx --enable-xwayland"
 	makedepends+=" MesaLib-devel"
 	replaces+=" glamor-egl>=0"
+	subpackages+=" xorg-server-xwayland"
 	;;
 *)
 	# Enable dri2 on !x86 via libdri.
-	configure_args+=" --disable-glx --disable-dri --enable-dri2 --enable-dri3"
-	makedepends+=" dri2proto libdri2-devel-git"
+	configure_args+=" --disable-glx --disable-dri --enable-dri2 --enable-dri3 --disable-xwayland"
+	makedepends+=" MesaLib-devel dri2proto libdri2-devel-git"
 	;;
 esac
 
@@ -71,7 +74,6 @@ post_install() {
 		*-musl) vinstall ${FILESDIR}/20-modules.conf 644 usr/share/X11/xorg.conf.d;;
 	esac
 
-	vinstall ${FILESDIR}/30-nvidia-drm-outputclass.conf 644 usr/share/X11/xorg.conf.d
 	vinstall ${FILESDIR}/Xwrapper.config 644 etc/X11
 
 	vlicense COPYING
@@ -85,6 +87,19 @@ post_install() {
 	fi
 }
 
+xorg-server-xdmx_package() {
+	short_desc="Distributed multihead X server and utilities"
+	pkg_install() {
+		vmove usr/bin/*dmx*
+		vmove usr/share/man/man1/*dmx*
+	}
+}
+xorg-server-xwayland_package() {
+	short_desc="A nested X server that runs as a wayland client"
+	pkg_install() {
+		vmove usr/bin/Xwayland
+	}
+}
 xorg-server-xnest_package() {
 	short_desc="A nested X server that runs as an X application"
 	pkg_install() {

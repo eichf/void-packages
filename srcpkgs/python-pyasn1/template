@@ -1,33 +1,38 @@
 # Template file for 'python-pyasn1'
 pkgname=python-pyasn1
-version=0.1.9
+version=0.4.2
 revision=1
 noarch=yes
 wrksrc="pyasn1-${version}"
 build_style=python-module
-python_versions="2.7 3.4"
-hostmakedepends="python-setuptools python3.4-setuptools"
+hostmakedepends="python-setuptools python3-setuptools"
 depends="python"
 pycompile_module="pyasn1"
 short_desc="ASN.1 library for Python2"
 maintainer="Alessio Sergi <al3hex@gmail.com>"
-homepage="http://pyasn1.sourceforge.net/"
+homepage="https://github.com/etingof/pyasn1"
 license="2-clause-BSD"
 distfiles="${PYPI_SITE}/p/pyasn1/pyasn1-${version}.tar.gz"
-checksum=853cacd96d1f701ddd67aa03ecc05f51890135b7262e922710112f12a2ed2a7f
+checksum=d258b0a71994f7770599835249cece1caef3c70def868c4915e6e5ca49b67d15
 
 post_install() {
-	vlicense LICENSE.txt LICENSE
+	vlicense LICENSE.rst LICENSE
 }
 
+python3-pyasn1_package() {
+	noarch=yes
+	depends="python3"
+	pycompile_module="pyasn1"
+	replaces="python3.4-pyasn1>=0"
+	short_desc="${short_desc/Python2/Python3}"
+	pkg_install() {
+		vmove usr/lib/python3*
+		vlicense LICENSE.rst LICENSE
+	}
+}
 python3.4-pyasn1_package() {
 	noarch=yes
-	depends="python3.4"
-	pycompile_version="3.4"
-	pycompile_module="pyasn1"
-	short_desc="${short_desc/Python2/Python3.4}"
-	pkg_install() {
-		vmove usr/lib/python3.4
-		vlicense LICENSE.txt LICENSE
-	}
+	build_style=meta
+	short_desc="${short_desc/Python2/Python3.4} (transitional dummy package)"
+	depends="python3-pyasn1>=${version}_${revision}"
 }

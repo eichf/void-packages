@@ -1,10 +1,10 @@
 # Template file for 'innoextract'.
 pkgname=innoextract
 version=1.6
-revision=1
+revision=4
 build_style=cmake
 configure_args="-DCMAKE_INSTALL_PREFIX=/usr"
-hostmakedepends="cmake boost"
+hostmakedepends="boost"
 makedepends="boost-devel liblzma-devel"
 short_desc="A tool to unpack installers created by Inno Setup"
 maintainer="Antonio Malcolm <antonio@antoniomalcolm.com>"

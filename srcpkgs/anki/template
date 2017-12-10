@@ -1,16 +1,16 @@
 # Template file for 'anki'
 pkgname=anki
-version=2.0.35
+version=2.0.47
 revision=1
 noarch=yes
-depends="python-PyQt4 python-httplib2 python-SQLAlchemy"
+depends="python-PyQt4-webkit python-httplib2 python-SQLAlchemy"
 pycompile_dirs="/usr/share/anki/anki /usr/share/anki/aqt"
 short_desc="Spaced repetition flashcard program"
 maintainer="Steve Prybylski <sa.prybylx@gmail.com>"
 license="AGPL-3"
 homepage="http://ankisrs.net"
-distfiles="http://ankisrs.net/download/mirror/${pkgname}-${version}.tgz"
-checksum=bb8a229b85f551e2f69829f9ec8485633b739c701dabd0067acb06fe3b1af3b4
+distfiles="http://ankisrs.net/downloads/current/${pkgname}-${version}-source.tgz"
+checksum=fbb5356d642a94a2cb2fb7f949e6db7c8acbe322f38a18c0603ff88f5bd4eb18
 
 do_install() {
 	vmkdir usr/share/anki
@@ -32,4 +32,3 @@ do_install() {
 	vbin runanki anki
 	vman anki.1
 }
-

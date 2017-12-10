@@ -1,12 +1,12 @@
 # Template file for 'icoutils'
 pkgname=icoutils
-version=0.31.0
+version=0.32.2
 revision=1
 build_style=gnu-configure
 makedepends="libpng-devel"
 short_desc="Extracts and converts images in MS Windows icon and cursor files"
-maintainer="Eivind Uggedal <eivind@uggedal.com>"
-license="GPL-2"
+maintainer="Leah Neukirchen <leah@vuxu.org>"
+license="GPL-3"
 homepage="http://www.nongnu.org/icoutils/"
 distfiles="${NONGNU_SITE}/${pkgname}/${pkgname}-${version}.tar.bz2"
-checksum=a895d9d74a418d65d39a667e58ae38be79c9e726711384551d36531696f3af71
+checksum=e892affbdc19cb640b626b62608475073bbfa809dc0c9850f0713d22788711bd

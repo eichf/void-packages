@@ -1,9 +1,14 @@
 # Template file for 'libclc-git'
 pkgname=libclc-git
-version=20150912
+version=20170816
 revision=1
+_git_hash=b73df2910b8bd95a7942ba292c8daac7a7a15588
+wrksrc="libclc-${_git_hash}"
 build_style=configure
-hostmakedepends="git python libffi-devel libedit-devel zlib-devel llvm clang ncurses-devel"
+configure_script="./configure.py"
+configure_args="--prefix=/usr"
+hostmakedepends="clang libedit-devel libffi-devel llvm ncurses-devel
+ python zlib-devel"
 short_desc="Open implementation of the OpenCL C programming language"
 maintainer="John Galt <johngaltfirstrun@gmail.com>"
 license="BSD/MIT"
@@ -11,17 +16,13 @@ homepage="http://libclc.llvm.org"
 provides="libclc-${version}_${revision}"
 replaces="libclc>=0"
 noarch=yes
+distfiles="https://github.com/llvm-mirror/libclc/archive/${_git_hash}.tar.gz>${pkgname}-${version}.tar.gz"
+checksum=6c06526b530938a975de0fd64ee475cc01120e60365262af75494b50dbba5700
 
-do_fetch() {
-	local _githash="f9b8aac70c01a85cf70267320a97fe0c51fb15da"
-	local url="http://llvm.org/git/libclc.git"
-	msg_normal "Fetching source from $url ...\n"
-	git clone ${url} ${wrksrc}
-	cd ${wrksrc}
-	git checkout ${_githash}
-}
-do_configure() {
-	./configure.py --prefix=/usr
+pre_build() {
+	sed -i Makefile \
+		-e"s;/usr/bin/clang++;g++;g" \
+		-e"s;-mtune=i686;;g"
 }
 post_install() {
 	vlicense LICENSE.TXT

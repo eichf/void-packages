@@ -1,9 +1,9 @@
 # Template file for 'ogre'
 pkgname=libogre
 version=1.9.0
-revision=5
+revision=12
 build_style=cmake
-_hgrev=dd30349ea6670e3cd962d9d41a8039de3a3482d3
+_hgrev=108ab0bcc69603dba32c0ffd4bbbc39051f421c9
 configure_args="-DCMAKE_INSTALL_PREFIX=/usr \
 	-DOGRE_INSTALL_PLUGINS_HEADERS=TRUE \
 	-DOGRE_INSTALL_SAMPLES=TRUE \
@@ -11,21 +11,25 @@ configure_args="-DCMAKE_INSTALL_PREFIX=/usr \
 	-DOGRE_INSTALL_MEDIA=TRUE \
 	-DOGRE_INSTALL_SAMPLES_SOURCE=TRUE \
 	-DCMAKE_BUILD_TYPE=Release"
-hostmakedepends="cmake pkg-config graphviz doxygen dejavu-fonts-ttf"
+hostmakedepends="pkg-config graphviz doxygen dejavu-fonts-ttf"
 makedepends="boost-devel freetype-devel libXaw-devel libXrandr-devel
- MesaLib-devel zziplib-devel libcppunit-devel glu-devel libatomic-devel"
+ MesaLib-devel zziplib-devel libcppunit-devel glu-devel libatomic-devel
+ freeimage-devel"
 short_desc="Scene-oriented, flexible 3D engine"
 maintainer="Enno Boland <gottox@voidlinux.eu>"
 homepage="http://www.ogre3d.org"
 license="MIT"
 distfiles="https://bitbucket.org/sinbad/ogre/get/${_hgrev}.tar.gz"
-checksum=ead2baa807903b740e726ebf2f205ad2de9f9aacaeeae0a38fc3e29184f50f5d
+checksum=e14c80e7d6e3f6af8176f79009db6f7c6b5a32d951da6ecb745f505e13889bc6
 wrksrc="sinbad-ogre-${_hgrev:0:12}"
 make_build_target="all OgreDoc"
+
+CXXFLAGS="-fcheck-new -fno-delete-null-pointer-checks -fno-lifetime-dse"
 
 post_install() {
 	vmkdir /usr/share/doc
 	vcopy build/Docs /usr/share/doc/libogre
+	vlicense COPYING
 }
 
 libogre-devel_package() {

@@ -1,28 +1,31 @@
 # Template file for 'gnupg2'
 pkgname=gnupg2
-version=2.1.12
+version=2.2.3
 revision=1
 wrksrc="gnupg-${version}"
 build_style=gnu-configure
-configure_args="--sbindir=/usr/bin
+configure_args="
  --with-libgcrypt-prefix=${XBPS_CROSS_BASE}
  --with-ksba-prefix=${XBPS_CROSS_BASE}
  --with-npth-prefix=${XBPS_CROSS_BASE}
- --with-libassuan-prefix=${XBPS_CROSS_BASE}"
+ --with-libassuan-prefix=${XBPS_CROSS_BASE}
+ --enable-gpg-is-gpg2"
 hostmakedepends="pkg-config"
 makedepends="zlib-devel libldap-devel libcurl-devel readline-devel
  libusb-compat-devel libgpg-error-devel libgcrypt-devel libassuan-devel
- libksba-devel npth-devel gnutls-devel bzip2-devel sqlite-devel"
+ libksba-devel npth-devel gnutls-devel bzip2-devel sqlite-devel
+ libusb-compat-devel"
 depends="pinentry"
 short_desc="The GNU Privacy Guard (2.x)"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="GPL-3"
-homepage="http://www.gnupg.org/"
-distfiles="ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-${version}.tar.bz2"
-checksum=ac34929d2400a58a349963865442ee6cdd75e500a8d5df083d29835e88bfc506
+homepage="https://www.gnupg.org/"
+distfiles="https://gnupg.org/ftp/gcrypt/gnupg/gnupg-${version}.tar.bz2"
+checksum=cbd37105d139f7aa74f92b6f65d136658682094b0e308666b820ae4b984084b4
 
 pre_configure() {
 	sed -i '/^CFLAGS_orig=/d;/^CFLAGS=$/d' configure
+	sed -i '/examples\/systemd-user/d' doc/Makefile.in
 }
 post_install() {
 	# remove conflicts with gnupg 1.
@@ -32,4 +35,13 @@ post_install() {
 	mv ${DESTDIR}/usr/share/doc/gnupg/examples ${DESTDIR}/usr/share/examples/gnupg2
 
 	rm -rf ${DESTDIR}/usr/share/doc/gnupg
+}
+
+gnupg2-scdaemon_package() {
+	depends="${sourcepkg}>=${version}_${revision} libpcsclite"
+	short_desc+=" - smartcard daemon"
+	pkg_install() {
+		vmove usr/libexec/scdaemon
+		vmove usr/share/man/man1/scdaemon.1
+	}
 }

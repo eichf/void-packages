@@ -1,0 +1,17 @@
+# Template file for 'paper-icon-theme'
+pkgname=paper-icon-theme
+version=1.4.0
+revision=1
+noarch=yes
+short_desc="A modern freedesktop icon theme"
+build_style=gnu-configure
+maintainer="Satoshi Amemiya <amemiya@protonmail.com>"
+license="LGPL-3, CC-BY-SA-4.0"
+hostmakedepends="autoconf automake"
+homepage="https://github.com/snwh/${pkgname}"
+distfiles="${homepage}/archive/v${version}.tar.gz"
+checksum=b90f3a84634572bcba76cdd0c2a0d305a5c521c2054d3d390edffda5f233928b
+
+pre_configure() {
+	NOCONFIGURE=1 ./autogen.sh
+}

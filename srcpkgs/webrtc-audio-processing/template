@@ -1,18 +1,30 @@
 # Template file for 'webrtc-audio-processing'
 pkgname=webrtc-audio-processing
-version=0.1
+version=0.3
 revision=3
 build_style=gnu-configure
+patch_args="-p1"
 short_desc="AudioProcessing library based on Google's implementation of WebRTC"
+hostmakedepends="automake libtool"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="BSD"
 homepage="http://freedesktop.org/software/pulseaudio/webrtc-audio-processing"
-distfiles="$homepage/$pkgname-$version.tar.xz"
-checksum=ed4b52f9c2688b97628035a5565377d74704d7c04de4254a768df3342c7afedc
+distfiles="${homepage}/${pkgname}-${version}.tar.xz"
+checksum=756e291d4f557d88cd50c4fe3b8454ec238362d22cedb3e6173240d90f0a80fa
+
+case "$XBPS_TARGET_MACHINE" in
+	# Disable neon for the arm* architectures
+	arm*) configure_args+=" --enable-neon=no" ;;
+esac
+
+pre_configure() {
+	# Remove failing statement PKG_CHECK_MODULE(GNUSTL, gnustl)
+	sed -i configure.ac -e'/if test "x$with_gnustl" != "xno"; then/,+2d'
+	autoreconf -fi
+}
 
 post_install() {
-	vinstall COPYING 644 usr/share/licenses/${pkgname}
-	vinstall PATENTS 644 usr/share/licenses/${pkgname}
+	vlicense COPYING
 }
 
 webrtc-audio-processing-devel_package() {

@@ -1,25 +1,21 @@
 # Template file for 'mate-applets'
 pkgname=mate-applets
-version=1.14.0
+version=1.18.2
 revision=1
 build_style=gnu-configure
-configure_args="--with-gtk=3.0 --disable-static
- --enable-networkmanager --enable-ipv6"
+configure_args="--disable-static --enable-ipv6"
 hostmakedepends="pkg-config intltool itstool libxslt glib-devel"
 makedepends="libSM-devel gtk+3-devel libmate-panel-devel NetworkManager-devel
  mate-desktop-devel mate-settings-daemon-devel libgtop-devel libwnck-devel
  upower0-devel polkit-devel libxml2-devel libmateweather-devel libnotify-devel
- gtksourceview-devel mate-icon-theme"
-depends="mate-icon-theme upower0"
-pycompile_module="mate_invest"
+ gtksourceview-devel wireless_tools-devel mate-icon-theme"
+depends="mate-icon-theme"
 short_desc="Applets for MATE panel"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="LGPL-3"
 homepage="http://mate-desktop.org"
 distfiles="http://pub.mate-desktop.org/releases/${version%.*}/${pkgname}-${version}.tar.xz"
-checksum=fceb0781d4481e805beb280e90a0ee3dabeca2238fef2de391fb0631541cec9f
-
-replaces="mate-netspeed>=0"
+checksum=fc6166f062ad3a557eec001608556e6faaa6b5c4bc79673709543b6b85a1ac10
 
 case "$XBPS_TARGET_MACHINE" in
 	i686|x86_64)

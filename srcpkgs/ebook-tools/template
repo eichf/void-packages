@@ -1,9 +1,8 @@
 # Template file for 'ebook-tools'
 pkgname=ebook-tools
 version=0.2.2
-revision=1
+revision=2
 build_style=cmake
-hostmakedepends="cmake"
 makedepends="libxml2-devel libzip-devel"
 short_desc="Tools for accessing and converting various ebook file formats"
 maintainer="Diogo Leal <diogo@diogoleal.com>"

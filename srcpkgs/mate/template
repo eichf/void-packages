@@ -1,14 +1,14 @@
 # Template file for 'mate'.
 pkgname=mate
-version=1.14.0
-revision=3
+version=1.18.0
+revision=1
 build_style=meta
 depends="
+	mate-themes>=3.22
 	mate-user-guide>=${version}
 	mate-backgrounds>=${version}
 	mate-icon-theme>=${version}
 	mate-icon-theme-faenza>=${version}
-	mate-themes>=${version}
 	mate-menus>=${version}
 	mate-notification-daemon>=${version}
 	mate-polkit>=${version}
@@ -18,11 +18,11 @@ depends="
 	mate-control-center>=${version}
 	mate-panel>=${version}
 	mate-netbook>=${version}
+	mate-themes>=${version}
 	caja>=${version}
 	marco>=${version}
 	zenity
-	ConsoleKit2
-	upower0"
+	ConsoleKit2"
 short_desc="The MATE meta-package for Void Linux"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://www.mate-desktop.org"

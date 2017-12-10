@@ -1,33 +1,42 @@
 # Template file for 'znc'
 pkgname=znc
-version=1.6.3
-revision=3
+version=1.6.5
+revision=6
 build_style=gnu-configure
 configure_args="--enable-python --enable-perl --enable-tcl --enable-cyrus"
 hostmakedepends="pkg-config perl"
-makedepends="libressl-devel python3.4-devel tcl-devel libsasl-devel icu-devel zlib-devel perl"
+makedepends="libressl-devel python3-devel tcl-devel libsasl-devel icu-devel zlib-devel perl"
 short_desc="An advanced IRC Bouncer"
 maintainer="Duncaen <duncaen@voidlinux.eu>"
 license="Apache-2.0"
 homepage="http://znc.in/"
 distfiles="http://znc.in/releases/$pkgname-$version.tar.gz"
-checksum=631c46de76fe601a41ef7676bc974958e9a302b72b25fc92b4a603a25d89b827
+checksum=2f0225d49c53a01f8d94feea4619a6fe92857792bb3401a4eb1edd65f0342aca
 
 system_accounts="znc"
 znc_homedir="/var/lib/znc"
 make_dirs="/var/lib/znc 0750 znc znc"
 
-do_configure() {
+pre_configure() {
+	local perlprefix=${XBPS_STATEDIR}/perlprefix-${XBPS_TARGET_MACHINE}
+	mkdir -p $perlprefix
+	cp "$XBPS_CROSS_BASE/usr/lib/perl5/core_perl/Config"*.p? $perlprefix
+	cp "$XBPS_CROSS_BASE/usr/lib/perl5/core_perl/Errno.pm" $perlprefix
+	export PERL5LIB=$perlprefix
+
 	export TCL_FLAGS="$CFLAGS $LDFLAGS -ltcl8.6"
-	${configure_script} ${configure_args}
 }
+
 post_install() {
 	vsv znc
 }
 
-znc-python3.4_package() {
+znc-python3_package() {
+	replaces="znc-python3.4>=0"
 	depends="znc>=${version}_${revision}"
-	short_desc+=" - python3.4 plugin"
+	pycompile_version="$py3_ver"
+	pycompile_dirs="/usr/lib/znc/modpython"
+	short_desc+=" - python3 plugin"
 	pkg_install() {
 		vmove usr/lib/znc/modpython
 		vmove usr/lib/znc/modpython.so
@@ -57,4 +66,9 @@ znc-devel_package() {
 		vmove usr/include
 		vmove usr/lib/pkgconfig
 	}
+}
+znc-python3.4_package() {
+	build_style=meta
+	short_desc+=" - python3.4 plugin (transitional dummy package)"
+	depends="znc-python3>=${version}_${revision}"
 }

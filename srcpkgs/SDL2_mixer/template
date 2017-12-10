@@ -1,25 +1,46 @@
 # Template file for 'SDL2_mixer'
 pkgname=SDL2_mixer
-version=2.0.1
+version=2.0.2
 revision=1
 build_style=gnu-configure
-configure_args="--disable-static"
 hostmakedepends="pkg-config"
-makedepends="SDL2-devel libvorbis-devel libmikmod-devel libflac-devel smpeg-devel fluidsynth-devel"
+makedepends="SDL2-devel libvorbis-devel libmikmod-devel libflac-devel
+ libmodplug-devel mpg123-devel smpeg2-devel fluidsynth-devel"
 # The following deps are dlopen(3)ed at runtime.
-depends="libvorbis libmikmod smpeg libflac"
+depends="libvorbis libmikmod libmpg123 libmodplug libflac smpeg2"
 short_desc="Multi-channel audio mixer library (SDL 2.x)"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="BSD"
 homepage="http://www.libsdl.org/projects/SDL_mixer/"
 distfiles="http://www.libsdl.org/projects/SDL_mixer/release/$pkgname-$version.tar.gz"
-checksum=5a24f62a610249d744cbd8d28ee399d8905db7222bf3bdbc8a8b4a76e597695f
+checksum=4e615e27efca4f439df9af6aa2c6de84150d17cbfd12174b54868c12f19c83bb
+
+# Package build options
+build_options="gles"
+
+case "$XBPS_TARGET_MACHINE" in
+	arm*)
+		# Enable OpenGL/ES on rpi platforms
+		build_options_default="gles"
+		;;
+esac
+
+
+if [ "$build_option_gles" ]; then
+	case "$XBPS_TARGET_MACHINE" in
+	armv[67]*)
+		# RaspberryPi, use Videocore IV
+		makedepends+=" rpi-userland-devel"
+		LDFLAGS="-L${XBPS_CROSS_BASE}/opt/vc/lib -lbcm_host"
+		;;
+	esac
+fi
 
 pre_configure() {
 	sed -e "/CONFIG_FILE_ETC/s|/etc/timidity.cfg|/etc/timidity++/timidity.cfg|" \
 		-e "/DEFAULT_PATH/s|/etc/timidity|/etc/timidity++|" \
 		-e "/DEFAULT_PATH2/s|/usr/local/lib/timidity|/usr/lib/timidity|" \
-		-i timidity/config.h
+		-i timidity/options.h
 }
 
 post_install() {
@@ -33,5 +54,6 @@ SDL2_mixer-devel_package() {
 		vmove usr/include
 		vmove usr/lib/pkgconfig
 		vmove "usr/lib/*.so"
+		vmove "usr/lib/*.a"
 	}
 }

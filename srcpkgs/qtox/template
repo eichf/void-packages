@@ -1,35 +1,23 @@
 # Template file for 'qtox'
 pkgname=qtox
-version=1.3.0
+version=1.13.0
 revision=1
-build_style=qmake
+build_style=cmake
 short_desc="QT-based TOX instant messenger client"
 maintainer="Spencer Hill <spencernh77@gmail.com>"
 license="GPL-3"
 homepage="https://wiki.tox.chat/clients/qtox"
-hostmakedepends="qt5-qmake"
-makedepends="toxcore-devel-git filteraudio-devel-git ffmpeg-devel qt5-svg-devel
+hostmakedepends="qt5-qmake qt5-host-tools qt5-tools pkg-config"
+makedepends="toxcore-devel filter_audio-devel ffmpeg-devel qt5-svg-devel
  qt5-tools-devel libopencv-devel libopenal-devel libsodium-devel
  libXScrnSaver-devel gdk-pixbuf-devel gtk+-devel libvpx-devel qrencode-devel
- sqlcipher-devel"
+ sqlcipher-devel qt5-plugin-mysql qt5-plugin-odbc qt5-plugin-pgsql qt5-plugin-sqlite
+ qt5-plugin-tds opus-devel libexif-devel"
 depends="qt5-plugin-sqlite"
 distfiles="https://github.com/tux3/qTox/archive/v${version}.tar.gz"
-checksum=a2d1483a9aa6e99684853733a0a0a04c8cde168a775b9d2bdab94771fd82bc0a
+checksum=8a85b47f5a1033e997e16616ddeeb9af277b2f8ee3fe06cf5b9f3c8869a5d737
 wrksrc="qTox-${version}"
+case "$XBPS_TARGET_MACHINE" in
+	armv6*) broken="https://build.voidlinux.eu/builders/armv6l-musl_builder/builds/6098/steps/shell_3/logs/stdio"
+esac
 
-pre_configure() {
-	case "$XBPS_TARGET_MACHINE" in
-		*-musl)
-			configure_args+=" ENABLE_SYSTRAY_STATUSNOTIFIER_BACKEND=NO ENABLE_SYSTRAY_UNITY_BACKEND=NO ENABLE_SYSTRAY_GTK_BACKEND=NO"
-			;;
-	esac
-}
-
-do_install() {
-	vbin qtox
-	vinstall qTox.desktop 644 usr/share/applications
-	vinstall img/icons/qtox.svg 644 usr/share/icons/hicolor/scalable/apps
-	for _s in 14 16 22 24 32 36 48 64 72 96 128 192 256 512; do
-		vinstall "img/icons/qtox-${_s}x${_s}.png" 644 "/usr/share/icons/hicolor/${_s}x${_s}/apps" qtox.png
-	done
-}

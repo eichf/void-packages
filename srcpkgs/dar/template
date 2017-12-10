@@ -1,17 +1,28 @@
 # Template file for 'dar'
 pkgname=dar
-version=2.5.4
+version=2.5.13
 revision=1
 build_style=gnu-configure
 configure_args="--disable-upx --disable-build-html"
 conf_files="/etc/darrc"
+hostmakedepends="automake libtool pkg-config gettext-devel gpgme-devel"
 makedepends="acl-devel zlib-devel bzip2-devel lzo-devel liblzma-devel libgcrypt-devel e2fsprogs-devel"
 short_desc="Shell command that backs up directory trees and files"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="GPL-2"
 homepage="http://dar.linux.free.fr/"
 distfiles="${SOURCEFORGE_SITE}/dar/dar-${version}.tar.gz"
-checksum=856d3031c44743e5f4bb548ab059899ae0cb44852cd18e1e1677668dc18266ca
+checksum=729119784f86197542c2b3786a956b46384e2a85fc22a5e39d93d7c16969c6cf
+
+if [ -n "$CROSS_BUILD" ]; then
+	configure_args+=" --with-gpgme-prefix=${XBPS_CROSS_BASE}/usr"
+	configure_args+=" ac_cv_lib_gcrypt_gcry_check_version=false"
+	LDFLAGS="-L${XBPS_CROSS_BASE}/usr/lib -lgcrypt"
+fi
+
+pre_configure() {
+	autoreconf -fi
+}
 
 libdar_package() {
 	short_desc+=" - runtime library"

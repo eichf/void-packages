@@ -1,6 +1,6 @@
 # Template file for 'clinfo'
 pkgname=clinfo
-version=2.1.16.01.12
+version=2.2.17.10.25
 revision=1
 build_style=gnu-makefile
 makedepends="ocl-icd-devel"
@@ -9,9 +9,10 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="Public domain"
 homepage="https://github.com/Oblomov/clinfo"
 distfiles="${homepage}/archive/${version}.tar.gz"
-checksum=f92fc60f337ad86c8506d7d03358bf47980cb08fca1a0ca496b15282db59dea3
+checksum=23cab774915eea6730582abfc449ac57dc10f2ce7b39293e56166ed500383862
+conflicts="catalyst>0 catalyst-opencl>0" # /usr/bin/clinfo
 
 do_install() {
 	vbin clinfo
-	vman man/clinfo.1
+	vman man1/clinfo.1
 }

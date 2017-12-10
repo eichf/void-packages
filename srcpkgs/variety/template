@@ -1,0 +1,18 @@
+# Template file for 'variety'
+pkgname=variety
+version=0.6.6
+revision=1
+noarch=yes
+build_style=python2-module
+pycompile_module="jumble variety variety_lib"
+pycompile_dirs="usr/share/variety/plugins"
+hostmakedepends="python-distutils-extra intltool"
+depends="gtk+3 ImageMagick libgexiv2 libnotify python-BeautifulSoup4
+ python-configobj python-dbus python-gobject python-httplib2
+ python-Pillow python-curl python-requests"
+short_desc="Changes the wallpaper on a regular interval"
+maintainer="Diogo Leal <diogo@diogoleal.com>"
+license="GPL-3"
+homepage="https://launchpad.net/variety/"
+distfiles="https://launchpad.net/variety/trunk/${version}/+download/variety_${version}.tar.gz"
+checksum=ff43613fa94dfa39abb55b1b162bd5f05717a28f2605cc0aab872c47d122e9b8

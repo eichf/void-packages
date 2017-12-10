@@ -1,6 +1,6 @@
 # Template file for 'libressl'
 pkgname=libressl
-version=2.3.4
+version=2.5.5
 revision=1
 bootstrap=yes
 build_style=gnu-configure
@@ -9,7 +9,7 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="OpenSSL-License, SSLeay-License, ISC"
 homepage="http://www.libressl.org/"
 distfiles="http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/${pkgname}-${version}.tar.gz"
-checksum=7a1135b2620f78928e89538c211a4df1d9415994001d1e7c9178c6b6d72de6a9
+checksum=e57f5e3d5842a81fe9351b6e817fcaf0a749ca4ef35a91465edba9e071dce7c4
 
 provides="openssl-${version}_${revision}"
 replaces="openssl>=0"
@@ -38,27 +38,30 @@ post_install() {
 	find ${DESTDIR}/usr/share/man/man1 -type f ! -name openssl.1 -delete
 }
 
-libcrypto37_package() {
+libcrypto41_package() {
 	short_desc+=" - crypto library"
 	pkg_install() {
 		vmove usr/lib/libcrypto.so.*
 	}
 }
-libssl38_package() {
+
+libssl43_package() {
 	short_desc+=" - SSL/TLS library"
 	pkg_install() {
 		vmove usr/lib/libssl.so.*
 	}
 }
-libtls10_package() {
+
+libtls15_package() {
 	short_desc+=" - new TLS library"
 	pkg_install() {
 		vmove usr/lib/libtls.so.*
 	}
 }
+
 libressl-devel_package() {
 	short_desc+=" - development files"
-	depends="libcrypto37-${version}_${revision} libssl38-${version}_${revision} libtls10-${version}_${revision}"
+	depends="libcrypto41-${version}_${revision} libssl43-${version}_${revision} libtls15-${version}_${revision}"
 	pkg_install() {
 		vmove usr/include
 		vmove usr/lib/*.a
@@ -67,6 +70,7 @@ libressl-devel_package() {
 		vmove usr/share/man/man3
 	}
 }
+
 libressl-netcat_package() {
 	short_desc="TCP/IP swiss army knife (LibreSSL variant)"
 	alternatives="

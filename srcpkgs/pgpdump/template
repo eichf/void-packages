@@ -1,0 +1,15 @@
+# Template file for 'pgpdump'
+pkgname=pgpdump
+version=0.32
+revision=1
+build_style=gnu-configure
+short_desc="A PGP packet visualizer"
+maintainer="Michael Aldridge <maldridge@VoidLinux.eu>"
+license="3-cause-BSD"
+homepage="https://github.com/kazu-yamamoto/${pkgname}"
+distfiles="${homepage}/archive/v${version}.tar.gz"
+checksum=b5cad57a07ba221049b168dd3baae54b03c6fdedcb4e9ce32e48f88cab01c305
+
+post_install() {
+	vlicense COPYRIGHT
+}

@@ -1,37 +1,42 @@
 # Template file for 'python-Django'
 pkgname=python-Django
-version=1.8.13
+version=1.11.8
 revision=1
 noarch=yes
 wrksrc="Django-${version}"
 build_style=python-module
-python_versions="2.7 3.4"
 pycompile_module="django"
-hostmakedepends="python-setuptools python3.4-setuptools"
-depends="python-setuptools"
+hostmakedepends="python-setuptools python3-setuptools"
+depends="python-setuptools python-pytz"
 short_desc="High-level Python2 Web framework"
 maintainer="Eivind Uggedal <eivind@uggedal.com>"
 license="3-clause-BSD"
-homepage="http://www.djangoproject.com/"
+homepage="https://www.djangoproject.com/"
 distfiles="${PYPI_SITE}/D/Django/Django-${version}.tar.gz"
-checksum=128e8bdc11c69ea90f778435d38126453d3bf283dbd28cf15a33aa8e52245df4
-alternatives="django:django-admin:/usr/bin/django-admin2.7"
+checksum=fed3e79bb5a3a8d5eb054c7a1ec1de229ef3f43335a67821cc3e489e9582f711
+alternatives="django:django-admin:/usr/bin/django-admin2"
 
 post_install() {
 	vlicense LICENSE
 	rm -f ${DESTDIR}/usr/bin/django-admin.py*
 }
 
-python3.4-Django_package() {
+python3-Django_package() {
 	noarch=yes
-	pycompile_version="3.4"
 	pycompile_module="django"
-	depends="python3.4-setuptools"
-	short_desc="${short_desc/Python2/Python3.4}"
-	alternatives="django:django-admin:/usr/bin/django-admin3.4"
+	replaces="python3.4-Django>=0"
+	depends="python3-setuptools python3-pytz"
+	short_desc="${short_desc/Python2/Python3}"
+	alternatives="django:django-admin:/usr/bin/django-admin3"
 	pkg_install() {
-		vmove usr/bin/*3.4
-		vmove usr/lib/python3.4
+		vmove usr/bin/*3
+		vmove usr/lib/python3*
 		vlicense LICENSE
 	}
+}
+python3.4-Django_package() {
+	noarch=yes
+	build_style=meta
+	short_desc="${short_desc/Python2/Python3.4} (transitional dummy package)"
+	depends="python3-Django>=${version}_${revision}"
 }

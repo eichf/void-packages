@@ -1,14 +1,14 @@
 # Template file for 'linux4.1'
 pkgname=linux4.1
-version=4.1.23
+version=4.1.43
 revision=1
 wrksrc="linux-${version}"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
-homepage="http://www.kernel.org"
+homepage="https://www.kernel.org"
 license="GPL-2"
 short_desc="The Linux kernel and modules (${version%.*} series)"
 distfiles="${KERNEL_SITE}/kernel/v4.x/linux-${version}.tar.xz"
-checksum=15b13213052596f9af040dc25e01a88e950a0901cec38fabb8f38b6a661e8c74
+checksum=2c018c3f499fab25f8854734665dd44c56adcfba4291999f0aa31ca83110398a
 
 nocross=yes
 nodebug=yes
@@ -33,6 +33,8 @@ mutable_files="
  /usr/lib/modules/${_kernver}/modules.alias
  /usr/lib/modules/${_kernver}/modules.alias.bin
  /usr/lib/modules/${_kernver}/modules.devname"
+
+export CCACHE_DISABLE=1
 
 do_configure() {
 	# If there's a file called <arch>-dotconfig, use it to

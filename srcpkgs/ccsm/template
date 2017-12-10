@@ -1,0 +1,21 @@
+# Template file for 'ccsm' of Compiz Reloaded
+pkgname=ccsm
+version=0.8.14
+revision=1
+build_style=python2-module
+
+hostmakedepends="automake intltool libtool pkg-config python"
+makedepends="compiz-core-devel compizconfig-python python-cairo-devel pygtk-devel"
+depends="compizconfig-python python-cairo"
+
+short_desc="Compiz Configuration Seetings Manager for Compiz Reloaded"
+maintainer="CoolOhm <micvlas@gmail.com>"
+homepage="https://github.com/compiz-reloaded"
+license="GPL-2"
+distfiles="https://github.com/compiz-reloaded/ccsm/archive/v${version}.tar.gz>${pkgname}-${version}.tar.gz"
+checksum=74f2e3ab0f7334e1c2fe1ad54244399475f4ab90f999f86655f39f852a94b365
+
+if [ -z "$CROSS_BUILD" ]; then
+	depends+=" python-gobject"
+	makedepends+=" python-gobject-devel"
+fi

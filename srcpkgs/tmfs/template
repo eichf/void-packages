@@ -1,9 +1,9 @@
 # Template file for 'tmfs'
 pkgname=tmfs
 version=r5
-revision=1
+revision=4
 build_style=cmake
-hostmakedepends="cmake pkg-config"
+hostmakedepends="pkg-config"
 makedepends="fuse-devel boost-devel"
 short_desc="Apple Time Machine read-only mounting utility"
 maintainer="sth <sth@nvsbl.org>"

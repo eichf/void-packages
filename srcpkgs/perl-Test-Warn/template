@@ -1,11 +1,11 @@
 # Template build file for 'perl-Test-Warn'.
 pkgname=perl-Test-Warn
-version=0.30
-revision=4
+version=0.32
+revision=1
 wrksrc="${pkgname/perl-/}-${version}"
 build_style=perl-module
 hostmakedepends="perl"
-makedepends="${hostmakedepends} perl-Tree-DAG_Node"
+makedepends="${hostmakedepends} perl-Sub-Uplevel"
 depends="${makedepends}"
 noarch="yes"
 short_desc="Test::Warn - Perl extension to test methods for warnings"
@@ -13,4 +13,4 @@ maintainer="Christian Neukirchen <chneukirchen@gmail.com>"
 homepage="http://search.cpan.org/dist/Test-Warn"
 license="Artistic, GPL-1"
 distfiles="${CPAN_SITE}/Test/${pkgname/perl-/}-$version.tar.gz"
-checksum=8197555b94189d919349a03f7058f83861f145af9bee59f505bfe47562144e41
+checksum=2fc516e71f9ef453be22a4619d91eb3f78df414a57dfa0fd745d3bff50bf73d2

@@ -1,15 +1,16 @@
 # Template build file for 'perl-Exception-Class'.
 pkgname=perl-Exception-Class
-version=1.40
+version=1.43
 revision=1
 wrksrc="${pkgname#*-}-${version}"
 build_style=perl-module
 hostmakedepends="perl-Class-Data-Inheritable perl-Devel-StackTrace"
+makedepends="${hostmakedepends}"
 depends="${hostmakedepends}"
 noarch=yes
-short_desc='Exception::Class - allows you to declare real exception classes'
+short_desc='Allows you to declare real exception classes'
 maintainer="Enguerrand de Rochefort <voidlinux@rochefort.de>"
 homepage="https://metacpan.org/pod/Exception::Class"
 license="GPL-1, Artistic"
 distfiles="$CPAN_SITE/Exception/Exception-Class-${version}.tar.gz"
-checksum=d1171f2d03a485e87eb561f34688991c17b939d2689bcda47f3f51b372669a1f
+checksum=ff3b4b3f706e84aaa87ab0dee5cec6bd7a8fc9f72cf76d115212541fa0a13760

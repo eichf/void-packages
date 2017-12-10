@@ -1,20 +1,21 @@
 # Template file for 'seafile-libclient'
 pkgname=seafile-libclient
-version=5.1.1
+version=6.1.3
 revision=1
-wrksrc="${pkgname/-libclient/}-${version}"
+_distname="${pkgname/-libclient/}"
+wrksrc="${_distname}-${version}"
 build_style=gnu-configure
-configure_args="--disable-static --disable-server --enable-client --disable-fuse"
-hostmakedepends="automake libtool pkg-config python vala intltool libsearpc-codegen"
-makedepends="glib-devel sqlite-devel libressl-devel libevent-devel libuuid-devel
-		jansson-devel libsearpc-devel ccnet-devel libcurl-devel"
+configure_args="--disable-static"
+hostmakedepends="automake libtool pkg-config vala intltool libsearpc-codegen"
+makedepends="glib-devel sqlite-devel libressl-devel libevent-devel
+ jansson-devel libsearpc-devel ccnet-devel libcurl-devel libuuid-devel"
 depends="python"
 short_desc="Cloud storage system - client command-line and libraries"
 maintainer="yopito <pierre.bourgin@free.fr>"
 license="GPL-3"
-homepage="https://github.com/haiwen/${pkgname/-libclient/}"
-distfiles="https://github.com/haiwen/${pkgname/-libclient/}/archive/v${version}.tar.gz>${pkgname/-libclient/}-${version}.tar.gz"
-checksum=6b7cf0b82c30925911d13081e66affe56c979b3d33a656c19c1d935f3a6a8cf9
+homepage="https://github.com/haiwen/seafile"
+distfiles="${homepage}/archive/v${version}.tar.gz>${_distname}-${version}.tar.gz"
+checksum=bcd6e363dc3e1727b1cbf1c889724ffff6e4002c507745445d6fd623faf7d47e
 
 pre_configure() {
 	./autogen.sh
@@ -24,16 +25,16 @@ post_install() {
 	# remove server files
 	rm -rf "${DESTDIR}/usr/lib/python2.7/site-packages/seaserv"
 
-	vdoc "README.markdown"
+	vdoc README.markdown
 }
 
 seafile-libclient-devel_package() {
 	short_desc+=" - development files"
 	depends="seafile-libclient>=${version}_${revision} glib-devel libsearpc-devel jansson-devel"
 	pkg_install() {
-		vdoc "README.markdown"
-		vmove "usr/include"
-		vmove "usr/lib/*.so"
-		vmove "usr/lib/pkgconfig"
+		vdoc README.markdown
+		vmove usr/include
+		vmove usr/lib/*.so
+		vmove usr/lib/pkgconfig
 	}
 }

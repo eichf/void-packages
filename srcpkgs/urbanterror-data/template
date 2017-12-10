@@ -1,19 +1,19 @@
 # Template file for 'urbanterror-data'
 pkgname=urbanterror-data
-version=4.2.023
+version=4.3.2
 revision=1
 noarch=yes
-wrksrc="UrbanTerror42"
+wrksrc="UrbanTerror43"
 hostmakedepends="unzip"
 short_desc="Urbanterror data files"
-maintainer="Andrea Brancaleoni <miwaxe@gmail.com>"
+maintainer="Andrea Brancaleoni <abc@pompel.me>"
 license="Freeware"
 homepage="http://www.urbanterror.info"
-distfiles="http://cdn.urbanterror.info/urt/42/zips/UrbanTerror42_full${version##*.}.zip"
-checksum=e287e2a17432b81551f5c16e431d752484ce9be10508e756542f653757a29090
+distfiles="http://cdn.urbanterror.info/urt/43/releases/zips/UrbanTerror432_full.zip"
+checksum=74dee1566fa6cd0eb26d866149a1b6ad7e8f18a653693f02790c05ef7ce352a4
 
 do_install() {
 	vmkdir usr/share/urbanterror
 	vcopy q3ut4 usr/share/urbanterror
-	vlicense q3ut4/readme42.txt
+	vlicense q3ut4/readme43.txt
 }

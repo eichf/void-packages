@@ -1,0 +1,57 @@
+# Template file for 'neomutt'
+pkgname=neomutt
+version=20171208
+revision=1
+wrksrc="${pkgname}-${pkgname}-${version}"
+build_style=gnu-configure
+configure_script=./configure.autosetup
+configure_args="--ssl --gpgme --notmuch --gdbm --lua --sasl"
+hostmakedepends="libxslt docbook-xsl w3m tcl"
+makedepends="ncurses-devel gpgme-devel libidn-devel libressl-devel libsasl-devel
+ gdbm-devel aspell-devel libnotmuch-devel gettext-devel lua-devel"
+depends="mime-types"
+conf_files="/etc/neomuttrc"
+short_desc="Mutt with misc fixes and feature patches"
+maintainer="Toyam Cox <Vaelatern@voidlinux.eu>"
+license="GPL-2"
+homepage="http://www.neomutt.org"
+distfiles="https://github.com/neomutt/neomutt/archive/neomutt-${version}.tar.gz"
+checksum=9fdf28d73a893ad5dfc77f6d8662b599e92c73e6a7ff24c0db4673924e3dd735
+nocross="https://build.voidlinux.eu/builders/armv7l_builder/builds/5375 no longer gnu-configure, but needs /etc set correctly and also to know how to cross build documentation"
+
+# fix:
+if [ -n "${XBPS_CROSS_BASE}" ]; then
+	configure_args="${configure_args} --host=$XBPS_CROSS_TRIPLET"
+	configure_args="${configure_args} --build=$XBPS_TRIPLET"
+	configure_args="${configure_args} --with-lua=$XBPS_CROSS_BASE/"
+	configure_args="${configure_args} --with-ncurses=$XBPS_CROSS_BASE/"
+	configure_args="${configure_args} --with-notmuch=$XBPS_CROSS_BASE/"
+	configure_args="${configure_args} --with-ssl=$XBPS_CROSS_BASE/"
+	configure_args="${configure_args} --with-gdbm=$XBPS_CROSS_BASE/"
+	configure_args="${configure_args} --with-gpgme=$XBPS_CROSS_BASE/"
+fi
+
+case "${XBPS_TARGET_MACHINE}" in
+	x86_64-musl) CFLAGS="-D_FILE_OFFSET_BITS=64 -DLARGEFILE_SOURCE=1";;
+	# Inquiry: Do we have largefile support on everywhere?
+esac
+
+post_install() {
+	# move dist to examples dir
+	vsconf contrib/gpg.rc Muttrc.gpg.dist
+}
+
+# REMARKS:
+# Conf file is in a --sysconfdir=/etc/$pkgname/Muttrc and then alternatives to
+# /etc/Muttrc. In addition, a dependency on mime-types is broken by having
+# /etc/dir/ because mutt probably expects the mime information in the same
+# dir as sysconfdir. Thus a symlink is created to deal with this.
+# /etc/Muttrc is not currently in alternatives to prevent inadvertently
+# overwriting configuration.
+# In version 20160808 keybase integration was added, and lots of new
+# documentation now gets installed. Rumors of an /etc/NeoMuttrc are in the
+# release notes but not currently installed for unknown reasons.
+# As of 20171013, neomutt has hard forked and no longer refers to itself as
+# "Mutt" anywhere in the codebase. https://www.neomutt.org/2017/10/13/release
+# /etc/neomuttrc now exists, and there are no conflicts with regular mutt.
+# Due to this, an install.msg was added and all alternatives were removed.

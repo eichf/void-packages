@@ -1,17 +1,17 @@
 # Template file for 'gnome-tweak-tool'
 pkgname=gnome-tweak-tool
-version=3.18.1
+version=3.26.3
 revision=1
 noarch=yes
 nocross=yes
-build_style=gnu-configure
+build_style=meson
 hostmakedepends="pkg-config intltool"
 makedepends="gtk+3-devel python-gobject-devel gsettings-desktop-schemas-devel"
-depends="python python-gobject>=3.14 gsettings-desktop-schemas>=3.14 dconf hicolor-icon-theme desktop-file-utils"
+depends="python python3-gobject>=3.14 gsettings-desktop-schemas>=3.14 dconf hicolor-icon-theme desktop-file-utils python-notify mutter gnome-settings-daemon"
 pycompile_module="gtweak"
 short_desc="GNOME3 tool to customize advanced options"
-maintainer="Juan RP <xtraeme@voidlinux.eu>"
+maintainer="Enno Boland <gottox@voidlinux.eu>"
 license="GPL-2"
 homepage="http://live.gnome.org/GnomeTweakTool"
-distfiles="${GNOME_SITE}/${pkgname}/${version%.*}/${pkgname}-${version}.tar.xz"
-checksum=5c2c1103237648413c2d63a941e06b7057d6b102276b5968517753075de29430
+distfiles="${GNOME_SITE}/${pkgname}/3.26/${pkgname}-${version}.tar.xz"
+checksum=9406447850b14de204f9c5a6eaa6b63ba805ddb1a10fd863239841090af76430

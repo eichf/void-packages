@@ -1,0 +1,14 @@
+# Template file for 'plasma-pa'
+pkgname=plasma-pa
+version=5.11.3
+revision=1
+build_style=cmake
+configure_args="-DBUILD_TESTING=OFF"
+hostmakedepends="extra-cmake-modules pkg-config"
+makedepends="plasma-framework-devel kdoctools-devel pulseaudio-devel GConf-devel libcanberra-devel"
+short_desc="PulseAudio Plasma applet"
+maintainer="Denis Revin <denis.revin@gmail.com>"
+license="LGPL-2"
+homepage="https://projects.kde.org/projects/plasma/plasma-pa"
+distfiles="http://download.kde.org/stable/plasma/${version}/${pkgname}-${version}.tar.xz"
+checksum=9427630bff958b77a6dc05810a6b683566b5a9991d71e8608b6daf5d2fa63c1f

@@ -1,17 +1,21 @@
-# Template file for 'audacious-plugins'.
+# Template file for 'audacious-plugins'
 pkgname=audacious-plugins
-version=3.7.2
-revision=1
+version=3.9
+revision=2
 build_style=gnu-configure
 hostmakedepends="pkg-config"
-makedepends="
- audacious-devel alsa-lib-devel pulseaudio-devel jack-devel
+makedepends="audacious-devel alsa-lib-devel pulseaudio-devel jack-devel
  lame-devel libvorbis-devel libflac-devel mpg123-devel faad2-devel ffmpeg-devel
  libmodplug-devel fluidsynth-devel libcdio-paranoia-devel wavpack-devel libnotify-devel
- libcurl-devel libmtp-devel neon-devel libmms-devel gtk+-devel libxml2-devel"
+ libcurl-devel libmtp-devel neon-devel libmms-devel gtk+-devel libxml2-devel
+ libbs2b-devel libsoxr-devel"
 short_desc="Plugins for the Audacious media player"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="BSD"
 homepage="http://audacious-media-player.org/"
 distfiles="http://distfiles.audacious-media-player.org/${pkgname}-${version}.tar.bz2"
-checksum=fcf7488f01781c8f51e0af5cabacdd582b22537a0085f26aa5ca636373f8e1ff
+checksum=8bf7f21089cb3406968cc9c71307774aee7100ec4607f28f63cf5690d5c927b8
+
+post_install() {
+	vlicense COPYING
+}

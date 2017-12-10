@@ -1,14 +1,14 @@
 # Template file for 'lzip'
 pkgname=lzip
-version=1.17
+version=1.19
 revision=1
 build_style=gnu-configure
-short_desc="Losless data compressor based on the LZMA algorithm"
+short_desc="Lossless data compressor based on the LZMA algorithm"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
-license="GPL-3"
+license="GPL-2"
 homepage="http://www.nongnu.org/lzip/lzip.html"
 distfiles="http://download.savannah.gnu.org/releases/lzip/lzip-${version}.tar.gz"
-checksum=9443855e0a33131233b22cdb6c62c9313a483f16cc7415efe88d4a494cea0352
+checksum=ffadc4f56be1bc0d3ae155ec4527bd003133bdc703a753b2cc683f610e646ba9
 
 do_configure() {
 	./configure --prefix=/usr CXX="$CXX" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS"

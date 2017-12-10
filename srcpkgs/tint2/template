@@ -1,8 +1,8 @@
 # Template file for 'tint2'
 pkgname=tint2
-version=0.12.10
+version=15.3
 revision=1
-wrksrc="${pkgname}-${version}-4ee1e8f2fa492f1bf251689258fae3ce6b274ad0"
+wrksrc="${pkgname}-${version}-d8770ed590b6a8af6345a1a6644e111a62ce3755"
 build_style=cmake
 hostmakedepends="pkg-config"
 makedepends="libXdamage-devel libXcomposite-devel libXinerama-devel libXrandr-devel
@@ -10,7 +10,8 @@ makedepends="libXdamage-devel libXcomposite-devel libXinerama-devel libXrandr-de
 depends="desktop-file-utils"
 short_desc="A basic, good-looking task manager for WMs"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
+# changelog="https://gitlab.com/o9000/tint2/blob/master/ChangeLog"
 license="GPL-2"
 homepage="https://gitlab.com/o9000/tint2"
-distfiles="https://gitlab.com/o9000/${pkgname}/repository/archive.tar.gz?ref=${version}>${pkgname}-${version}.tar.gz"
-checksum=9606082d29affd536dba04b68fd11830159f2aab30ab47cd6d0fa72d7a2d32f6
+distfiles="https://gitlab.com/o9000/${pkgname}/repository/${version}/archive.tar.gz>${pkgname}-${version}.tar.gz"
+checksum=ec016a43827786c19584f02cbe21171c394059060ddeb5a8854ee0e9878dd8f7

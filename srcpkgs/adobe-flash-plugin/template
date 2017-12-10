@@ -1,21 +1,21 @@
 # Template file for 'adobe-flash-plugin'
 pkgname=adobe-flash-plugin
-version=11.2.202.616
+version=27.0.0.183
 revision=1
 # The EULA file
-_eula="http://www.adobe.com/products/eulas/pdfs/PlatformClients_PC_WWEULA_Combined_20100108_1657.pdf"
-_eulacksum=3cb0a5f4576be735abcff7189ed18eda17c70b762c3a78a3379b6f44395fbc10
+_eula="https://www.adobe.com/content/dam/Adobe/en/legal/licenses-terms/pdf/PlatformClients_PC_WWEULA-en_US-20150407_1357.pdf"
+_eulacksum=91e504a9e99ebd988ffa95ce0d5feaf340410c03709348297301a22dc11df1a8
 _url=http://fpdownload.adobe.com/get/flashplayer/pdc/${version}
 if [ "$XBPS_MACHINE" = "x86_64" ]; then
-	_disttarball="${_url}/install_flash_player_11_linux.x86_64.tar.gz"
-	_distcksum=39c57f57468dff12a982a3f8fb5b9d5b85f5730d542cf361d7087868e4d3b164
+	_disttarball="${_url}/flash_player_npapi_linux.x86_64.tar.gz"
+	_distcksum=a12b8ee3e40dc80bd3f96a968f17f0de2cd9acea5c8a6b7e9a4688bcd7a2c835
 else
-	_disttarball="${_url}/install_flash_player_11_linux.i386.tar.gz"
-	_distcksum=607d12307bb2d8b03475e317873bc7f4c577a3383e5e79190444fb9089ece744
+	_disttarball="${_url}/flash_player_npapi_linux.i386.tar.gz"
+	_distcksum=ae4532b374b63aa2ce5a625d93e5ae543a073bcb1f812489a88c1595691e466f
 fi
 distfiles="${_eula} ${_disttarball}"
 checksum="${_eulacksum} ${_distcksum}"
-skip_extraction="$(basename ${_eula})"
+skip_extraction="${_eula##*/}"
 short_desc="Adobe Flash Player plugin for Netscape compatible browsers"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://www.adobe.com"
@@ -26,11 +26,12 @@ depends="curl hicolor-icon-theme desktop-file-utils"
 restricted=yes
 create_wrksrc=yes
 only_for_archs="i686 x86_64"
+nopie=yes
 
 do_install() {
 	vinstall libflashplayer.so 755 usr/lib/mozilla/plugins
 	#vinstall usr/lib/kde4/kcm_adobe_flash_player.so 755 usr/lib/kde4
-	    vbin usr/bin/flash-player-properties 755 usr/bin
+	vbin usr/bin/flash-player-properties
 	for i in 16x16 22x22 24x24 32x32 48x48; do
 		vinstall usr/share/icons/hicolor/${i}/apps/flash-player-properties.png \
 		644 usr/share/icons/hicolor/${i}/apps
@@ -39,6 +40,5 @@ do_install() {
 		usr/share/applications
 	vinstall usr/share/kde4/services/kcm_adobe_flash_player.desktop 644 \
 		usr/share/kde4/services
-	vinstall "${XBPS_SRCDISTDIR}/${pkgname}-${version}/$(basename ${_eula})" 644 \
-		usr/share/licenses/${pkgname} LICENSE.pdf
+	vlicense "${XBPS_SRCDISTDIR}/${pkgname}-${version}/$(basename ${_eula})" LICENSE.pdf
 }

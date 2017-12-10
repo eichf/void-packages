@@ -1,10 +1,11 @@
 # Template file for 'dracut'
 pkgname=dracut
-version=044
+version=046
 revision=1
 build_style=configure
 configure_args="--prefix=/usr --sysconfdir=/etc"
-hostmakedepends="libxslt docbook-xsl asciidoc"
+hostmakedepends="libxslt docbook-xsl asciidoc pkg-config"
+makedepends="libkmod-devel"
 depends="bash psmisc cpio coreutils"
 conf_files="/etc/dracut.conf"
 make_dirs="
@@ -15,12 +16,24 @@ short_desc="A new initramfs infrastructure"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="GPL-2"
 distfiles="${KERNEL_SITE}/utils/boot/$pkgname/$pkgname-$version.tar.xz"
-checksum=84b97c9b0120e9fde06c3b9cf2ede1c4632cccd8e085e980b9ec9c788655af05
+checksum=3cb206abc198811972d452d53e88c32f29dd1b0bb24e35e23b4056aa74824f99
+
+case "$XBPS_TARGET_MACHINE" in
+*-musl) # Add musl-fts implementation
+	makedepends+=" musl-fts-devel"
+	;;
+esac
+
+do_build() {
+	case "$XBPS_TARGET_MACHINE" in
+		*-musl) make ${makejobs} LDLIBS="${XBPS_CROSS_BASE}/usr/lib/libfts.a";;
+	esac
+}
 
 post_install() {
 	# kernel hooks.
-	vinstall ${FILESDIR}/kernel-hook-postinst 755 etc/kernel.d/post-install 10-dracut
-	vinstall ${FILESDIR}/kernel-hook-postrm 755 etc/kernel.d/post-remove 10-dracut
+	vinstall ${FILESDIR}/kernel-hook-postinst 755 etc/kernel.d/post-install 20-dracut
+	vinstall ${FILESDIR}/kernel-hook-postrm 755 etc/kernel.d/post-remove 20-dracut
 	# We don't need the systemd stuff.
 	rm -rf ${DESTDIR}/usr/lib/dracut/modules.d/*systemd*
 	rm -f ${DESTDIR}/usr/share/man/man8/*.service.*
@@ -28,7 +41,7 @@ post_install() {
 }
 
 dracut-network_package() {
-	depends="dracut-${version}_${revision}"
+	depends="dhclient dracut-${version}_${revision}"
 	short_desc+=" - network modules"
 	noarch=yes
 	pkg_install() {

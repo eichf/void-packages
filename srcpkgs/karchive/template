@@ -1,0 +1,25 @@
+# Template file for 'karchive'
+pkgname=karchive
+version=5.40.0
+revision=1
+build_style=cmake
+configure_args="-DBUILD_TESTING=OFF"
+hostmakedepends="extra-cmake-modules qt5-host-tools qt5-devel"
+makedepends="qt5-devel zlib-devel bzip2-devel liblzma-devel"
+short_desc="Qt5 addon providing access to numerous types of archives"
+maintainer="Denis Revin <denis.revin@gmail.com>"
+license="LGPL-2"
+homepage="https://projects.kde.org/projects/frameworks/karchive"
+distfiles="http://download.kde.org/stable/frameworks/${version%.*}/${pkgname}-${version}.tar.xz"
+checksum=1e181495390ba730f2b1aa9354da2122e2aa592aaffdbce4164fd9dcb2d97bb1
+
+karchive-devel_package() {
+	short_desc+=" - development"
+	depends="${makedepends} ${sourcepkg}>=${version}_${revision}"
+	pkg_install() {
+		vmove usr/include
+		vmove usr/lib/qt5/mkspecs
+		vmove usr/lib/cmake
+		vmove usr/lib/*.so
+	}
+}

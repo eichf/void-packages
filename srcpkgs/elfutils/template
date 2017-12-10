@@ -1,6 +1,6 @@
 # Template file for 'elfutils'
 pkgname=elfutils
-version=0.166
+version=0.170
 revision=1
 build_style=gnu-configure
 configure_args="--program-prefix=eu-"
@@ -9,16 +9,20 @@ makedepends="zlib-devel bzip2-devel liblzma-devel"
 short_desc="Utilities to handle ELF object files"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 license="GPL-3"
-homepage="https://fedorahosted.org/elfutils/"
-distfiles="https://fedorahosted.org/releases/e/l/${pkgname}/${version}/${pkgname}-${version}.tar.bz2"
-checksum=3c056914c8a438b210be0d790463b960fc79d234c3f05ce707cbff80e94cba30
+homepage="https://sourceware.org/elfutils/"
+distfiles="https://sourceware.org/${pkgname}/ftp/${version}/${pkgname}-${version}.tar.bz2"
+checksum=1f844775576b79bdc9f9c717a50058d08620323c1e935458223a12f249c9e066
 
-# Suppress certain warnings to not fail for -Werror
-CFLAGS="-Wno-unused-result -Wno-format-nonliteral"
+CFLAGS="-Wno-error"
 
 case "$XBPS_TARGET_MACHINE" in
 	*-musl) makedepends+=" argp-standalone musl-fts-devel musl-obstack" ;;
 esac
+
+if [ "$CROSS_BUILD" ]; then
+	# kernel headers in our cross-* packages are too old (need >= 4.1)
+	CFLAGS+=" -DBPF_PSEUDO_MAP_FD=1"
+fi
 
 post_extract() {
 	case "$XBPS_TARGET_MACHINE" in

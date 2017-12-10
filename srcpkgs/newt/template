@@ -1,15 +1,16 @@
 # Template file for 'newt'
 pkgname=newt
-version=0.52.19
-revision=1
+version=0.52.20
+revision=2
 build_style=gnu-configure
-makedepends="slang-devel popt-devel"
+hostmakedepends="python-devel python3-devel"
+makedepends="slang-devel popt-devel python3-devel python-devel"
 short_desc="Library for color text mode, widget based user interfaces"
 maintainer="Enno Boland <gottox@voidlinux.eu>"
 license="GPL-3"
-homepage="https://fedorahosted.org/newt/"
-distfiles="https://fedorahosted.org/releases/n/e/$pkgname/$pkgname-$version.tar.gz"
-checksum=08c0db56c21996af6a7cbab99491b774c6c09cef91cd9b03903c84634bff2e80
+homepage="https://pagure.io/newt/"
+distfiles="https://pagure.io/releases/newt/newt-${version}.tar.gz"
+checksum=8d66ba6beffc3f786d4ccfee9d2b43d93484680ef8db9397a4fb70b5adbb6dbc
 
 newt-devel_package() {
 	depends="${sourcepkg}>=${version}_${revision}"
@@ -19,5 +20,19 @@ newt-devel_package() {
 		vmove usr/lib/pkgconfig
 		vmove "usr/lib/*.a"
 		vmove "usr/lib/*.so"
+	}
+}
+newt-python_package() {
+	short_desc+=" - Python2 bindings"
+	pycompile_module="snake.py"
+	pkg_install() {
+		vmove usr/lib/python2*
+	}
+}
+newt-python3_package() {
+	short_desc+=" - Python3 bindings"
+	pycompile_module="snake.py"
+	pkg_install() {
+		vmove usr/lib/python3*
 	}
 }

@@ -1,18 +1,18 @@
 # Template file for 'synergy'
 pkgname=synergy
-version=1.7.6
+version=1.8.8
 revision=2
-wrksrc="${pkgname}-${version}-stable"
+wrksrc="${pkgname}-core-${version}-stable"
 build_style=cmake
-hostmakedepends="cmake unzip pkg-config"
+hostmakedepends="unzip pkg-config"
 makedepends="avahi-compat-libs-devel libcurl-devel
  libSM-devel libXext-devel libXrandr-devel libXtst-devel libXinerama-devel"
 short_desc="Share a single mouse and keyboard between multiple computers"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
 homepage="http://synergy-foss.org/"
 license="GPL-2"
-distfiles="https://github.com/symless/synergy/archive/v${version}-stable.tar.gz"
-checksum=a453b880606edbdaec82576bcb74189a7ae564feeee126b125063802a778411d
+distfiles="https://github.com/symless/synergy-core/archive/v${version}-stable.tar.gz"
+checksum=9ee45aabf9f77925bfab6248e713ae5d9e6bfe6bc246e4a0a6304dc6a30f5f14
 
 CXXFLAGS="-pthread"
 
@@ -26,10 +26,10 @@ if [ -z "$CROSS_BUILD" ]; then
 	makedepends+=" qt5-devel"
 	post_build() {
 		CXXFLAGS+=" $(pkg-config --cflags avahi-compat-libdns_sd)"
-		# qt4 gui
+		# qt5 gui
 		cd $wrksrc/src/gui
-		qmake
-		make CXXFLAGS+="$CXXFLAGS -fPIC" ${makejobs}
+		qmake QMAKE_CXXFLAGS="$CXXFLAGS" QMAKE_LFLAGS="$LDFLAGS"
+		make ${makejobs}
 	}
 	synergy-gui_package() {
 		depends="desktop-file-utils ${sourcepkg}>=${version}_${revision}"

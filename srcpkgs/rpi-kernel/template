@@ -1,10 +1,10 @@
 # Template file for 'rpi-kernel'
 #
-_githash="68bead249ca6ad97fc39a0780471f4b65402afc1"
+_githash="3a1b10a4770309529f945287a91a1402ca804585"
 _gitshort="${_githash:0:7}"
 
 pkgname=rpi-kernel
-version=4.4.9
+version=4.9.67
 revision=1
 wrksrc="linux-${_githash}"
 maintainer="Juan RP <xtraeme@voidlinux.eu>"
@@ -12,7 +12,7 @@ homepage="http://www.kernel.org"
 license="GPL-2"
 short_desc="The Linux kernel for Raspberry Pi (${version%.*} series [git ${_gitshort}])"
 distfiles="https://github.com/raspberrypi/linux/archive/${_githash}.tar.gz"
-checksum=ce4c72bde12c5cb92696dcaf35ae66293781f02e2c83340c64ff9a51589a8246
+checksum=d636e49b13a282a7d0959cf23a7f487e41619a8bd76f270ab6291b0dd5bc3c60
 
 _kernver="${version}_${revision}"
 
@@ -37,8 +37,6 @@ mutable_files="
 	/usr/lib/modules/${_kernver}/modules.devname"
 
 pre_configure() {
-	$XBPS_FETCH_CMD https://raw.githubusercontent.com/raspberrypi/tools/master/mkimage/mkknlimg
-	chmod +x mkknlimg
 	# Remove .git directory, otherwise scripts/setkernelversion.sh
 	# modifies KERNELRELEASE and appends + to it.
 	rm -rf .git
@@ -52,10 +50,16 @@ do_configure() {
 	case "$XBPS_TARGET_MACHINE" in
 	armv7l*)
 		echo "CONFIG_USER_NS=y" >> arch/arm/configs/bcm2709_defconfig
+		echo "CONFIG_CONNECTOR=y" >> arch/arm/configs/bcm2709_defconfig
+		echo "CONFIG_PROC_EVENTS=y" >> arch/arm/configs/bcm2709_defconfig
+		echo "CONFIG_F2FS_FS_SECURITY=y" >> arch/arm/configs/bcm2709_defconfig
 		make ${makejobs} ${_args} ARCH=arm bcm2709_defconfig
 		;;
 	armv6l*)
 		echo "CONFIG_USER_NS=y" >> arch/arm/configs/bcmrpi_defconfig
+		echo "CONFIG_CONNECTOR=y" >> arch/arm/configs/bcmrpi_defconfig
+		echo "CONFIG_PROC_EVENTS=y" >> arch/arm/configs/bcmrpi_defconfig
+		echo "CONFIG_F2FS_FS_SECURITY=y" >> arch/arm/configs/bcmrpi_defconfig
 		make ${makejobs} ${_args} ARCH=arm bcmrpi_defconfig
 		;;
 	esac
@@ -83,10 +87,10 @@ do_install() {
 	# Generate kernel.img and install it to destdir.
 	case "$XBPS_TARGET_MACHINE" in
 	armv7l*)
-		./mkknlimg --dtok arch/arm/boot/zImage ${DESTDIR}/boot/kernel7.img
+		cp arch/arm/boot/zImage ${DESTDIR}/boot/kernel7.img
 		;;
 	armv6l*)
-		./mkknlimg --dtok arch/arm/boot/zImage ${DESTDIR}/boot/kernel.img
+		cp arch/arm/boot/zImage ${DESTDIR}/boot/kernel.img
 		;;
 	esac
 
@@ -130,19 +134,8 @@ do_install() {
 	# copy arch includes for external modules
 	mkdir -p ${hdrdest}/arch/arm
 	cp -a arch/arm/include ${hdrdest}/arch/arm
-	case "$XBPS_TARGET_MACHINE" in
-	armv7l*)
-		mkdir -p ${hdrdest}/arch/arm/mach-bcm2709
-		cp -a arch/arm/mach-bcm2709/include ${hdrdest}/arch/arm/mach-bcm2709
-		;;
-	armv6l*)
-		mkdir -p ${hdrdest}/arch/arm/mach-bcm2708
-		cp -a arch/arm/mach-bcm2708/include ${hdrdest}/arch/arm/mach-bcm2708
-		;;
-	esac
 
 	mkdir -p ${hdrdest}/arch/arm/kernel
-
 	cp arch/arm/Makefile ${hdrdest}/arch/arm
 	cp arch/arm/kernel/asm-offsets.s ${hdrdest}/arch/arm/kernel
 
