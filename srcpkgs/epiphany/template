@@ -1,6 +1,6 @@
 # Template file for 'epiphany'
 pkgname=epiphany
-version=3.26.3
+version=3.26.5.1
 revision=1
 build_style=meson
 configure_args="-Ddistributor_name=VoidLinux -Dunit_tests=false"
@@ -17,5 +17,5 @@ short_desc="Intuitive GNOME web browser"
 maintainer="Enno Boland <gottox@voidlinux.eu>"
 homepage="http://www.gnome.org/projects/epiphany/"
 license="GPL-2"
-distfiles="${GNOME_SITE}/$pkgname/${version%.*}/$pkgname-$version.tar.xz"
-checksum=cb50042496e704621db3d0213581b0f914c639e160522751f64c5e5f6e6040b5
+distfiles="${GNOME_SITE}/$pkgname/${version%.*.*}/$pkgname-$version.tar.xz"
+checksum=4b2f1c48e6f50793ff205d9215add5596ab5c7ebf4cef76907868fcd5a029221

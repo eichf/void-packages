@@ -1,7 +1,7 @@
 # Template file for 'zfs'
 pkgname=zfs
-version=0.7.3
-revision=2
+version=0.7.5
+revision=1
 patch_args="-Np1"
 wrksrc="${pkgname}-${pkgname}-${version/r/-}"
 build_style=gnu-configure
@@ -16,7 +16,7 @@ maintainer="Toyam Cox <Vaelatern@voidlinux.eu>"
 license="CDDL"
 homepage="http://zfsonlinux.org/"
 distfiles="https://github.com/zfsonlinux/${pkgname}/archive/${pkgname}-${version/r/-}.tar.gz"
-checksum=9f766eb111d11825130547aba093f42bdbae9a388e9b133f2048c431c955a591
+checksum=c011113d960ed0e7ddfd0ccdf0af1a7a0d1d4315d4ad737694a2eaac8147297e
 
 triggers="dkms"
 dkms_modules="zfs ${version/r/-}"

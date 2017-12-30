@@ -1,6 +1,6 @@
 # Template file for 'python-setuptools'
 pkgname=python-setuptools
-version=36.7.2
+version=38.2.4
 revision=1
 noarch=yes
 wrksrc="setuptools-${version}"
@@ -15,7 +15,7 @@ maintainer="Alessio Sergi <al3hex@gmail.com>"
 homepage="https://github.com/pypa/setuptools"
 license="MIT"
 distfiles="${PYPI_SITE}/s/setuptools/setuptools-${version}.zip"
-checksum=ad86fd8dd09c285c33b4c5b82bbc21d21883637faef78b0ab58fa9984847220d
+checksum=9c671a6291a5b1171fb9da81665eb4f9625c7dbddc613d82abdc6002a4bce896
 alternatives="setuptools:easy_install:/usr/bin/easy_install2"
 
 export SETUPTOOLS_INSTALL_WINDOWS_SPECIFIC_FILES=0
@@ -31,17 +31,11 @@ python3-setuptools_package() {
 	pycompile_module="pkg_resources setuptools easy_install.py"
 	short_desc="${short_desc/Python2/Python3}"
 	provides="python3-distribute-${version}_1"
-	replaces="python3-distribute>=0 python3.4-setuptools>=0"
+	replaces="python3-distribute>=0"
 	alternatives="setuptools:easy_install:/usr/bin/easy_install3"
 	pkg_install() {
 		vmove usr/bin/easy_install3
 		vmove ${py3_sitelib}
 		vlicense LICENSE
 	}
-}
-python3.4-setuptools_package() {
-	noarch=yes
-	build_style=meta
-	short_desc="${short_desc/Python2/Python3.4} (transitional dummy package)"
-	depends="python3-setuptools>=${version}_${revision}"
 }

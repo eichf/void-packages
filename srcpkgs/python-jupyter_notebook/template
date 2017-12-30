@@ -1,6 +1,6 @@
 # Template file for 'python-jupyter_notebook'
 pkgname=python-jupyter_notebook
-version=5.2.1
+version=5.2.2
 revision=1
 noarch=yes
 wrksrc="notebook-${version}"
@@ -16,7 +16,7 @@ maintainer="Alessio Sergi <al3hex@gmail.com>"
 homepage="https://github.com/jupyter/notebook"
 license="3-clause-BSD"
 distfiles="${PYPI_SITE}/n/notebook/notebook-${version}.tar.gz"
-checksum=4ae5b81dd39b37cdd99dcffe83a5182c849947b92d46ac4d2b5093af2bb9f224
+checksum=7bb54fb61b9c5426bc116f840541b973431198e00ea2896122d05fc122dbbd67
 
 alternatives="
  jupyter-notebook:jupyter-notebook:/usr/bin/jupyter-notebook2
@@ -40,7 +40,6 @@ python3-jupyter_notebook_package() {
 	 jupyter-notebook:jupyter-serverextension:/usr/bin/jupyter-serverextension3
 	 jupyter-notebook:jupyter-bundlerextension:/usr/bin/jupyter-bundlerextension3"
 	noarch=yes
-	replaces="python3.4-jupyter_notebook>=0"
 	depends="python3-Jinja2 python3-terminado python3-tornado
 	 python3-ipython_genutils python3-traitlets python3-jupyter_core
 	 python3-jupyter_client python3-jupyter_nbformat python3-jupyter_nbconvert
@@ -52,10 +51,4 @@ python3-jupyter_notebook_package() {
 		vmove usr/lib/python3*
 		vlicense COPYING.md LICENSE
 	}
-}
-python3.4-jupyter_notebook_package() {
-	noarch=yes
-	build_style=meta
-	short_desc="${short_desc/Python2/Python3.4} (transitional dummy package)"
-	depends="python3-jupyter_notebook>=${version}_${revision}"
 }

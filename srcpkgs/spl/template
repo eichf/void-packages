@@ -1,6 +1,6 @@
 # Template file for 'spl'
 pkgname=spl
-version=0.7.3
+version=0.7.5
 revision=1
 wrksrc="${pkgname}-${pkgname}-${version/r/-}"
 build_style=gnu-configure
@@ -11,7 +11,7 @@ maintainer="Toyam Cox <Vaelatern@voidlinux.eu>"
 license="GPL-2"
 homepage="http://zfsonlinux.org/"
 distfiles="https://github.com/zfsonlinux/${pkgname}/archive/${pkgname}-${version/r/-}.tar.gz"
-checksum=0c15747027c7b90f1c683d045f247d5e9f2479a3e1b2f0094b2f571e2f39610f
+checksum=3d93b0f14ca59f4e70a14626327833aaa94f9cef907716357ac731ebf4892e57
 
 triggers="dkms"
 dkms_modules="spl ${version/r/-}"
