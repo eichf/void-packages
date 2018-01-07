@@ -3042,3 +3042,4 @@ libVkLayer_parameter_validation.so vulkan-validation-layers-1.0.57.0_1
 libVkLayer_threading.so vulkan-validation-layers-1.0.57.0_1
 libVkLayer_unique_objects.so vulkan-validation-layers-1.0.57.0_1
 libVkLayer_utils.so vulkan-validation-layers-1.0.57.0_1
+libhpdf.so Haru-devel-2.3.0_1
