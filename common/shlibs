@@ -395,13 +395,13 @@ libtag_c.so.0 taglib-1.6.1_1
 libfribidi.so.0 fribidi-0.19.2_1
 liba52.so.0 liba52-0.7.4_1
 libcddb.so.2 libcddb-1.3.2_1
-libiso9660.so.10 libcdio-0.93_1
+libiso9660.so.11 libcdio-2.0.0_1
 libudf.so.0 libcdio-0.83_1
 libcdio_cdda.so.2 libcdio-paranoia-10.2_1
 libcdio_paranoia.so.2 libcdio-paranoia-10.2_1
 libiso9660++.so.0 libcdio-0.83_1
-libcdio++.so.0 libcdio-0.83_1
-libcdio.so.16 libcdio-0.93_1
+libcdio++.so.1 libcdio-2.0.0_1
+libcdio.so.18 libcdio-2.0.0_1
 libmpcdec.so.5 libmpcdec-1.2.6_1
 libproxy.so.1 libproxy-0.4.6_1
 libmoar.so MoarVM-2015.11_1
@@ -776,7 +776,7 @@ libospgrove.so.0 openjade-1.3.2_1
 libostyle.so.0 openjade-1.3.2_1
 libtorrent.so.19 libtorrent-0.13.6_1
 libgiblib.so.1 giblib-1.2.4_1
-libgc.so.1 gc-7.1_1
+libgc.so.2 gc-7.6.2_1
 libcord.so.1 gc-7.4_1
 libgslcblas.so.0 gsl-1.15_1
 libgsl.so.23 gsl-2.4_1
@@ -1130,8 +1130,8 @@ libjansson.so.4 jansson-2.4_1
 libleveldb.so.1 leveldb-1.8.0_1
 libcprops.so.15 libcprops-0.1.12_1
 libopus.so.0 opus-1.0.2_1
-libconfig++.so.9 libconfig++-1.4.8_1
-libconfig.so.9 libconfig-1.4.8_1
+libconfig++.so.11 libconfig++-1.7.1_1
+libconfig.so.11 libconfig-1.7.1_1
 libopusfile.so.0 opusfile-0.2_1
 libopusurl.so.0 opusfile-0.6_1
 libgtkaml.so.0 libgtkaml-0.5.94_1
@@ -1686,7 +1686,7 @@ libtelepathy-farstream.so.3 telepathy-farstream-0.6.0_6
 libnetpbm.so.11 libnetpbm-10.66.03_2
 libid3.so id3lib-3.8.3_1
 libid3-3.8.so.3 id3lib-3.8.3_1
-libgirara-gtk3.so.2 girara-0.2.4_1
+libgirara-gtk3.so.3 girara-0.2.8_1
 libjq.so.1 jq-devel-1.4_1
 libcrypto.so.37 libcrypto37-2.3.3_1
 libcrypto.so.38 libcrypto38-2.4.2_1
@@ -1722,7 +1722,7 @@ libbalooqueryparser.so.4 baloo-4.14.2_1
 libbaloowidgets.so.4 baloo-widgets-4.13.3_1
 libkdcraw.so.23 libkdcraw-4.13.3_1
 libchm.so.0 libchmlib-0.40_1
-libOkular5Core.so.7 libokular-17.08.1_1
+libOkular5Core.so.8 libokular-17.12.0_1
 libmnl.so.0 libmnl-1.0.3_1
 libnftnl.so.7 libnftnl-1.0.8_1
 libfcgi.so.0 fcgi-2.4.0_2
@@ -2621,7 +2621,7 @@ libMonoSupportW.so mono-4.0.1.44_2
 libmono-btls-shared.so mono-5.2.0.215_1
 libxcb-xrm.so.0 xcb-util-xrm-1.0_1
 libinchi.so.0 openbabel-2.3.2_1
-libopenbabel.so.4 openbabel-2.3.2_1
+libopenbabel.so.5 openbabel-2.4.1_1
 libavogadro.so.1 avogadro-1.2.0_1
 libavogadro_OpenQube.so.0 avogadro-1.2.0_1
 libcourier-unicode.so.4 courier-unicode-2.0_1
@@ -2721,7 +2721,7 @@ libui.so.0 libui-alpha3.1_1
 libgnome-autoar-0.so.0 gnome-autoar-0.1.1_1
 libgnome-autoar-gtk-0.so.0 gnome-autoar-0.1.1_1
 libxapp.so.1 xapps-1.0.2_1
-libite.so.4 libite-1.9.2_1
+libite.so.5 libite-2.0.1_1
 liblog4cplus-1.2.so.5 log4cplus-1.2.0_1
 libpng12.so.0 libpng12-1.2.56_2
 libpng.so.3 libpng12-1.2.56_2
@@ -2937,7 +2937,7 @@ libtracker-control-2.0.so.0 libtracker-2.0.0_1
 libtracker-sparql-2.0.so.0 libtracker-2.0.0_1
 libdockapp.so.3 libdockapp-0.7.2_1
 libkrdccore.so.5 krdc-17.04.3_1
-libkrfbprivate.so.5.0 krfb-17.08.1_1 
+libkrfbprivate.so.5.0 krfb-17.08.1_1
 libArcus.so.3 libArcus-3.1.0_1
 libgutenprint.so.2 gutenprint-5.2.12_1
 libunbound.so.2 unbound-1.6.6_1
@@ -2994,6 +2994,8 @@ librpm.so.7 rpm-4.13.0.2_1
 librpmsign.so.7 rpm-4.13.0.2_1
 librpmbuild.so.7 rpm-4.13.0.2_1
 librpmio.so.7 rpm-4.13.0.2_1
+libsquirrel.so.0 squirrel-libs-3.1_1
+libsqstdlib.so.0 squirrel-libs-3.1_1
 libexecinfo.so.1 libexecinfo-1.1_1
 libkdeconnectpluginkcm.so.1 kdeconnect-1.2_1
 libkdeconnectinterfaces.so.1 kdeconnect-1.2_1
@@ -3023,3 +3025,10 @@ libr_crypto.so radare2-2.2.0_1
 libr_fs.so radare2-2.2.0_1
 libr_magic.so radare2-2.2.0_1
 libr_reg.so radare2-2.2.0_1
+libcalc.so.2.12.6.0 libcalc-2.12.6.0_1
+libcustcalc.so.2.12.6.0 libcalc-2.12.6.0_1
+libykpiv.so.1 libykpiv-1.5.0_1
+libykcs11.so.1 libykcs11-1.5.0_1
+libKF5KExiv2.so.15.0.0 libkexiv25-17.04.3_1
+libqmobipocket.so.2 libqmobipocket-17.04.3_1
+libgloox.so.17 gloox-1.0.20_1

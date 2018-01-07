@@ -1,6 +1,6 @@
 # Template file for 'Adapta'
 pkgname=Adapta
-version=3.92.2.63
+version=3.93.0.11
 revision=1
 build_style=gnu-configure
 wrksrc="adapta-gtk-theme-$version"
@@ -11,7 +11,7 @@ maintainer="Andrea Brancaleoni <abc@pompel.me>"
 license="GPL-2"
 homepage=https://github.com/adapta-project/adapta-gtk-theme
 distfiles="https://github.com/adapta-project/adapta-gtk-theme/archive/$version.tar.gz"
-checksum=7c38a880889c4e0a8dfd2385740f5a3e004dc0e2178e62ddfb61418b31a59ee2
+checksum=6f6ce6cbe0a78606b8c422a1d2c9e4c6a794047be4cfc4a322f89d2c369a0d40
 
 noarch=y
 
